@@ -1,10 +1,8 @@
-package gyul.songgyubin.daytogo
+package gyul.songgyubin.daytogo.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import com.kakao.sdk.common.util.Utility
-import com.kakao.sdk.user.UserApiClient
+import gyul.songgyubin.daytogo.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
