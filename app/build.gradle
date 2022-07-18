@@ -55,7 +55,8 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-database-ktx' // firebase RealtimeDatabase
     implementation 'com.google.firebase:firebase-auth-ktx' // firebase 로그인
-    implementation "com.kakao.sdk:v2-user:2.11.0" // 카카오 로그인
+
+    implementation "com.kakao.sdk:v2-user-rx:2.11.0" // 카카오 로그인
 
 
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0' // rxAndroid
