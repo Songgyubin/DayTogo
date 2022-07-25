@@ -15,7 +15,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         // 사용자 정보 요청 (기본)
         UserApiClient.rx.me()
             .subscribeOn(Schedulers.io())
@@ -26,7 +25,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                             "\n회원번호: ${user.id}" +
                             "\n이메일: ${user.kakaoAccount?.email}"
                 )
-                binding.test.text = user.kakaoAccount?.email
             }, { error ->
                 Log.e("TAG", "사용자 정보 요청 실패", error)
             })
