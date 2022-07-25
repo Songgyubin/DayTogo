@@ -9,8 +9,11 @@ android {
     // local.properties에서 키,값 가져오기
     def localProperties = new Properties()
     localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
     def naver_map_client_id = localProperties.getProperty('naver_map_client_id')
+    def naver_map_client_id_manifest = localProperties.getProperty('naver_map_client_id_manifest')
     def kakaoSdkKey = localProperties.getProperty('kakao_sdk_key')
+    def kakao_sdk_key_manifest = localProperties.getProperty('kakao_sdk_key_manifest')
 
     defaultConfig {
         applicationId "gyul.songgyubin.daytogo"
@@ -18,8 +21,10 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
-        manifestPlaceholders = [naverMapClientId: naver_map_client_id]
+        manifestPlaceholders = [naverMapClientId: naver_map_client_id_manifest, kakaoSdkKeyManifest:kakao_sdk_key_manifest]
         buildConfigField "String",'KakaoSdkKey', kakaoSdkKey
+        buildConfigField "String",'NaverMapClientId',naver_map_client_id
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
