@@ -22,7 +22,7 @@ import io.reactivex.schedulers.Schedulers
 import java.util.regex.Pattern
 import kotlin.math.log
 
-class LoginViewModel(application: Application) : BaseViewModel(application) {
+class LoginViewModel() : BaseViewModel() {
     private val auth: FirebaseAuth by lazy { Firebase.auth }
     private val _isLoginSuccess = MutableLiveData<Boolean>()
     private val _isValidEmail = MutableLiveData<Boolean>(true)
