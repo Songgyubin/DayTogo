@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="viewmodel"
+            type="gyul.songgyubin.daytogo.viewmodels.LoginViewModel" />
+
+    </data>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -10,22 +17,27 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
+        android:text="@={viewmodel.inputEmail}"
         android:hint="이메일을 입력하세요"
+        android:onTextChanged="@{viewmodel.onEmailTextChanged}"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:id="@+id/ed_password"
+        android:inputType="textPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:hint="비밀번호를 입력하세요"
+        android:onTextChanged="@{viewmodel.onPasswordTextChanged}"
+        android:text="@={viewmodel.inputPassword}"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ed_email" />
-
 
     <ImageButton
         android:id="@+id/btn_kakao_login"
@@ -39,6 +51,7 @@
         app:layout_constraintRight_toRightOf="parent" />
 
     <Button
+        android:id="@+id/btn_firebase_login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="이메일로 시작하기"
@@ -48,3 +61,4 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_kakao_login" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

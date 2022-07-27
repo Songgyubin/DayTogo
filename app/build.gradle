@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -60,6 +61,8 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-database-ktx' // firebase RealtimeDatabase
     implementation 'com.google.firebase:firebase-auth-ktx' // firebase 로그인
+    implementation 'com.github.FrangSierra:RxFirebase:1.5.6' //rx firebase
+
 
     implementation "com.kakao.sdk:v2-user-rx:2.11.0" // 카카오 로그인
 
