@@ -1,8 +1,12 @@
 package gyul.songgyubin.daytogo.activities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -22,7 +26,7 @@ import io.reactivex.rxkotlin.addTo
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
     private lateinit var viewModel: LoginViewModel
-    private val auth: FirebaseAuth by lazy { Firebase.auth }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,31 +35,35 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         binding.btnKakaoLogin.setOnClickListener { kakaoLogin() }
         binding.btnFirebaseLogin.setOnClickListener { firebaseLogin() }
         binding.viewmodel = viewModel
+
+        checkEmailValidation()
+
+
+    }
+
+    private fun checkEmailValidation() {
+        binding.tvWarningEmail.run {
+            viewModel.isValidEmail.observe(this@LoginActivity) { isValidEmail ->
+                if (isValidEmail) visibility = View.GONE
+                else visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun firebaseLogin() {
-        viewModel.run {
-            if (!isValidEmail.value!!) showToast("이메일을 입력해주세요.")
-            else if (!isValidPassword.value!!) showToast("패스워드를 입력해주세요.")
-            else {
-                RxFirebaseAuth.signInWithEmailAndPassword(
-                    auth,
-                    inputEmail.value!!,
-                    inputPassword.value!!
-                )
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .map { it.user != null }
-                    .subscribe({ isSuccess ->
-                        if (isSuccess) {
-                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                            startActivity(intent)
-                        } else {
-                            showToast("아이디와 패스워드를 확인해주시길 바랍니다.")
-                        }
-                    }, { error ->
-                        Log.e("TAG", "firebaseLogin: ", error)
 
-                    }).addTo(disposable)
+        viewModel.run {
+            firebaseLogin()
+            if (isValidEmail.value!! && isValidPassword.value!!) {
+                isLoginSuccess.observe(this@LoginActivity) { isSuccess ->
+                    if (isSuccess) {
+                        startMainActivity()
+                    } else {
+                        showToast("이메일과 패스워드를 확인해주세요.")
+                    }
+                }
+            } else {
+                showToast("이메일과 패스워드를 입력해주세요.")
             }
         }
     }
@@ -73,8 +81,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                     }
                 }.observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ token ->
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
+                    startMainActivity()
                 }, { error ->
                     Log.e("TAG", "로그인 실패", error)
                 }).addTo(disposable)
@@ -87,6 +94,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                     Log.e("TAG", "로그인 실패: ", error)
                 }).addTo(disposable)
         }
+    }
+
+    private fun startMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onDestroy() {
