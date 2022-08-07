@@ -10,6 +10,7 @@ import com.kakao.sdk.user.UserApiClient
 import com.kakao.sdk.user.rx
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.databinding.ActivityLoginBinding
+import gyul.songgyubin.daytogo.repositories.AuthRepository
 import gyul.songgyubin.daytogo.viewmodels.LoginViewModel
 import gyul.songgyubin.daytogo.viewmodels.LoginViewModel.Companion.EVENT_FIREBASE_LOGIN
 import gyul.songgyubin.daytogo.viewmodels.LoginViewModel.Companion.EVENT_KAKAO_LOGIN
@@ -19,16 +20,24 @@ import io.reactivex.rxkotlin.addTo
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
     private lateinit var viewModel: LoginViewModel
+    private lateinit var viewModelFactory : LoginViewModel.ViewModelFactory
+    private lateinit var authRepository: AuthRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
-        binding.viewmodel = viewModel
 
-        observeLoginViewModel()
+        setView()
+        setObserveLoginViewModel()
         setUi()
 
+    }
+
+    private fun setView() {
+        authRepository = AuthRepository(this)
+        viewModelFactory = LoginViewModel.ViewModelFactory(authRepository)
+        viewModel = ViewModelProvider(this,viewModelFactory).get(LoginViewModel::class.java)
+        binding.viewmodel = viewModel
     }
 
     private fun setUi() {
@@ -42,6 +51,46 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         }
     }
 
+    private fun callFirebaseLoginIfValidUserInfo() {
+        viewModel.run {
+            if (inputEmail.value?.isNotEmpty() == true && inputPassword.value?.isNotEmpty() == true) {
+                firebaseLogin(inputEmail.value!!, inputPassword.value!!)
+            } else {
+                showToast("이메일과 패스워드를 입력해주세요")
+            }
+        }
+
+    }
+
+
+    // observing viewModel data
+    private fun setObserveLoginViewModel() {
+        observeEmailValidation()
+        observeFirebaseLogin()
+    }
+
+    private fun observeEmailValidation() {
+        binding.tvWarningEmail.run {
+            viewModel.isValidEmail.observe(this@LoginActivity) { isValidEmail ->
+                if (isValidEmail) visibility = View.GONE
+                else visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun observeFirebaseLogin() {
+        viewModel.run {
+            authenticatedUser.observe(this@LoginActivity) { user ->
+                if (user != null) {
+                    startMainActivity(this@LoginActivity, MainActivity())
+                } else {
+                    showToast("이메일과 패스워드를 확인해주세요.")
+                }
+            }
+        }
+    }
+
+    // TODO: check return and move to AuthRepository
     private fun kakaoLogin() {
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
             UserApiClient.rx.loginWithKakaoTalk(this)
@@ -70,44 +119,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         }
     }
 
-
-    // observing viewModel data
-    private fun observeLoginViewModel(){
-        observeEmailValidation()
-        observeFirebaseLogin()
-    }
-
-    private fun observeEmailValidation() {
-        binding.tvWarningEmail.run {
-            viewModel.isValidEmail.observe(this@LoginActivity) { isValidEmail ->
-                if (isValidEmail) visibility = View.GONE
-                else visibility = View.VISIBLE
-            }
-        }
-    }
-
-    private fun observeFirebaseLogin() {
-        viewModel.run {
-            authenticatedUser.observe(this@LoginActivity) { user ->
-                if (user != null) {
-                    startMainActivity(this@LoginActivity, MainActivity())
-                } else {
-                    showToast("이메일과 패스워드를 확인해주세요.")
-                }
-            }
-        }
-    }
-    private fun callFirebaseLoginIfValidUserInfo(){
-        if (viewModel.inputEmail.value?.isNotEmpty() == true && viewModel.inputPassword.value?.isNotEmpty() == true) {
-            viewModel.firebaseLogin()
-        }else {
-            showToast("이메일과 패스워드를 입력해주세요")
-        }
-    }
-
-
     override fun onDestroy() {
         disposable.dispose()
         super.onDestroy()
     }
+
 }

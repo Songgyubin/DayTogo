@@ -20,18 +20,13 @@ open class Event<out T>(private val content: T) {
         val elapsedTime: Long = currentClickTime - lastClickTime
         lastClickTime = currentClickTime
 
-        Log.d("TAG", "elapsedTime: $elapsedTime")
-        Log.d("TAG", "MIN_CLICK_INTERVAL: $MIN_CLICK_INTERVAL")
         if (elapsedTime <= MIN_CLICK_INTERVAL) {
-            Log.d("TAG", "if return null:")
             return null
         }
 
         return if (hasBeenHandled) {
-            Log.d("TAG", "getContentIfNotHandled: return null")
             null
         } else {
-            Log.d("TAG", "return content ")
             hasBeenHandled = true
             content
         }

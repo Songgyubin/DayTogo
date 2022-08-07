@@ -1,11 +1,17 @@
 package gyul.songgyubin.daytogo.viewmodels
 
+import android.app.Application
 import android.util.Log
 import android.util.Patterns
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations.map
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import gyul.songgyubin.daytogo.models.User
 import gyul.songgyubin.daytogo.repositories.AuthRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,20 +21,15 @@ import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import kotlin.math.log
 
-class LoginViewModel : BaseViewModel() {
-
-    private val authRepository by lazy { AuthRepository() }
-    val clickSubject: PublishSubject<Unit> = PublishSubject.create()
+class LoginViewModel(private val authRepository: AuthRepository) : BaseViewModel() {
+    private val auth: FirebaseAuth by lazy { Firebase.auth }
 
     private val _isValidEmail = MutableLiveData<Boolean>(true)
-    private val _isValidPassword = MutableLiveData<Boolean>(false)
     private val _errorMsg = MutableLiveData<String>()
     private val _authenticatedUser = MutableLiveData<User>()
 
     val isValidEmail: LiveData<Boolean> get() = _isValidEmail
-    val isValidPassword: LiveData<Boolean> get() = _isValidPassword
     val authenticatedUser: LiveData<User> get() = _authenticatedUser
-    val errorMsg: LiveData<String> get() = _errorMsg
 
     val inputEmail: MutableLiveData<String> = MutableLiveData()
     val inputPassword: MutableLiveData<String> = MutableLiveData()
@@ -41,14 +42,12 @@ class LoginViewModel : BaseViewModel() {
         viewEvent(EVENT_KAKAO_LOGIN)
     }
 
-    fun firebaseLogin() {
-        authRepository.firebaseLogin(inputEmail.value!!, inputPassword.value!!)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+    fun firebaseLogin(inputEmail: String, inputPassword: String) {
+        authRepository.firebaseLogin(auth, inputEmail, inputPassword)
             .subscribe({ authResult ->
                 // DB 테이블 만들기
                 authResult?.run {
-                    val user = user?.let { User(uid = it.uid, email = inputEmail.value!!) }
+                    val user = user?.let { User(uid = it.uid, email = inputEmail) }
                     _authenticatedUser.value = user
                     Log.d("TAG", "firebaseLogin: ${user?.email}")
                 }
@@ -66,9 +65,16 @@ class LoginViewModel : BaseViewModel() {
         }
     }
 
-    // check password validation
-    fun onPasswordTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        _isValidPassword.value = s.isNotEmpty()
+    class ViewModelFactory(private val repository: AuthRepository)
+        : ViewModelProvider.Factory {
+
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
+                @Suppress("UNCHECKED_CAST")
+                return LoginViewModel(repository) as T
+            }
+            throw IllegalArgumentException("Unknown ViewModel class")
+        }
     }
 
     companion object {
