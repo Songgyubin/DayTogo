@@ -1,4 +1,4 @@
-package gyul.songgyubin.daytogo.activities
+package gyul.songgyubin.daytogo.login.view
 
 import android.os.Bundle
 import android.util.Log
@@ -9,10 +9,12 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.kakao.sdk.user.rx
 import gyul.songgyubin.daytogo.R
+import gyul.songgyubin.daytogo.base.view.BaseActivity
+import gyul.songgyubin.daytogo.main.view.MainActivity
 import gyul.songgyubin.daytogo.databinding.ActivityLoginBinding
+import gyul.songgyubin.daytogo.login.viewmodel.LoginViewModel
+import gyul.songgyubin.daytogo.login.viewmodel.LoginViewModel.Companion.EVENT_FIREBASE_LOGIN
 import gyul.songgyubin.daytogo.repositories.AuthRepository
-import gyul.songgyubin.daytogo.viewmodels.LoginViewModel
-import gyul.songgyubin.daytogo.viewmodels.LoginViewModel.Companion.EVENT_FIREBASE_LOGIN
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo

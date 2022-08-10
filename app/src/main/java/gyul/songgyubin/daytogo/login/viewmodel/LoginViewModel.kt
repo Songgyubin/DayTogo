@@ -1,25 +1,19 @@
-package gyul.songgyubin.daytogo.viewmodels
+package gyul.songgyubin.daytogo.login.viewmodel
 
-import android.app.Application
 import android.util.Log
 import android.util.Patterns
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import gyul.songgyubin.daytogo.base.viewmodel.BaseViewModel
 import gyul.songgyubin.daytogo.models.User
 import gyul.songgyubin.daytogo.repositories.AuthRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
-import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.PublishSubject
-import java.util.concurrent.TimeUnit
-import kotlin.math.log
 
 class LoginViewModel(private val authRepository: AuthRepository) : BaseViewModel() {
     private val auth: FirebaseAuth by lazy { Firebase.auth }

@@ -1,4 +1,4 @@
-package gyul.songgyubin.daytogo.activities
+package gyul.songgyubin.daytogo.main.view
 
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +7,7 @@ import com.kakao.sdk.user.rx
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import gyul.songgyubin.daytogo.R
+import gyul.songgyubin.daytogo.base.view.BaseActivity
 import gyul.songgyubin.daytogo.databinding.ActivityMainBinding
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo

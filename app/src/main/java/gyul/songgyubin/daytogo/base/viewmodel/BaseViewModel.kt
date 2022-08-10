@@ -1,24 +1,22 @@
-package gyul.songgyubin.daytogo.viewmodels
+package gyul.songgyubin.daytogo.base.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import gyul.songgyubin.daytogo.utils.Event
+import gyul.songgyubin.daytogo.utils.SingleEvent
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.subjects.PublishSubject
 
 abstract class BaseViewModel() : ViewModel() {
     protected val disposable = CompositeDisposable()
 
-    private val _viewEvent = MutableLiveData<Event<Any>>()
-    val viewEvent: LiveData<Event<Any>> get() = _viewEvent
+    private val _viewSingleEvent = MutableLiveData<SingleEvent<Int>>()
+    val viewSingleEvent: LiveData<SingleEvent<Int>> get() = _viewSingleEvent
 
     private val _isLoading = MutableLiveData<Boolean>(false)
     val isLoading: LiveData<Boolean> get() = _isLoading
 
-
-    protected fun viewEvent(content: Any){
-        _viewEvent.value = Event(content)
+    protected fun viewEvent(content: Int) {
+        _viewSingleEvent.value = SingleEvent(content)
     }
 
     protected fun showProgress() {
