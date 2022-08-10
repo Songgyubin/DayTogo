@@ -13,7 +13,6 @@ import gyul.songgyubin.daytogo.databinding.ActivityLoginBinding
 import gyul.songgyubin.daytogo.repositories.AuthRepository
 import gyul.songgyubin.daytogo.viewmodels.LoginViewModel
 import gyul.songgyubin.daytogo.viewmodels.LoginViewModel.Companion.EVENT_FIREBASE_LOGIN
-import gyul.songgyubin.daytogo.viewmodels.LoginViewModel.Companion.EVENT_KAKAO_LOGIN
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -26,10 +25,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         setView()
         setObserveLoginViewModel()
-        setUi()
 
     }
 
@@ -40,21 +37,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         binding.viewmodel = viewModel
     }
 
-    private fun setUi() {
-        viewModel.viewEvent.observe(this@LoginActivity) {
-            it.getContentIfNotHandled()?.let { event ->
-                when (event) {
-                    EVENT_FIREBASE_LOGIN -> callFirebaseLoginIfValidUserInfo()
-                    EVENT_KAKAO_LOGIN -> kakaoLogin()
-                }
-            }
-        }
-    }
-
     private fun callFirebaseLoginIfValidUserInfo() {
         viewModel.run {
-            if (inputEmail.value?.isNotEmpty() == true && inputPassword.value?.isNotEmpty() == true) {
-                firebaseLogin(inputEmail.value!!, inputPassword.value!!)
+            if (inputEmail.isNotEmpty() && inputPassword.isNotEmpty()) {
+                firebaseLogin(inputEmail, inputPassword)
             } else {
                 showToast("이메일과 패스워드를 입력해주세요")
             }
@@ -62,11 +48,24 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     }
 
-
     // observing viewModel data
     private fun setObserveLoginViewModel() {
+        observeEvent()
         observeEmailValidation()
         observeFirebaseLogin()
+
+    }
+
+
+    private fun observeEvent() {
+        viewModel.viewSingleEvent.observe(this@LoginActivity) {
+            it.getContentIfNotHandled()?.let { event ->
+                when (event) {
+                    EVENT_FIREBASE_LOGIN -> callFirebaseLoginIfValidUserInfo()
+//                    EVENT_KAKAO_LOGIN -> kakaoLogin()
+                }
+            }
+        }
     }
 
     private fun observeEmailValidation() {
@@ -76,6 +75,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                 else visibility = View.VISIBLE
             }
         }
+        binding.btnKakaoLogin.setOnClickListener {  }
     }
 
     private fun observeFirebaseLogin() {

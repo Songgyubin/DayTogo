@@ -31,16 +31,9 @@ class LoginViewModel(private val authRepository: AuthRepository) : BaseViewModel
     val isValidEmail: LiveData<Boolean> get() = _isValidEmail
     val authenticatedUser: LiveData<User> get() = _authenticatedUser
 
-    val inputEmail: MutableLiveData<String> = MutableLiveData()
-    val inputPassword: MutableLiveData<String> = MutableLiveData()
+    var inputEmail: String = ""
+    var inputPassword: String = ""
 
-    fun firebaseLoginEvent(view: View) {
-        viewEvent(EVENT_FIREBASE_LOGIN)
-    }
-
-    fun kakaoLoginEvent(view: View) {
-        viewEvent(EVENT_KAKAO_LOGIN)
-    }
 
     fun firebaseLogin(inputEmail: String, inputPassword: String) {
         authRepository.firebaseLogin(auth, inputEmail, inputPassword)
@@ -65,10 +58,20 @@ class LoginViewModel(private val authRepository: AuthRepository) : BaseViewModel
         }
     }
 
+
+    fun onClickFirebaseLoginEvent(view: View) {
+        viewEvent(EVENT_FIREBASE_LOGIN)
+    }
+    fun onClickKakaoLoginEvent(view: View) {
+        viewEvent(EVENT_KAKAO_LOGIN)
+    }
+
+
+
     class ViewModelFactory(private val repository: AuthRepository)
         : ViewModelProvider.Factory {
 
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
                 return LoginViewModel(repository) as T
