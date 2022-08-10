@@ -4,9 +4,10 @@ import android.os.SystemClock
 import android.util.Log
 
 /**
- * Used as a wrapper for data that is exposed via a LiveData that represents an event.
+ * Used to Single Click Event
  */
-open class Event<out T>(private val content: T) {
+
+open class SingleEvent<Int>(private val content: kotlin.Int) {
 
 
     var hasBeenHandled = false
@@ -15,27 +16,22 @@ open class Event<out T>(private val content: T) {
     /**
      * Returns the content and prevents its use again.
      */
-    fun getContentIfNotHandled(): T? {
+    fun getContentIfNotHandled(): kotlin.Int {
         val currentClickTime = SystemClock.uptimeMillis()
         val elapsedTime: Long = currentClickTime - lastClickTime
         lastClickTime = currentClickTime
 
         if (elapsedTime <= MIN_CLICK_INTERVAL) {
-            return null
+            return 0
         }
 
         return if (hasBeenHandled) {
-            null
+            0
         } else {
             hasBeenHandled = true
             content
         }
     }
-
-    /**
-     * Returns the content, even if it's already been handled.
-     */
-    fun peekContent(): T = content
 
     companion object {
         private val MIN_CLICK_INTERVAL: Long = 1000
