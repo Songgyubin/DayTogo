@@ -52,16 +52,16 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     // observing viewModel data
     private fun setObserveLoginViewModel() {
-        observeEvent()
+        observeSingleEvent()
         observeEmailValidation()
         observeFirebaseLogin()
 
     }
 
 
-    private fun observeEvent() {
+    private fun observeSingleEvent() {
         viewModel.viewSingleEvent.observe(this@LoginActivity) {
-            it.getContentIfNotHandled()?.let { event ->
+            it.getContentIfNotHandled().let { event ->
                 when (event) {
                     EVENT_FIREBASE_LOGIN -> callFirebaseLoginIfValidUserInfo()
 //                    EVENT_KAKAO_LOGIN -> kakaoLogin()
