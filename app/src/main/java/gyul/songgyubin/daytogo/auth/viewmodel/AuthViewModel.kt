@@ -7,13 +7,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import gyul.songgyubin.daytogo.base.viewmodel.BaseViewModel
 import gyul.songgyubin.daytogo.models.User
 import gyul.songgyubin.daytogo.repositories.AuthRepository
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.schedulers.Schedulers.io
 
 class AuthViewModel(private val authRepository: AuthRepository) : BaseViewModel() {
     private val auth: FirebaseAuth by lazy { Firebase.auth }
@@ -29,16 +35,10 @@ class AuthViewModel(private val authRepository: AuthRepository) : BaseViewModel(
     var inputEmail: String = ""
     var inputPassword: String = ""
 
-
     fun firebaseLogin(inputEmail: String, inputPassword: String) {
         authRepository.firebaseLogin(auth, inputEmail, inputPassword)
-            .subscribe({ authResult ->
-                // DB 테이블 만들기
-                authResult?.run {
-                    val user = user?.let { User(uid = it.uid, email = inputEmail) }
+            .subscribe({ user ->
                     _authenticatedUser.value = user
-                    Log.d("TAG", "firebaseLogin: ${user?.email}")
-                }
             }, { error ->
                 _errorMsg.value = error.message
                 Log.e("TAG", "firebaseLogin: ", error)
