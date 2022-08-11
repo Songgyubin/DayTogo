@@ -50,11 +50,13 @@
         app:layout_constraintTop_toBottomOf="@id/tv_warning_email" />
 
     <Button
+        android:id="@+id/btn_sign_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:text="@string/finish"
+        android:onClick="@{viewmodel::signUpSingleClickEvent}"
+        android:text="@string/sign_up"
         app:layout_constraintTop_toBottomOf="@+id/ed_password"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
