@@ -1,4 +1,4 @@
-package gyul.songgyubin.daytogo.login.viewmodel
+package gyul.songgyubin.daytogo.auth.viewmodel
 
 import android.util.Log
 import android.util.Patterns
@@ -15,7 +15,7 @@ import gyul.songgyubin.daytogo.models.User
 import gyul.songgyubin.daytogo.repositories.AuthRepository
 import io.reactivex.rxkotlin.addTo
 
-class LoginViewModel(private val authRepository: AuthRepository) : BaseViewModel() {
+class AuthViewModel(private val authRepository: AuthRepository) : BaseViewModel() {
     private val auth: FirebaseAuth by lazy { Firebase.auth }
 
     private val _isValidEmail = MutableLiveData<Boolean>(true)
@@ -25,6 +25,7 @@ class LoginViewModel(private val authRepository: AuthRepository) : BaseViewModel
     val isValidEmail: LiveData<Boolean> get() = _isValidEmail
     val authenticatedUser: LiveData<User> get() = _authenticatedUser
 
+    // two way binding
     var inputEmail: String = ""
     var inputPassword: String = ""
 
@@ -53,6 +54,7 @@ class LoginViewModel(private val authRepository: AuthRepository) : BaseViewModel
     }
 
 
+    // two way binding
     fun onClickFirebaseLoginEvent(view: View) {
         viewEvent(EVENT_FIREBASE_LOGIN)
     }
@@ -66,9 +68,9 @@ class LoginViewModel(private val authRepository: AuthRepository) : BaseViewModel
         : ViewModelProvider.Factory {
 
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
+            if (modelClass.isAssignableFrom(AuthViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return LoginViewModel(repository) as T
+                return AuthViewModel(repository) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }

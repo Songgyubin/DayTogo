@@ -1,4 +1,4 @@
-package gyul.songgyubin.daytogo.login.view
+package gyul.songgyubin.daytogo.auth.view
 
 import android.os.Bundle
 import android.util.Log
@@ -11,17 +11,17 @@ import com.kakao.sdk.user.rx
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.base.view.BaseActivity
 import gyul.songgyubin.daytogo.main.view.MainActivity
-import gyul.songgyubin.daytogo.databinding.ActivityLoginBinding
-import gyul.songgyubin.daytogo.login.viewmodel.LoginViewModel
-import gyul.songgyubin.daytogo.login.viewmodel.LoginViewModel.Companion.EVENT_FIREBASE_LOGIN
+import gyul.songgyubin.daytogo.auth.viewmodel.AuthViewModel
+import gyul.songgyubin.daytogo.auth.viewmodel.AuthViewModel.Companion.EVENT_FIREBASE_LOGIN
+import gyul.songgyubin.daytogo.databinding.ActivityAuthBinding
 import gyul.songgyubin.daytogo.repositories.AuthRepository
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 
-class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
-    private lateinit var viewModel: LoginViewModel
-    private lateinit var viewModelFactory : LoginViewModel.ViewModelFactory
+class AuthActivity : BaseActivity<ActivityAuthBinding>(R.layout.activity_auth) {
+    private lateinit var viewModel: AuthViewModel
+    private lateinit var viewModelFactory : AuthViewModel.ViewModelFactory
     private lateinit var authRepository: AuthRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,13 +29,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
         setView()
         setObserveLoginViewModel()
-
     }
 
     private fun setView() {
         authRepository = AuthRepository(this)
-        viewModelFactory = LoginViewModel.ViewModelFactory(authRepository)
-        viewModel = ViewModelProvider(this,viewModelFactory).get(LoginViewModel::class.java)
+        viewModelFactory = AuthViewModel.ViewModelFactory(authRepository)
+        viewModel = ViewModelProvider(this,viewModelFactory).get(AuthViewModel::class.java)
         binding.viewmodel = viewModel
     }
 
@@ -58,9 +57,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     }
 
-
     private fun observeSingleEvent() {
-        viewModel.viewSingleEvent.observe(this@LoginActivity) {
+        viewModel.viewSingleEvent.observe(this@AuthActivity) {
             it.getContentIfNotHandled().let { event ->
                 when (event) {
                     EVENT_FIREBASE_LOGIN -> callFirebaseLoginIfValidUserInfo()
@@ -72,7 +70,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     private fun observeEmailValidation() {
         binding.tvWarningEmail.run {
-            viewModel.isValidEmail.observe(this@LoginActivity) { isValidEmail ->
+            viewModel.isValidEmail.observe(this@AuthActivity) { isValidEmail ->
                 if (isValidEmail) visibility = View.GONE
                 else visibility = View.VISIBLE
             }
@@ -82,9 +80,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     private fun observeFirebaseLogin() {
         viewModel.run {
-            authenticatedUser.observe(this@LoginActivity) { user ->
+            authenticatedUser.observe(this@AuthActivity) { user ->
                 if (user != null) {
-                    startMainActivity(this@LoginActivity, MainActivity())
+                    startMainActivity(this@AuthActivity, MainActivity())
                 } else {
                     showToast("이메일과 패스워드를 확인해주세요.")
                 }
@@ -106,7 +104,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                     }
                 }.observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ token ->
-                    startMainActivity(this@LoginActivity, MainActivity())
+                    startMainActivity(this@AuthActivity, MainActivity())
                 }, { error ->
                     Log.e("TAG", "로그인 실패", error)
                 }).addTo(disposable)
