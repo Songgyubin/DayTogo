@@ -48,11 +48,12 @@ class AuthViewModel(private val authRepository: AuthRepository) : BaseViewModel(
 
 
     // check email validation
-    fun onEmailTextChanged(s: CharSequence) {
+    fun onEmailTextChanged(s: CharSequence,start: Int, before: Int, count: Int) {
         if (s.isNotEmpty()) {
             _isValidEmail.value = Patterns.EMAIL_ADDRESS.matcher(s).matches()
         }
     }
+
 
     // two way binding
     fun firebaseLoginSingleClickEvent(view: View) {
