@@ -1,10 +1,7 @@
 package gyul.songgyubin.daytogo.viewmodels
 
 import android.content.Context
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.auth.viewmodel.AuthViewModel
 import gyul.songgyubin.daytogo.repositories.AuthRepository
