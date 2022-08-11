@@ -7,7 +7,7 @@ import android.util.Log
  * Used to Single Click Event
  */
 
-open class SingleEvent<Int>(private val content: kotlin.Int) {
+open class SingleClickEvent<Int>(private val content: kotlin.Int) {
 
 
     var hasBeenHandled = false

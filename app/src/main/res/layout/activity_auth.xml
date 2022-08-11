@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
             name="viewmodel"
@@ -19,6 +19,7 @@
         android:layout_marginRight="50dp"
         android:text="@={viewmodel.inputEmail}"
         android:hint="@string/enter_email"
+        android:autofillHints="emailAddress"
         android:onTextChanged="@{viewmodel::onEmailTextChanged}"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -42,6 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
+        android:autofillHints="password"
         android:hint="@string/enter_password"
         android:text="@={viewmodel.inputPassword}"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -54,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="100dp"
         android:background="@color/white"
-        android:onClick="@{viewmodel::onClickKakaoLoginEvent}"
+        android:onClick="@{viewmodel::kakaoLoginSingleClickEvent}"
         android:src="@drawable/kakao_login_medium_wide"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -64,7 +66,7 @@
         android:id="@+id/btn_firebase_login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:onClick="@{viewmodel::onClickFirebaseLoginEvent}"
+        android:onClick="@{viewmodel::firebaseLoginSingleClickEvent}"
         android:text="@string/start_with_email"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/btn_kakao_login"

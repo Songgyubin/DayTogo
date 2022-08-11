@@ -30,6 +30,7 @@ class AuthViewModel(private val authRepository: AuthRepository) : BaseViewModel(
 
     val isValidEmail: LiveData<Boolean> get() = _isValidEmail
     val authenticatedUser: LiveData<User> get() = _authenticatedUser
+    val errorMsg : LiveData<String> get() = _errorMsg
 
     // two way binding
     var inputEmail: String = ""
@@ -53,15 +54,13 @@ class AuthViewModel(private val authRepository: AuthRepository) : BaseViewModel(
         }
     }
 
-
     // two way binding
-    fun onClickFirebaseLoginEvent(view: View) {
+    fun firebaseLoginSingleClickEvent(view: View) {
         viewEvent(EVENT_FIREBASE_LOGIN)
     }
-    fun onClickKakaoLoginEvent(view: View) {
+    fun kakaoLoginSingleClickEvent(view: View) {
         viewEvent(EVENT_KAKAO_LOGIN)
     }
-
 
 
     class ViewModelFactory(private val repository: AuthRepository)

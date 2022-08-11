@@ -21,7 +21,7 @@ import io.reactivex.rxkotlin.addTo
 
 class AuthActivity : BaseActivity<ActivityAuthBinding>(R.layout.activity_auth) {
     private lateinit var viewModel: AuthViewModel
-    private lateinit var viewModelFactory : AuthViewModel.ViewModelFactory
+    private lateinit var viewModelFactory: AuthViewModel.ViewModelFactory
     private lateinit var authRepository: AuthRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,12 +29,13 @@ class AuthActivity : BaseActivity<ActivityAuthBinding>(R.layout.activity_auth) {
 
         setView()
         setObserveLoginViewModel()
+
     }
 
     private fun setView() {
         authRepository = AuthRepository(this)
         viewModelFactory = AuthViewModel.ViewModelFactory(authRepository)
-        viewModel = ViewModelProvider(this,viewModelFactory).get(AuthViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(AuthViewModel::class.java)
         binding.viewmodel = viewModel
     }
 
@@ -46,18 +47,17 @@ class AuthActivity : BaseActivity<ActivityAuthBinding>(R.layout.activity_auth) {
                 showToast("이메일과 패스워드를 입력해주세요")
             }
         }
-
     }
 
     // observing viewModel data
     private fun setObserveLoginViewModel() {
-        observeSingleEvent()
+        observeSingleClickEvent()
         observeEmailValidation()
         observeFirebaseLogin()
 
     }
 
-    private fun observeSingleEvent() {
+    private fun observeSingleClickEvent() {
         viewModel.viewSingleEvent.observe(this@AuthActivity) {
             it.getContentIfNotHandled().let { event ->
                 when (event) {
@@ -75,17 +75,15 @@ class AuthActivity : BaseActivity<ActivityAuthBinding>(R.layout.activity_auth) {
                 else visibility = View.VISIBLE
             }
         }
-        binding.btnKakaoLogin.setOnClickListener {  }
     }
 
     private fun observeFirebaseLogin() {
         viewModel.run {
             authenticatedUser.observe(this@AuthActivity) { user ->
-                if (user != null) {
-                    startMainActivity(this@AuthActivity, MainActivity())
-                } else {
-                    showToast("이메일과 패스워드를 확인해주세요.")
-                }
+                startMainActivity(this@AuthActivity, MainActivity())
+            }
+            errorMsg.observe(this@AuthActivity){ error->
+                showToast(error)
             }
         }
     }
