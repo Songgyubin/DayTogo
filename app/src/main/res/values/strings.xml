@@ -5,5 +5,6 @@
     <string name="start_with_email">이메일로 시작하기</string>
     <string name="enter_email">이메일을 입력해주세요</string>
     <string name="enter_password">비밀번호를 입력해주세요</string>
-
+    <string name="signup_with_email">계정이 없으신가요?</string>
+    <string name="finish">완료</string>
 </resources>

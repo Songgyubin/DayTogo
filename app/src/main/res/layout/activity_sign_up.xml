@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="viewmodel"
             type="gyul.songgyubin.daytogo.auth.viewmodel.AuthViewModel" />
-
     </data>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -17,61 +16,46 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:text="@={viewmodel.inputEmail}"
-        android:hint="@string/enter_email"
         android:autofillHints="emailAddress"
+        android:hint="@string/enter_email"
         android:onTextChanged="@{viewmodel::onEmailTextChanged}"
+        android:text="@={viewmodel.inputEmail}"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tv_warning_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#ff0000"
-        app:layout_constraintTop_toBottomOf="@id/ed_email"
-        app:layout_constraintLeft_toLeftOf="@+id/ed_email"
         android:text="@string/enter_valid_email"
+        android:textColor="#ff0000"
         android:visibility="gone"
-        />
+        app:layout_constraintLeft_toLeftOf="@+id/ed_email"
+        app:layout_constraintTop_toBottomOf="@id/ed_email" />
 
     <EditText
         android:id="@+id/ed_password"
-        android:inputType="textPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:autofillHints="password"
         android:hint="@string/enter_password"
+        android:inputType="textPassword"
         android:text="@={viewmodel.inputPassword}"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_warning_email" />
 
-    <ImageButton
-        android:id="@+id/btn_kakao_login"
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
-        android:background="@color/white"
-        android:onClick="@{viewmodel::kakaoLoginSingleClickEvent}"
-        android:src="@drawable/kakao_login_medium_wide"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <Button
-        android:id="@+id/btn_firebase_login"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:onClick="@{viewmodel::firebaseLoginSingleClickEvent}"
-        android:text="@string/start_with_email"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/btn_kakao_login"
-        app:layout_constraintStart_toStartOf="@+id/btn_kakao_login"
-        app:layout_constraintTop_toBottomOf="@+id/btn_kakao_login" />
-
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="@string/finish"
+        app:layout_constraintTop_toBottomOf="@+id/ed_password"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
