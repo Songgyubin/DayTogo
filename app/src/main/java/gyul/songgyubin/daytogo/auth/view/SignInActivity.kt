@@ -20,9 +20,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 
 class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sign_in) {
-    private lateinit var viewModel: AuthViewModel
-    private lateinit var viewModelFactory: AuthViewModel.ViewModelFactory
-    private lateinit var authRepository: AuthRepository
+
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this,
+            viewModelFactory
+        ).get(AuthViewModel::class.java)
+    }
+    private val viewModelFactory by lazy { AuthViewModel.ViewModelFactory(authRepository) }
+    private val authRepository by lazy { AuthRepository() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +38,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
     }
 
     private fun setView() {
-        authRepository = AuthRepository()
-        viewModelFactory = AuthViewModel.ViewModelFactory(authRepository)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(AuthViewModel::class.java)
         binding.viewmodel = viewModel
         binding.activity = this
     }
@@ -93,8 +96,8 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
     }
 
     // two way binding
-    fun startSignUp(view:View){
-        startOtherActivity(this@SignInActivity,SignUpActivity())
+    fun startSignUp(view: View) {
+        startOtherActivity(this@SignInActivity, SignUpActivity())
     }
 
     override fun onDestroy() {

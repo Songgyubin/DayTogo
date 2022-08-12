@@ -12,9 +12,14 @@ import gyul.songgyubin.daytogo.models.User
 import gyul.songgyubin.daytogo.repositories.AuthRepository
 
 class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sign_up) {
-    private lateinit var viewModel: AuthViewModel
-    private lateinit var viewModelFactory: AuthViewModel.ViewModelFactory
-    private lateinit var authRepository: AuthRepository
+    private val authRepository by lazy { AuthRepository() }
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this,
+            viewModelFactory
+        ).get(AuthViewModel::class.java)
+    }
+    private val viewModelFactory by lazy { AuthViewModel.ViewModelFactory(authRepository) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,9 +29,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sig
     }
 
     private fun setView() {
-        authRepository = AuthRepository()
-        viewModelFactory = AuthViewModel.ViewModelFactory(authRepository)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(AuthViewModel::class.java)
         binding.viewmodel = viewModel
     }
 
