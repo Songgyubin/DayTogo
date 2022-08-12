@@ -39,13 +39,13 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
         binding.activity = this
     }
 
+    // if email and password are empty
+    // go to sign up
     private fun callFirebaseLoginIfValidUserInfo() {
         viewModel.run {
             if (inputEmail.isNotEmpty() && inputPassword.isNotEmpty()) {
                 firebaseLogin(inputEmail, inputPassword)
             } else if (inputEmail.isEmpty() && inputPassword.isEmpty()) {
-                Log.d("TAG", "callFirebaseLoginIfValidUserInfo:email: $inputEmail ")
-                Log.d("TAG", "callFirebaseLoginIfValidUserInfo:password: $inputPassword ")
                 startOtherActivity(this@SignInActivity, SignUpActivity())
             } else {
                 showLongToast(getString(R.string.enter_email_password))
@@ -90,6 +90,11 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
                 showShortToast(getString(R.string.check_email_password))
             }
         }
+    }
+
+    // two way binding
+    fun startSignUp(view:View){
+        startOtherActivity(this@SignInActivity,SignUpActivity())
     }
 
     override fun onDestroy() {
