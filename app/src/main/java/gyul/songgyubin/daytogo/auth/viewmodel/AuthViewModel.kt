@@ -7,25 +7,30 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.analytics.FirebaseAnalytics.Event.SIGN_UP
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import gyul.songgyubin.daytogo.base.viewmodel.BaseViewModel
 import gyul.songgyubin.daytogo.models.User
 import gyul.songgyubin.daytogo.repositories.AuthRepository
 import io.reactivex.rxkotlin.addTo
+import java.lang.Exception
 
 class AuthViewModel(private val authRepository: AuthRepository) : BaseViewModel() {
     private val auth: FirebaseAuth by lazy { Firebase.auth }
+    private val dbReference by lazy { Firebase.database.reference }
 
     private val _isValidEmail = MutableLiveData<Boolean>(true)
-    private val _errorMsg = MutableLiveData<String>()
+    private val _loginErrorMsg = MutableLiveData<String>()
+    private val _dbErrorMsg = MutableLiveData<String>()
+
     private val _authenticatedUser = MutableLiveData<User>()
 
     val isValidEmail: LiveData<Boolean> get() = _isValidEmail
     val authenticatedUser: LiveData<User> get() = _authenticatedUser
-    val errorMsg: LiveData<String> get() = _errorMsg
+    val loginErrorMsg: LiveData<String> get() = _loginErrorMsg
+    val dbErrorMsg: LiveData<String> get() = _dbErrorMsg
 
     // two way binding
     var inputEmail: String = ""
@@ -36,21 +41,35 @@ class AuthViewModel(private val authRepository: AuthRepository) : BaseViewModel(
             .subscribe({ user ->
                 _authenticatedUser.value = user
             }, { error ->
-                _errorMsg.value = error.message
+                _loginErrorMsg.value = error.message
                 Log.e("TAG", "firebaseLogin: ", error)
             }).addTo(disposable)
     }
 
-    fun createUserWithEmailAndPassword(inputEmail: String, inputPassword: String) {
-        authRepository.createUserWithEmailAndPassword(auth, inputEmail, inputPassword)
+    // sign up And firebase DB create
+    // firebase DB root element is userEmail
+    fun createUser(inputEmail: String, inputPassword: String) {
+        authRepository.createUser(auth, inputEmail, inputPassword)
             .subscribe({ user ->
                 _authenticatedUser.value = user
             },
                 { error ->
-                    _errorMsg.value = error.message
-                    Log.e("TAG", "createUserWithEmailAndPassword: ",error )
+                    _loginErrorMsg.value = error.message
+                    Log.e("TAG", "createUserWithEmailAndPassword: ", error)
                 }
             ).addTo(disposable)
+    }
+
+    fun createDB(user: User) {
+        authRepository.createDB(dbReference, user)
+            .subscribe {
+                try {
+                    Log.d("TAG", "createDB: ")
+                } catch (e: Exception) {
+                    Log.e("TAG", "createDB: ", e)
+                }
+
+            }.addTo(disposable)
     }
 
 
@@ -69,7 +88,8 @@ class AuthViewModel(private val authRepository: AuthRepository) : BaseViewModel(
     fun kakaoLoginSingleClickEvent(view: View) {
         viewEvent(EVENT_KAKAO_LOGIN)
     }
-    fun signUpSingleClickEvent(view:View){
+
+    fun signUpSingleClickEvent(view: View) {
         viewEvent(SIGN_UP)
     }
 

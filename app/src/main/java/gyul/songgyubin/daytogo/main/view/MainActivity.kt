@@ -14,15 +14,18 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main), OnMapReadyCallback {
+    private var backKeyPressedTime = 0L
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
     }
-    private fun initNaverMap(){
+
+    private fun initNaverMap() {
 
     }
 
-    private fun getKaKaoUser(){
+    private fun getKaKaoUser() {
         // 사용자 정보 요청 (기본)
         UserApiClient.rx.me()
             .subscribeOn(Schedulers.io())
@@ -44,9 +47,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main), 
             isScaleBarEnabled = false
             isZoomControlEnabled = false
             isLocationButtonEnabled = true
+        }
+    }
 
+    override fun onBackPressed() {
+        if (System.currentTimeMillis() > backKeyPressedTime + 2000){
+            backKeyPressedTime = System.currentTimeMillis()
+            showShortToast("한 번 더 누르면 종료됩니다.")
+            return
+        }
+        if (System.currentTimeMillis() <= backKeyPressedTime +2000){
+            finish()
         }
 
     }
-
 }

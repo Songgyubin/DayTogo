@@ -10,19 +10,26 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class BaseActivity<B : ViewDataBinding>(@LayoutRes val layoutId: Int):AppCompatActivity() {
-    lateinit var binding :B
+abstract class BaseActivity<B : ViewDataBinding>(@LayoutRes val layoutId: Int) :
+    AppCompatActivity() {
+    lateinit var binding: B
     protected val disposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,layoutId)
+        binding = DataBindingUtil.setContentView(this, layoutId)
         binding.lifecycleOwner = this
     }
-    protected fun showToast(msg:String){
-        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
+
+    protected fun showLongToast(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
-    protected fun startOtherActivity(fromActivityContext: Context, toActivity:AppCompatActivity) {
+
+    protected fun showShortToast(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    protected fun startOtherActivity(fromActivityContext: Context, toActivity: AppCompatActivity) {
         val intent = Intent(fromActivityContext, toActivity::class.java)
         startActivity(intent)
     }

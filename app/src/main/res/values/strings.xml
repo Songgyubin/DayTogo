@@ -7,4 +7,6 @@
     <string name="enter_password">비밀번호를 입력해주세요</string>
     <string name="signup_with_email">계정이 없으신가요?</string>
     <string name="sign_up">회원가입</string>
+    <string name="enter_email_password">이메일과 비밀번호를 입력해주세요</string>
+    <string name="check_email_password">이메일과 비밀번호를 확인해주세요</string>
 </resources>

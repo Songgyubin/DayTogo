@@ -3,11 +3,12 @@ package gyul.songgyubin.daytogo.auth.view
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import durdinapps.rxfirebase2.RxFirebaseAuth.createUserWithEmailAndPassword
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.auth.viewmodel.AuthViewModel
 import gyul.songgyubin.daytogo.base.view.BaseActivity
 import gyul.songgyubin.daytogo.databinding.ActivitySignUpBinding
-import gyul.songgyubin.daytogo.main.view.MainActivity
+import gyul.songgyubin.daytogo.models.User
 import gyul.songgyubin.daytogo.repositories.AuthRepository
 
 class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sign_up) {
@@ -21,26 +22,29 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sig
         setObserve()
 
     }
-    private fun setView(){
-        authRepository = AuthRepository(this)
+
+    private fun setView() {
+        authRepository = AuthRepository()
         viewModelFactory = AuthViewModel.ViewModelFactory(authRepository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(AuthViewModel::class.java)
         binding.viewmodel = viewModel
     }
 
-    private fun setObserve(){
+    private fun setObserve() {
         observeSingleClickEvent()
         observeCreateUser()
         observeEmailValidation()
     }
 
-    private fun observeCreateUser(){
+    // create db after create user
+    private fun observeCreateUser() {
         viewModel.run {
             authenticatedUser.observe(this@SignUpActivity) { user ->
-                startOtherActivity(this@SignUpActivity, MainActivity())
+                createDBWithUserEmail(user)
+                startOtherActivity(this@SignUpActivity, SignInActivity())
             }
-            errorMsg.observe(this@SignUpActivity) { error ->
-                showToast("회원가입 실패")
+            loginErrorMsg.observe(this@SignUpActivity) { error ->
+                showLongToast("회원가입 실패")
             }
         }
     }
@@ -54,6 +58,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sig
             }
         }
     }
+
     private fun observeEmailValidation() {
         binding.tvWarningEmail.run {
             viewModel.isValidEmail.observe(this@SignUpActivity) { isValidEmail ->
@@ -66,11 +71,15 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sig
     private fun callCreateUserWithEmailAndPassword() {
         viewModel.run {
             if (inputEmail.isNotEmpty() && inputPassword.isNotEmpty()) {
-                createUserWithEmailAndPassword(inputEmail, inputPassword)
+                createUser(inputEmail, inputPassword)
             } else {
-                showToast("이메일과 패스워드를 입력해주세요")
+                showLongToast("이메일과 패스워드를 입력해주세요")
             }
         }
+    }
+
+    private fun createDBWithUserEmail(user: User) {
+        viewModel.createDB(user)
     }
 
     override fun onDestroy() {
