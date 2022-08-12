@@ -32,7 +32,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
     }
 
     private fun setView() {
-        authRepository = AuthRepository(this)
+        authRepository = AuthRepository()
         viewModelFactory = AuthViewModel.ViewModelFactory(authRepository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(AuthViewModel::class.java)
         binding.viewmodel = viewModel
@@ -44,9 +44,11 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
             if (inputEmail.isNotEmpty() && inputPassword.isNotEmpty()) {
                 firebaseLogin(inputEmail, inputPassword)
             } else if (inputEmail.isEmpty() && inputPassword.isEmpty()) {
+                Log.d("TAG", "callFirebaseLoginIfValidUserInfo:email: $inputEmail ")
+                Log.d("TAG", "callFirebaseLoginIfValidUserInfo:password: $inputPassword ")
                 startOtherActivity(this@SignInActivity, SignUpActivity())
             } else {
-                showToast("이메일과 패스워드를 입력해주세요")
+                showLongToast(getString(R.string.enter_email_password))
             }
         }
     }
@@ -64,7 +66,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
             it.getContentIfNotHandled().let { event ->
                 when (event) {
                     EVENT_FIREBASE_LOGIN -> callFirebaseLoginIfValidUserInfo()
-//                    EVENT_KAKAO_LOGIN -> kakaoLogin()
                 }
             }
         }
@@ -83,39 +84,11 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
         viewModel.run {
             authenticatedUser.observe(this@SignInActivity) { user ->
                 startOtherActivity(this@SignInActivity, MainActivity())
+                finish()
             }
-            errorMsg.observe(this@SignInActivity) { error ->
-                startOtherActivity(this@SignInActivity, SignUpActivity())
+            loginErrorMsg.observe(this@SignInActivity) { error ->
+                showShortToast(getString(R.string.check_email_password))
             }
-        }
-    }
-
-    // TODO: check return and move to AuthRepository
-    private fun kakaoLogin() {
-        if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
-            UserApiClient.rx.loginWithKakaoTalk(this)
-                .observeOn(AndroidSchedulers.mainThread())
-                .onErrorResumeNext { error ->
-                    Log.e("TAG", "kakaoLogin:${error.message} ")
-                    if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
-                        Single.error(error)
-                    } else {
-                        UserApiClient.rx.loginWithKakaoAccount(this)
-                    }
-                }.observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ token ->
-                    startOtherActivity(this@SignInActivity, MainActivity())
-                }, { error ->
-                    Log.e("TAG", "로그인 실패", error)
-                }).addTo(disposable)
-        } else {
-            UserApiClient.rx.loginWithKakaoAccount(this)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ token ->
-                    Log.i("TAG", "로그인 성공 ${token.accessToken} ")
-                }, { error ->
-                    Log.e("TAG", "로그인 실패: ", error)
-                }).addTo(disposable)
         }
     }
 
