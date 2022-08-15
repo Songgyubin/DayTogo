@@ -83,10 +83,10 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sig
     }
 
     /**
+     * DB structure
      *  uid
      *   L user_email
-     *   L saved_location_list (Location(lat,lng, title, description))
-     *
+     *   L saved_location_list (Location(category, title, description, latLng))
      */
     private fun createDBWithUserEmail(user: User) {
         viewModel.createDB(user)

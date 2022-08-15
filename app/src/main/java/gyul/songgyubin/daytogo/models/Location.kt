@@ -5,6 +5,7 @@ import gyul.songgyubin.daytogo.utils.Category
 
 data class Location(
     val category: Category,
-    val name:String,
-    val latLng: LatLng
+    val title: String,
+    val description:String,
+    val latLng: LatLng,
 )
