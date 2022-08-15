@@ -10,6 +10,7 @@ import gyul.songgyubin.daytogo.base.view.BaseActivity
 import gyul.songgyubin.daytogo.databinding.ActivitySignUpBinding
 import gyul.songgyubin.daytogo.models.User
 import gyul.songgyubin.daytogo.repositories.AuthRepository
+import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
 
 class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sign_up) {
     private val authRepository by lazy { AuthRepository() }
@@ -46,7 +47,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sig
                 startOtherActivity(this@SignUpActivity, SignInActivity())
             }
             loginErrorMsg.observe(this@SignUpActivity) { error ->
-                showLongToast("회원가입 실패")
+                showLongToast(getString(R.string.fail_sign_up))
             }
         }
     }
@@ -55,7 +56,8 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sig
         viewModel.viewSingleEvent.observe(this@SignUpActivity) {
             it.getContentIfNotHandled().let { event ->
                 when (event) {
-                    AuthViewModel.SIGN_UP -> callCreateUserWithEmailAndPassword()
+                    SingleClickEventFlag.SIGN_UP -> callCreateUserWithEmailAndPassword()
+                    else -> {return@let}
                 }
             }
         }
@@ -75,17 +77,18 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sig
             if (inputEmail.isNotEmpty() && inputPassword.isNotEmpty()) {
                 createUser(inputEmail, inputPassword)
             } else {
-                showLongToast("이메일과 패스워드를 입력해주세요")
+                showLongToast(getString(R.string.enter_email_password))
             }
         }
     }
 
+    /**
+     *  uid
+     *   L user_email
+     *   L saved_location_list (Location(lat,lng, title, description))
+     *
+     */
     private fun createDBWithUserEmail(user: User) {
         viewModel.createDB(user)
-    }
-
-    override fun onDestroy() {
-        disposable.dispose()
-        super.onDestroy()
     }
 }

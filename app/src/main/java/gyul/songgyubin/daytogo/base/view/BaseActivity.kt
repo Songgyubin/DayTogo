@@ -3,6 +3,7 @@ package gyul.songgyubin.daytogo.base.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
@@ -10,9 +11,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class BaseActivity<B : ViewDataBinding>(@LayoutRes val layoutId: Int) :
+abstract class BaseActivity<T : ViewDataBinding>(@LayoutRes val layoutId: Int) :
     AppCompatActivity() {
-    lateinit var binding: B
+    lateinit var binding: T
     protected val disposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +37,7 @@ abstract class BaseActivity<B : ViewDataBinding>(@LayoutRes val layoutId: Int) :
 
     override fun onDestroy() {
         disposable.dispose()
+        Log.d("TAG", "onDestroy: ${disposable.isDisposed}")
         super.onDestroy()
     }
 }

@@ -1,23 +1,15 @@
 package gyul.songgyubin.daytogo.auth.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import com.kakao.sdk.common.model.ClientError
-import com.kakao.sdk.common.model.ClientErrorCause
-import com.kakao.sdk.user.UserApiClient
-import com.kakao.sdk.user.rx
 import gyul.songgyubin.daytogo.R
-import gyul.songgyubin.daytogo.base.view.BaseActivity
-import gyul.songgyubin.daytogo.main.view.MainActivity
 import gyul.songgyubin.daytogo.auth.viewmodel.AuthViewModel
-import gyul.songgyubin.daytogo.auth.viewmodel.AuthViewModel.Companion.EVENT_FIREBASE_LOGIN
+import gyul.songgyubin.daytogo.base.view.BaseActivity
 import gyul.songgyubin.daytogo.databinding.ActivitySignInBinding
+import gyul.songgyubin.daytogo.main.view.MainActivity
 import gyul.songgyubin.daytogo.repositories.AuthRepository
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.addTo
+import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
 
 class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sign_in) {
 
@@ -68,7 +60,10 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
         viewModel.viewSingleEvent.observe(this@SignInActivity) {
             it.getContentIfNotHandled().let { event ->
                 when (event) {
-                    EVENT_FIREBASE_LOGIN -> callFirebaseLoginIfValidUserInfo()
+                    SingleClickEventFlag.EVENT_FIREBASE_LOGIN -> callFirebaseLoginIfValidUserInfo()
+                    else -> {
+                        return@let
+                    }
                 }
             }
         }
@@ -98,11 +93,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
     // two way binding
     fun startSignUp(view: View) {
         startOtherActivity(this@SignInActivity, SignUpActivity())
-    }
-
-    override fun onDestroy() {
-        disposable.dispose()
-        super.onDestroy()
     }
 
 }
