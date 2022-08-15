@@ -7,6 +7,13 @@ import gyul.songgyubin.daytogo.base.viewmodel.BaseViewModel
 import gyul.songgyubin.daytogo.repositories.AuthRepository
 import gyul.songgyubin.daytogo.repositories.MainRepository
 
+
+/**
+ * This class is SharedViewModel
+ * with the classes included in the main package.
+ * (MainActivity, LocationFragment...)
+ */
+
 class MainViewModel(repository: MainRepository) :BaseViewModel(){
 
 

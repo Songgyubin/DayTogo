@@ -1,13 +1,12 @@
 package gyul.songgyubin.daytogo.utils
 
 import android.os.SystemClock
-import android.util.Log
 
 /**
  * Used to Single Click Event
  */
 
-open class SingleClickEvent<Int>(private val content: kotlin.Int) {
+open class SingleClickEvent<event : SingleClickEventFlag>(private val content: SingleClickEventFlag) {
 
 
     var hasBeenHandled = false
@@ -16,17 +15,17 @@ open class SingleClickEvent<Int>(private val content: kotlin.Int) {
     /**
      * Returns the content and prevents its use again.
      */
-    fun getContentIfNotHandled(): kotlin.Int {
+    fun getContentIfNotHandled(): SingleClickEventFlag {
+
         val currentClickTime = SystemClock.uptimeMillis()
         val elapsedTime: Long = currentClickTime - lastClickTime
         lastClickTime = currentClickTime
 
         if (elapsedTime <= MIN_CLICK_INTERVAL) {
-            return 0
+            return SingleClickEventFlag.NONE
         }
-
         return if (hasBeenHandled) {
-            0
+            SingleClickEventFlag.NONE
         } else {
             hasBeenHandled = true
             content

@@ -14,6 +14,7 @@ import com.google.firebase.ktx.Firebase
 import gyul.songgyubin.daytogo.base.viewmodel.BaseViewModel
 import gyul.songgyubin.daytogo.models.User
 import gyul.songgyubin.daytogo.repositories.AuthRepository
+import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
 import io.reactivex.rxkotlin.addTo
 import java.lang.Exception
 
@@ -82,15 +83,15 @@ class AuthViewModel(private val authRepository: AuthRepository) : BaseViewModel(
 
     // two way binding
     fun firebaseLoginSingleClickEvent(view: View) {
-        viewEvent(EVENT_FIREBASE_LOGIN)
+        viewEvent(SingleClickEventFlag.EVENT_FIREBASE_LOGIN)
     }
 
     fun kakaoLoginSingleClickEvent(view: View) {
-        viewEvent(EVENT_KAKAO_LOGIN)
+        viewEvent(SingleClickEventFlag.EVENT_KAKAO_LOGIN)
     }
 
     fun signUpSingleClickEvent(view: View) {
-        viewEvent(SIGN_UP)
+        viewEvent(SingleClickEventFlag.SIGN_UP)
     }
 
 
@@ -105,9 +106,5 @@ class AuthViewModel(private val authRepository: AuthRepository) : BaseViewModel(
         }
     }
 
-    companion object {
-        const val EVENT_FIREBASE_LOGIN = 10000
-        const val EVENT_KAKAO_LOGIN = 10001
-        const val SIGN_UP = 10002
-    }
+
 }
