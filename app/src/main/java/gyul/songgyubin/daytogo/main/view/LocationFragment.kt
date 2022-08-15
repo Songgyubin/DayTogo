@@ -4,22 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.base.view.BaseFragment
 import gyul.songgyubin.daytogo.databinding.FragmentLocationBinding
 import gyul.songgyubin.daytogo.main.viewmodel.MainViewModel
-import gyul.songgyubin.daytogo.repositories.MainRepository
 
 class LocationFragment : BaseFragment<FragmentLocationBinding>(R.layout.fragment_location) {
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            viewModelFactory
-        ).get(MainViewModel::class.java)
-    }
-    private val repository by lazy { MainRepository() }
-    private val viewModelFactory by lazy { MainViewModel.ViewModelFactory(repository) }
+
+    private val viewModel by activityViewModels<MainViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
