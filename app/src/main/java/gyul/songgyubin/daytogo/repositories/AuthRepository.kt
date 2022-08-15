@@ -51,7 +51,7 @@ class AuthRepository() {
         dbReference: DatabaseReference,
         user: User
     ):Completable {
-        return RxFirebaseDatabase.setValue(dbReference.child(user.uid),user.email)
+        return RxFirebaseDatabase.setValue(dbReference.child(user.uid),user)
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
     }
