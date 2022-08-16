@@ -61,13 +61,33 @@ class AuthViewModel(private val authRepository: AuthRepository) : BaseViewModel(
             ).addTo(disposable)
     }
 
-    fun createDB(user: User) {
-        authRepository.createDB(dbReference, user)
+    /**
+     * create User Info
+     * : User.class
+     */
+    fun createUserInfoDB(user: User) {
+        authRepository.createUserInfoDB(dbReference, user)
             .subscribe {
                 try {
-                    Log.d("TAG", "createDB: ")
+                    Log.d("TAG", "createUserInfoDB: ")
                 } catch (e: Exception) {
-                    Log.e("TAG", "createDB: ", e)
+                    Log.e("TAG", "createUserInfoDB: ", e)
+                }
+
+            }.addTo(disposable)
+    }
+
+    /**
+     *  create Users Saved LocationInfo List
+     *  : LocationInfo.class
+     */
+    fun createUsersSavedLocationListDB(user:User){
+        authRepository.createUsersSavedLocationListDB(dbReference, user)
+            .subscribe {
+                try {
+                    Log.d("TAG", "createUsersSavedLocationListDB: ")
+                } catch (e: Exception) {
+                    Log.e("TAG", "createUsersSavedLocationListDB: ", e)
                 }
 
             }.addTo(disposable)
@@ -84,10 +104,6 @@ class AuthViewModel(private val authRepository: AuthRepository) : BaseViewModel(
     // two way binding
     fun firebaseLoginSingleClickEvent(view: View) {
         viewEvent(SingleClickEventFlag.EVENT_FIREBASE_LOGIN)
-    }
-
-    fun kakaoLoginSingleClickEvent(view: View) {
-        viewEvent(SingleClickEventFlag.EVENT_KAKAO_LOGIN)
     }
 
     fun signUpSingleClickEvent(view: View) {
