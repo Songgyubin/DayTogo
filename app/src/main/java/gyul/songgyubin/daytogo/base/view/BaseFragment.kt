@@ -11,28 +11,31 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class BaseFragment<T : ViewDataBinding>(@LayoutRes val layoutId: Int) :
+abstract class BaseFragment<T : ViewDataBinding?>(@LayoutRes val layoutId: Int) :
     Fragment() {
-    lateinit var binding: T
-    protected val disposable = CompositeDisposable()
+    private var _binding: T? = null
+    protected val binding: T get() = _binding!!
+    private val disposable = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
-        return binding.root
+    ): View? {
+        _binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.lifecycleOwner = this
+        binding?.lifecycleOwner = this
 
         super.onViewCreated(view, savedInstanceState)
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         disposable.dispose()
-        super.onDestroy()
+        _binding = null
+        super.onDestroyView()
     }
+
 }

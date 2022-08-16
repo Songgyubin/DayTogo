@@ -8,23 +8,32 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/tv_location_name"
+            android:id="@+id/tv_location_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="우리가 처음 만난 곳"
+            android:text="카테고리"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="25sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_location_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="타이틀"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@id/tv_location_category" />
 
         <TextView
             android:id="@+id/tv_location_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="설명"
             android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/tv_location_name"
-            tools:text="고기 못굽는다고 놀렸었다" />
-
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@id/tv_location_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

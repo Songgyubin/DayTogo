@@ -2,22 +2,17 @@ package gyul.songgyubin.daytogo.main.view
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
+import androidx.annotation.UiThread
 import androidx.lifecycle.ViewModelProvider
-import com.kakao.sdk.user.UserApiClient
-import com.kakao.sdk.user.rx
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import gyul.songgyubin.daytogo.R
-import gyul.songgyubin.daytogo.auth.viewmodel.AuthViewModel
 import gyul.songgyubin.daytogo.base.view.BaseActivity
 import gyul.songgyubin.daytogo.databinding.ActivityMainBinding
 import gyul.songgyubin.daytogo.main.viewmodel.MainViewModel
-import gyul.songgyubin.daytogo.repositories.AuthRepository
 import gyul.songgyubin.daytogo.repositories.MainRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.addTo
-import io.reactivex.schedulers.Schedulers
 
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main), OnMapReadyCallback {
     private var backKeyPressedTime = 0L
@@ -31,21 +26,29 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main), 
     private val repository by lazy { MainRepository() }
     private val viewModelFactory by lazy { MainViewModel.ViewModelFactory(repository) }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        initNaverMap()
+        loadSavedLocation()
 
     }
 
     private fun initNaverMap() {
+        val fm = supportFragmentManager
+        val naverMapFragment = fm.findFragmentById(R.id.naver_map) as MapFragment
+        naverMapFragment.getMapAsync(this)
+    }
+
+    // load User's place stored in db
+    private fun loadSavedLocation() {
+        viewModel.getSavedLocationList()
+    }
+
+    private fun observeSavedLocation() {
 
     }
 
-    private fun setView() {
-
-    }
-
+    @UiThread
     override fun onMapReady(p0: NaverMap) {
         p0.uiSettings.run {
             isScaleBarEnabled = false
@@ -54,14 +57,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main), 
         }
         p0.setOnMapClickListener { pointF, latLng ->
             showShortToast("pointF: ${pointF.x} / ${pointF.y} \n latLng: ${latLng.latitude} / ${latLng.longitude}")
-
+            Log.d(
+                "TAG",
+                "pointF: ${pointF.x} / ${pointF.y} \n latLng: ${latLng.latitude} / ${latLng.longitude}"
+            )
         }
         p0.setOnSymbolClickListener { symbol ->
             showShortToast(symbol.position.toString())
+            Log.d("TAG", "${symbol.position}")
             true
         }
-
-
     }
 
     override fun onBackPressed() {

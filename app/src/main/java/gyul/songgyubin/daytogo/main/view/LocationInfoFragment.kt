@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.base.view.BaseFragment
-import gyul.songgyubin.daytogo.databinding.FragmentLocationBinding
+import gyul.songgyubin.daytogo.databinding.FragmentLocationInfoBinding
 import gyul.songgyubin.daytogo.main.viewmodel.MainViewModel
 
-class LocationFragment : BaseFragment<FragmentLocationBinding>(R.layout.fragment_location) {
+class LocationInfoFragment : BaseFragment<FragmentLocationInfoBinding>(R.layout.fragment_location_info) {
 
     private val viewModel by activityViewModels<MainViewModel>()
 
@@ -18,7 +18,7 @@ class LocationFragment : BaseFragment<FragmentLocationBinding>(R.layout.fragment
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
