@@ -1,9 +1,6 @@
 package gyul.songgyubin.daytogo.mapper
 
-import android.text.TextUtils.split
-import android.util.Log
 import gyul.songgyubin.daytogo.models.LocationInfo
-import gyul.songgyubin.daytogo.models.User
 
 object LocationInfoMapper {
 
