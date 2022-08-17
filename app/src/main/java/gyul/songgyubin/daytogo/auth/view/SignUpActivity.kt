@@ -3,7 +3,6 @@ package gyul.songgyubin.daytogo.auth.view
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import durdinapps.rxfirebase2.RxFirebaseAuth.createUserWithEmailAndPassword
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.auth.viewmodel.AuthViewModel
 import gyul.songgyubin.daytogo.base.view.BaseActivity
@@ -26,7 +25,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sig
         super.onCreate(savedInstanceState)
         setView()
         setObserve()
-
     }
 
     private fun setView() {
@@ -85,10 +83,19 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sig
     /**
      * DB structure
      *  uid
-     *   L user_email
-     *   L saved_location_list (Location(category, title, description, latLng))
+     *   L userInfo
+     *      L uid
+     *      L email
+     *   L savedLocationList
+     *      L locationInfo
      */
     private fun createDBWithUserEmail(user: User) {
-        viewModel.createDB(user)
+        viewModel.createUserInfoDB(user)
+        viewModel.createUsersSavedLocationListDB(user)
+    }
+
+    override fun onDestroy() {
+        disposable.dispose()
+        super.onDestroy()
     }
 }
