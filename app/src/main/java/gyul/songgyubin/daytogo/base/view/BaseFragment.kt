@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -32,6 +33,9 @@ abstract class BaseFragment<T : ViewDataBinding?>(@LayoutRes val layoutId: Int) 
         super.onViewCreated(view, savedInstanceState)
     }
 
+    protected fun showShortToast(msg: String) {
+        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
+    }
     override fun onDestroyView() {
         disposable.dispose()
         _binding = null

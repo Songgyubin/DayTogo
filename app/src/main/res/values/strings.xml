@@ -6,6 +6,9 @@
     <string name="enter_email">이메일을 입력해주세요</string>
     <string name="enter_password">비밀번호를 입력해주세요</string>
     <string name="enter_email_password">이메일과 비밀번호를 입력해주세요</string>
+    <string name="enter_location_title">별명을 입력해주세요</string>
+    <string name="enter_location_description">내용을 입력해주세요</string>
+
 
     <!--  button string  -->
     <string name="sign_up">회원가입</string>
@@ -15,5 +18,6 @@
     <!--  failed message  -->
     <string name="check_email_password">이메일과 비밀번호를 확인해주세요</string>
     <string name="fail_sign_up">회원가입에 실패하였습니다.</string>
+    <string name="retry">다시 시도 하십시오</string>
 
 </resources>
