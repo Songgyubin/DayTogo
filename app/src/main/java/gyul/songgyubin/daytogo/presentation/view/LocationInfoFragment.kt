@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.presentation.base.view.BaseFragment
-import gyul.songgyubin.daytogo.domain.models.LocationInfo
+import gyul.songgyubin.daytogo.domain.model.LocationInfo
 import gyul.songgyubin.daytogo.data.repository.location.LocationRepositoryImpl
 import gyul.songgyubin.daytogo.databinding.FragmentLocationInfoBinding
-import gyul.songgyubin.daytogo.domain.usecases.AddLocationInfoUseCase
-import gyul.songgyubin.daytogo.domain.usecases.GetRemoteSavedLocationInfoUseCase
+import gyul.songgyubin.daytogo.domain.usecase.AddLocationInfoUseCase
+import gyul.songgyubin.daytogo.domain.usecase.GetRemoteSavedLocationInfoUseCase
 import gyul.songgyubin.daytogo.presentation.viewmodel.LocationViewModel
 import gyul.songgyubin.daytogo.utils.LocationEditMode
 import gyul.songgyubin.daytogo.utils.toLatLng

@@ -1,8 +1,8 @@
-package gyul.songgyubin.daytogo.domain.repositories
+package gyul.songgyubin.daytogo.domain.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
-import gyul.songgyubin.daytogo.domain.models.User
+import gyul.songgyubin.daytogo.domain.model.User
 import io.reactivex.Completable
 import io.reactivex.Maybe
 

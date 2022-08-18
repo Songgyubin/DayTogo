@@ -12,11 +12,10 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import gyul.songgyubin.daytogo.presentation.base.viewmodel.BaseViewModel
-import gyul.songgyubin.daytogo.domain.models.User
-import gyul.songgyubin.daytogo.data.repository.auth.AuthRepositoryImpl
-import gyul.songgyubin.daytogo.domain.usecases.FirebaseCreateUserInfoDbUseCase
-import gyul.songgyubin.daytogo.domain.usecases.FirebaseCreateUserUseCase
-import gyul.songgyubin.daytogo.domain.usecases.FirebaseLoginUseCase
+import gyul.songgyubin.daytogo.domain.model.User
+import gyul.songgyubin.daytogo.domain.usecase.FirebaseCreateUserInfoDbUseCase
+import gyul.songgyubin.daytogo.domain.usecase.FirebaseCreateUserUseCase
+import gyul.songgyubin.daytogo.domain.usecase.FirebaseLoginUseCase
 import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -28,6 +27,7 @@ class AuthViewModel(
     private val firebaseCreateUserUseCase: FirebaseCreateUserUseCase,
     private val firebaseCreateUserInfoDbUseCase: FirebaseCreateUserInfoDbUseCase
 ) : BaseViewModel() {
+
     private val auth: FirebaseAuth by lazy { Firebase.auth }
     private val dbReference by lazy { Firebase.database.reference }
 

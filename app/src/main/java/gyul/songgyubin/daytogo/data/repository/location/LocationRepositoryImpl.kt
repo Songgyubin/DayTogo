@@ -1,12 +1,10 @@
 package gyul.songgyubin.daytogo.data.repository.location
 
-import android.util.Log
-import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import durdinapps.rxfirebase2.RxFirebaseDatabase
 import gyul.songgyubin.daytogo.data.mapper.LocationInfoMapper
-import gyul.songgyubin.daytogo.domain.models.LocationInfo
-import gyul.songgyubin.daytogo.domain.repositories.LocationRepository
+import gyul.songgyubin.daytogo.domain.model.LocationInfo
+import gyul.songgyubin.daytogo.domain.repository.LocationRepository
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.schedulers.Schedulers

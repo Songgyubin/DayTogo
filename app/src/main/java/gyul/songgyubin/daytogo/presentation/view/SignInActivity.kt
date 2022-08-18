@@ -8,11 +8,13 @@ import gyul.songgyubin.daytogo.presentation.viewmodel.AuthViewModel
 import gyul.songgyubin.daytogo.presentation.base.view.BaseActivity
 import gyul.songgyubin.daytogo.databinding.ActivitySignInBinding
 import gyul.songgyubin.daytogo.data.repository.auth.AuthRepositoryImpl
-import gyul.songgyubin.daytogo.domain.usecases.FirebaseCreateUserInfoDbUseCase
-import gyul.songgyubin.daytogo.domain.usecases.FirebaseCreateUserUseCase
-import gyul.songgyubin.daytogo.domain.usecases.FirebaseLoginUseCase
+import gyul.songgyubin.daytogo.domain.usecase.FirebaseCreateUserInfoDbUseCase
+import gyul.songgyubin.daytogo.domain.usecase.FirebaseCreateUserUseCase
+import gyul.songgyubin.daytogo.domain.usecase.FirebaseLoginUseCase
 import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
 
+//TODO: two way binding으로 view 단 코드 감축
+//TODO: liveData로 ToastMsg 관리
 class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sign_in) {
 
     private val viewModel by lazy {

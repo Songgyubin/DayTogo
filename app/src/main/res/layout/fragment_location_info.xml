@@ -7,7 +7,7 @@
 
         <variable
             name="locationInfo"
-            type="gyul.songgyubin.daytogo.domain.models.LocationInfo" />
+            type="gyul.songgyubin.daytogo.domain.model.LocationInfo" />
 
         <variable
             name="fragment"

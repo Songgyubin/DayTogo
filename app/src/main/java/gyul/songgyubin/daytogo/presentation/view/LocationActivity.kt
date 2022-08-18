@@ -1,7 +1,6 @@
 package gyul.songgyubin.daytogo.presentation.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.annotation.UiThread
 import com.naver.maps.geometry.LatLng
@@ -14,8 +13,8 @@ import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.presentation.base.view.BaseActivity
 import gyul.songgyubin.daytogo.data.repository.location.LocationRepositoryImpl
 import gyul.songgyubin.daytogo.databinding.ActivityLocationBinding
-import gyul.songgyubin.daytogo.domain.usecases.AddLocationInfoUseCase
-import gyul.songgyubin.daytogo.domain.usecases.GetRemoteSavedLocationInfoUseCase
+import gyul.songgyubin.daytogo.domain.usecase.AddLocationInfoUseCase
+import gyul.songgyubin.daytogo.domain.usecase.GetRemoteSavedLocationInfoUseCase
 import gyul.songgyubin.daytogo.presentation.viewmodel.LocationViewModel
 
 import io.reactivex.Observable

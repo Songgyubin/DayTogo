@@ -5,11 +5,10 @@ import com.google.firebase.database.DatabaseReference
 import durdinapps.rxfirebase2.RxFirebaseAuth
 import durdinapps.rxfirebase2.RxFirebaseDatabase
 import gyul.songgyubin.daytogo.data.mapper.UserMapper
-import gyul.songgyubin.daytogo.domain.models.User
-import gyul.songgyubin.daytogo.domain.repositories.AuthRepository
+import gyul.songgyubin.daytogo.domain.model.User
+import gyul.songgyubin.daytogo.domain.repository.AuthRepository
 import io.reactivex.Completable
 import io.reactivex.Maybe
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class AuthRepositoryImpl : AuthRepository {

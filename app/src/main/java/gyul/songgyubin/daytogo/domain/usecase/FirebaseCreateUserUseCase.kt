@@ -1,8 +1,8 @@
-package gyul.songgyubin.daytogo.domain.usecases
+package gyul.songgyubin.daytogo.domain.usecase
 
 import com.google.firebase.auth.FirebaseAuth
-import gyul.songgyubin.daytogo.domain.models.User
-import gyul.songgyubin.daytogo.domain.repositories.AuthRepository
+import gyul.songgyubin.daytogo.domain.model.User
+import gyul.songgyubin.daytogo.domain.repository.AuthRepository
 import io.reactivex.Maybe
 
 class FirebaseCreateUserUseCase(private val repository: AuthRepository) {

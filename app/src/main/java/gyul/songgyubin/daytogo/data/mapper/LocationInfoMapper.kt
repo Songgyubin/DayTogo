@@ -1,7 +1,7 @@
 package gyul.songgyubin.daytogo.data.mapper
 
 import com.google.firebase.database.DataSnapshot
-import gyul.songgyubin.daytogo.domain.models.LocationInfo
+import gyul.songgyubin.daytogo.domain.model.LocationInfo
 
 object LocationInfoMapper {
 

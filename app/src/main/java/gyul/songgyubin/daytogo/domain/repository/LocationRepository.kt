@@ -1,8 +1,7 @@
-package gyul.songgyubin.daytogo.domain.repositories
+package gyul.songgyubin.daytogo.domain.repository
 
-import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
-import gyul.songgyubin.daytogo.domain.models.LocationInfo
+import gyul.songgyubin.daytogo.domain.model.LocationInfo
 import io.reactivex.Completable
 import io.reactivex.Maybe
 

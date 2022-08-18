@@ -1,4 +1,4 @@
-package gyul.songgyubin.daytogo.domain.models
+package gyul.songgyubin.daytogo.domain.model
 
 
 data class User(

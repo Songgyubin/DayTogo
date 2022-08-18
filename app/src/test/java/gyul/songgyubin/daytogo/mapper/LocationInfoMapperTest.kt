@@ -1,6 +1,6 @@
 package gyul.songgyubin.daytogo.mapper
 
-import gyul.songgyubin.daytogo.domain.models.LocationInfo
+import gyul.songgyubin.daytogo.domain.model.LocationInfo
 import org.hamcrest.MatcherAssert.*
 import org.junit.Before
 import org.junit.Test
