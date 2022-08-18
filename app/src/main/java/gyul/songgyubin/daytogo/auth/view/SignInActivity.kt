@@ -95,4 +95,8 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
         startOtherActivity(this@SignInActivity, SignUpActivity())
     }
 
+    override fun onDestroy() {
+        disposable.dispose()
+        super.onDestroy()
+    }
 }

@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import durdinapps.rxfirebase2.RxFirebaseAuth
 import durdinapps.rxfirebase2.RxFirebaseDatabase
+import gyul.songgyubin.daytogo.models.LocationInfo
 import gyul.songgyubin.daytogo.models.User
 import io.reactivex.Completable
 import io.reactivex.Maybe
@@ -47,14 +48,12 @@ class AuthRepository() {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun createDB(
+    fun createUserInfoDB(
         dbReference: DatabaseReference,
         user: User
     ):Completable {
-        return RxFirebaseDatabase.setValue(dbReference.child(user.uid),user)
+        return RxFirebaseDatabase.setValue(dbReference.child("users").child(user.uid).child("userInfo"),user)
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
     }
-
-
 }

@@ -1,39 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+
+        <variable
+            name="fragment"
+            type="gyul.songgyubin.daytogo.main.view.LocationInfoFragment" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
-        <TextView
-            android:id="@+id/tv_location_category"
-            android:layout_width="match_parent"
+        <ImageButton
+            android:id="@+id/ib_edit"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="카테고리"
-            android:textColor="@color/black"
-            android:textSize="25sp"
-            android:textStyle="bold"
+            android:background="@color/white"
+            android:onClick="@{fragment::editLocation}"
+            android:src="@drawable/edit"
+            android:contentDescription="@string/edit_location"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_location_title"
-            android:layout_width="match_parent"
+        <ImageButton
+            android:id="@+id/ib_save"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="타이틀"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintTop_toBottomOf="@id/tv_location_category" />
+            android:background="@color/white"
+            android:onClick="@{fragment::finishEditLocation}"
+            android:src="@drawable/finish"
+            android:contentDescription="@string/save_location"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_location_description"
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="ib_edit,ib_save" />
+
+        <EditText
+            android:id="@+id/ed_location_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="설명"
+            android:inputType="text"
+            android:layout_marginTop="10dp"
+            android:background="@null"
+            android:enabled="false"
+            android:hint="@string/enter_location_title"
+            android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="20sp"
-            app:layout_constraintTop_toBottomOf="@id/tv_location_title" />
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/barrier" />
+
+        <EditText
+            android:id="@+id/ed_location_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:inputType="text"
+            android:enabled="false"
+            android:hint="@string/enter_location_description"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintTop_toBottomOf="@id/ed_location_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -13,7 +13,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseActivity<T : ViewDataBinding>(@LayoutRes val layoutId: Int) :
     AppCompatActivity() {
-    lateinit var binding: T
+    protected lateinit var binding: T
     protected val disposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +37,6 @@ abstract class BaseActivity<T : ViewDataBinding>(@LayoutRes val layoutId: Int) :
 
     override fun onDestroy() {
         disposable.dispose()
-        Log.d("TAG", "onDestroy: ${disposable.isDisposed}")
         super.onDestroy()
     }
 }
