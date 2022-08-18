@@ -1,4 +1,4 @@
-package gyul.songgyubin.daytogo.base.viewmodel
+package gyul.songgyubin.daytogo.presentation.base.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

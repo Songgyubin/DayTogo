@@ -11,7 +11,7 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import gyul.songgyubin.daytogo.R
-import gyul.songgyubin.daytogo.base.view.BaseActivity
+import gyul.songgyubin.daytogo.presentation.base.view.BaseActivity
 import gyul.songgyubin.daytogo.data.repository.location.LocationRepositoryImpl
 import gyul.songgyubin.daytogo.databinding.ActivityLocationBinding
 import gyul.songgyubin.daytogo.domain.usecases.AddLocationInfoUseCase
@@ -27,7 +27,7 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(R.layout.activity
     private var backKeyPressedTime = 0L
     private lateinit var naverMap: NaverMap
 
-    private val viewModel by viewModels<LocationViewModel>(null, { viewModelFactory })
+    private val viewModel by viewModels<LocationViewModel>(null) { viewModelFactory }
     private val repository by lazy { LocationRepositoryImpl() }
     private val viewModelFactory by lazy { LocationViewModel.ViewModelFactory(
         AddLocationInfoUseCase(repository),
@@ -83,27 +83,20 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(R.layout.activity
     @UiThread
     override fun onMapReady(p0: NaverMap) {
         naverMap = p0
-
-        p0.uiSettings.run {
-            isScaleBarEnabled = false
-            isZoomControlEnabled = false
-            isLocationButtonEnabled = true
+        with(naverMap){
+            uiSettings.run {
+                isScaleBarEnabled = false
+                isZoomControlEnabled = false
+                isLocationButtonEnabled = true
+            }
+            setOnMapClickListener { pointF, latLng ->
+                viewModel.selectLocation(latLng.latitude, latLng.longitude)
+            }
+            setOnSymbolClickListener { symbol ->
+                viewModel.selectLocation(symbol.position.latitude, symbol.position.longitude)
+                true
+            }
         }
-
-        p0.setOnMapClickListener { pointF, latLng ->
-            viewModel.selectLocation(latLng.latitude, latLng.longitude)
-            Log.d(
-                "TAG",
-                "pointF: ${pointF.x} / ${pointF.y} \n latLng: ${latLng.latitude} / ${latLng.longitude}"
-            )
-        }
-        p0.setOnSymbolClickListener { symbol ->
-            viewModel.selectLocation(symbol.position.latitude, symbol.position.longitude)
-            Log.d("TAG", "${symbol.position}")
-            true
-        }
-
-
     }
 
     override fun onBackPressed() {

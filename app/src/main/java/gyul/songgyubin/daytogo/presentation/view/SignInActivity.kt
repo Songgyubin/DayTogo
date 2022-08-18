@@ -5,9 +5,12 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.presentation.viewmodel.AuthViewModel
-import gyul.songgyubin.daytogo.base.view.BaseActivity
+import gyul.songgyubin.daytogo.presentation.base.view.BaseActivity
 import gyul.songgyubin.daytogo.databinding.ActivitySignInBinding
 import gyul.songgyubin.daytogo.data.repository.auth.AuthRepositoryImpl
+import gyul.songgyubin.daytogo.domain.usecases.FirebaseCreateUserInfoDbUseCase
+import gyul.songgyubin.daytogo.domain.usecases.FirebaseCreateUserUseCase
+import gyul.songgyubin.daytogo.domain.usecases.FirebaseLoginUseCase
 import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
 
 class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sign_in) {
@@ -18,7 +21,13 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
             viewModelFactory
         ).get(AuthViewModel::class.java)
     }
-    private val viewModelFactory by lazy { AuthViewModel.ViewModelFactory(authRepository) }
+    private val viewModelFactory by lazy {
+        AuthViewModel.ViewModelFactory(
+            FirebaseLoginUseCase(authRepository),
+            FirebaseCreateUserUseCase(authRepository),
+            FirebaseCreateUserInfoDbUseCase(authRepository)
+        )
+    }
     private val authRepository by lazy { AuthRepositoryImpl() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +61,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
         observeSingleClickEvent()
         observeEmailValidation()
         observeFirebaseLogin()
-
     }
 
     private fun observeSingleClickEvent() {

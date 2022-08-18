@@ -1,4 +1,4 @@
-package gyul.songgyubin.daytogo.application
+package gyul.songgyubin.daytogo
 
 import android.app.Application
 import com.kakao.sdk.common.KakaoSdk

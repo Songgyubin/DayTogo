@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import gyul.songgyubin.daytogo.base.viewmodel.BaseViewModel
+import gyul.songgyubin.daytogo.presentation.base.viewmodel.BaseViewModel
 import gyul.songgyubin.daytogo.domain.models.LocationInfo
 import gyul.songgyubin.daytogo.domain.usecases.AddLocationInfoUseCase
 import gyul.songgyubin.daytogo.domain.usecases.GetRemoteSavedLocationInfoUseCase
@@ -46,6 +46,9 @@ class LocationViewModel(
     val selectedLocationId: LiveData<LocationId> get() = _selectedLocationId
     private val _selectedLocationId = MutableLiveData<LocationId>()
 
+    val isEditMode: LiveData<Boolean> get() = _isEditMode
+    private val _isEditMode = MutableLiveData<Boolean>(false)
+
 
     fun selectLocation(latitude: Double, longitude: Double) {
         _selectedLocationId.value = "${latitude}_$longitude"
@@ -53,6 +56,13 @@ class LocationViewModel(
 
     fun setSavedLocationInfo(locationInfo: LocationInfo) {
         savedLocationInfo[locationInfo.locationId] = locationInfo
+    }
+
+    fun setEditMode(){
+        _isEditMode.value = true
+    }
+    fun setNotEditMode(){
+        _isEditMode.value = false
     }
 
     fun getSavedLocationList() {
@@ -88,14 +98,19 @@ class LocationViewModel(
     }
 
 
-    class ViewModelFactory(private val addLocationInfoUseCase: AddLocationInfoUseCase,
-    private val getRemoteSavedLocationInfoUseCase: GetRemoteSavedLocationInfoUseCase) :
+    class ViewModelFactory(
+        private val addLocationInfoUseCase: AddLocationInfoUseCase,
+        private val getRemoteSavedLocationInfoUseCase: GetRemoteSavedLocationInfoUseCase
+    ) :
         ViewModelProvider.Factory {
 
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(LocationViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return LocationViewModel(addLocationInfoUseCase,getRemoteSavedLocationInfoUseCase) as T
+                return LocationViewModel(
+                    addLocationInfoUseCase,
+                    getRemoteSavedLocationInfoUseCase
+                ) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }

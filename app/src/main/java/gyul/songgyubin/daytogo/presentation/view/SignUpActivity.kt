@@ -5,13 +5,17 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.presentation.viewmodel.AuthViewModel
-import gyul.songgyubin.daytogo.base.view.BaseActivity
+import gyul.songgyubin.daytogo.presentation.base.view.BaseActivity
 import gyul.songgyubin.daytogo.databinding.ActivitySignUpBinding
 import gyul.songgyubin.daytogo.domain.models.User
 import gyul.songgyubin.daytogo.data.repository.auth.AuthRepositoryImpl
+import gyul.songgyubin.daytogo.domain.usecases.FirebaseCreateUserInfoDbUseCase
+import gyul.songgyubin.daytogo.domain.usecases.FirebaseCreateUserUseCase
+import gyul.songgyubin.daytogo.domain.usecases.FirebaseLoginUseCase
 import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
 
 class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sign_up) {
+
     private val authRepository by lazy { AuthRepositoryImpl() }
     private val viewModel by lazy {
         ViewModelProvider(
@@ -19,7 +23,13 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sig
             viewModelFactory
         ).get(AuthViewModel::class.java)
     }
-    private val viewModelFactory by lazy { AuthViewModel.ViewModelFactory(authRepository) }
+    private val viewModelFactory by lazy {
+        AuthViewModel.ViewModelFactory(
+            FirebaseLoginUseCase(authRepository),
+            FirebaseCreateUserUseCase(authRepository),
+            FirebaseCreateUserInfoDbUseCase(authRepository)
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +65,9 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sig
             it.getContentIfNotHandled().let { event ->
                 when (event) {
                     SingleClickEventFlag.SIGN_UP -> callCreateUserWithEmailAndPassword()
-                    else -> {return@let}
+                    else -> {
+                        return@let
+                    }
                 }
             }
         }
@@ -79,7 +91,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sig
             }
         }
     }
-
 
     private fun createDBWithUserEmail(user: User) {
         viewModel.createUserInfoDB(user)

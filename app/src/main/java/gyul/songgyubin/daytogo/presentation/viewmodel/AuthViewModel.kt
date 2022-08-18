@@ -11,14 +11,23 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import gyul.songgyubin.daytogo.base.viewmodel.BaseViewModel
+import gyul.songgyubin.daytogo.presentation.base.viewmodel.BaseViewModel
 import gyul.songgyubin.daytogo.domain.models.User
 import gyul.songgyubin.daytogo.data.repository.auth.AuthRepositoryImpl
+import gyul.songgyubin.daytogo.domain.usecases.FirebaseCreateUserInfoDbUseCase
+import gyul.songgyubin.daytogo.domain.usecases.FirebaseCreateUserUseCase
+import gyul.songgyubin.daytogo.domain.usecases.FirebaseLoginUseCase
 import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
+import io.reactivex.schedulers.Schedulers
 import java.lang.Exception
 
-class AuthViewModel(private val authRepository: AuthRepositoryImpl) : BaseViewModel() {
+class AuthViewModel(
+    private val firebaseLoginUseCase: FirebaseLoginUseCase,
+    private val firebaseCreateUserUseCase: FirebaseCreateUserUseCase,
+    private val firebaseCreateUserInfoDbUseCase: FirebaseCreateUserInfoDbUseCase
+) : BaseViewModel() {
     private val auth: FirebaseAuth by lazy { Firebase.auth }
     private val dbReference by lazy { Firebase.database.reference }
 
@@ -38,7 +47,8 @@ class AuthViewModel(private val authRepository: AuthRepositoryImpl) : BaseViewMo
     var inputPassword: String = ""
 
     fun firebaseLogin(inputEmail: String, inputPassword: String) {
-        authRepository.firebaseLogin(auth, inputEmail, inputPassword)
+        firebaseLoginUseCase.invoke(auth, inputEmail, inputPassword)
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ user ->
                 _authenticatedUser.value = user
             }, { error ->
@@ -50,7 +60,8 @@ class AuthViewModel(private val authRepository: AuthRepositoryImpl) : BaseViewMo
     // sign up And firebase DB create
     // firebase DB root element is userEmail
     fun createUser(inputEmail: String, inputPassword: String) {
-        authRepository.createUser(auth, inputEmail, inputPassword)
+        firebaseCreateUserUseCase.invoke(auth, inputEmail, inputPassword)
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ user ->
                 _authenticatedUser.value = user
             },
@@ -61,12 +72,9 @@ class AuthViewModel(private val authRepository: AuthRepositoryImpl) : BaseViewMo
             ).addTo(disposable)
     }
 
-    /**
-     * create User Info
-     * : User.class
-     */
     fun createUserInfoDB(user: User) {
-        authRepository.createUserInfoDB(dbReference, user)
+        firebaseCreateUserInfoDbUseCase.invoke(dbReference, user)
+        .observeOn(Schedulers.io())
             .subscribe {
                 try {
                     Log.d("TAG", "createUserInfoDB: ")
@@ -93,12 +101,20 @@ class AuthViewModel(private val authRepository: AuthRepositoryImpl) : BaseViewMo
     }
 
 
-    class ViewModelFactory(private val repository: AuthRepositoryImpl) : ViewModelProvider.Factory {
+    class ViewModelFactory(
+        private val firebaseLoginUseCase: FirebaseLoginUseCase,
+        private val firebaseCreateUserUseCase: FirebaseCreateUserUseCase,
+        private val firebaseCreateUserInfoDbUseCase: FirebaseCreateUserInfoDbUseCase
+    ) : ViewModelProvider.Factory {
 
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(AuthViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return AuthViewModel(repository) as T
+                return AuthViewModel(
+                    firebaseLoginUseCase,
+                    firebaseCreateUserUseCase,
+                    firebaseCreateUserInfoDbUseCase
+                ) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
