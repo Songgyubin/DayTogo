@@ -70,6 +70,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main), 
         }
     }
 
+
     @UiThread
     override fun onMapReady(p0: NaverMap) {
         naverMap = p0

@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:onClick="@{fragment::finishEditLocation}"
+            android:onClick="@{fragment::saveLocation}"
             android:src="@drawable/finish"
             android:contentDescription="@string/save_location"
             android:visibility="gone"

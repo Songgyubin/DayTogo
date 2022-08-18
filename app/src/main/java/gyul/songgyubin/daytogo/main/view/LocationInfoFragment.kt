@@ -11,6 +11,7 @@ import gyul.songgyubin.daytogo.databinding.FragmentLocationInfoBinding
 import gyul.songgyubin.daytogo.main.viewmodel.MainViewModel
 import gyul.songgyubin.daytogo.models.LocationInfo
 import gyul.songgyubin.daytogo.repositories.MainRepository
+import gyul.songgyubin.daytogo.utils.LocationEditMode
 import gyul.songgyubin.daytogo.utils.toLatLng
 
 class LocationInfoFragment :
@@ -27,7 +28,35 @@ class LocationInfoFragment :
         observeSelectedLocation()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setView()
+        super.onViewCreated(view, savedInstanceState)
+    }
 
+    fun saveLocation(view: View) {
+        with(viewModel) {
+            if (selectedLocationId.value != null) {
+                val selectedLocationId = selectedLocationId.value!!
+                val latLng = selectedLocationId.toLatLng()
+                with(binding) {
+                    val locationInfo = LocationInfo().also {
+                        it.locationId = selectedLocationId
+                        it.title = edLocationTitle.text.toString()
+                        it.description = edLocationDescription.text.toString()
+                        it.latitude = latLng.latitude
+                        it.longitude = latLng.longitude
+                    }
+                    changeViewMode(LocationEditMode.SAVE)
+                    savedLocationDB(locationInfo)
+                }
+            } else {
+                showShortToast(getString(R.string.retry))
+            }
+        }
+    }
+    fun editLocation(view: View) {
+        changeViewMode(LocationEditMode.EDIT)
+    }
 
     private fun observeSelectedLocation() {
         with(viewModel) {
@@ -43,43 +72,23 @@ class LocationInfoFragment :
     private fun setView() {
         binding.fragment = this@LocationInfoFragment
     }
-
-    fun finishEditLocation(view: View) {
-        with(viewModel) {
-            if (selectedLocationId.value != null) {
-                val selectedLocationId = selectedLocationId.value!!
-                val latLng = selectedLocationId.toLatLng()
-                with(binding) {
-                    val locationInfo = LocationInfo().also {
-                        it.locationId = selectedLocationId
-                        it.title = edLocationTitle.text.toString()
-                        it.description = edLocationDescription.text.toString()
-                        it.latitude = latLng.latitude
-                        it.longitude = latLng.longitude
-                    }
+    private fun changeViewMode(mode: LocationEditMode) {
+        with(binding) {
+            when (mode) {
+                LocationEditMode.EDIT -> {
+                    ibEdit.visibility = View.GONE
+                    ibSave.visibility = View.VISIBLE
+                    edLocationTitle.isEnabled = true
+                    edLocationDescription.isEnabled = true
+                }
+                LocationEditMode.SAVE -> {
                     ibEdit.visibility = View.VISIBLE
                     ibSave.visibility = View.GONE
                     edLocationTitle.isEnabled = false
                     edLocationDescription.isEnabled = false
-                    savedLocationDB(locationInfo)
                 }
-            } else {
-                showShortToast(getString(R.string.retry))
             }
         }
     }
-
-fun editLocation(view: View) {
-    binding.ibEdit.visibility = View.GONE
-    binding.ibSave.visibility = View.VISIBLE
-    binding.edLocationTitle.isEnabled = true
-    binding.edLocationDescription.isEnabled = true
-}
-
-override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    setView()
-    super.onViewCreated(view, savedInstanceState)
-}
-
 
 }
