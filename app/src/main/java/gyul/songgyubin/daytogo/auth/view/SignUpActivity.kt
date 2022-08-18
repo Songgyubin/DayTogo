@@ -80,18 +80,9 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sig
         }
     }
 
-    /**
-     * DB structure
-     *  uid
-     *   L userInfo
-     *      L uid
-     *      L email
-     *   L savedLocationList
-     *      L locationInfo
-     */
+
     private fun createDBWithUserEmail(user: User) {
         viewModel.createUserInfoDB(user)
-        viewModel.createUsersSavedLocationListDB(user)
     }
 
     override fun onDestroy() {

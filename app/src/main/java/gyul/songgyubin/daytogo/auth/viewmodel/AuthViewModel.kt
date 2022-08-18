@@ -73,26 +73,8 @@ class AuthViewModel(private val authRepository: AuthRepository) : BaseViewModel(
                 } catch (e: Exception) {
                     Log.e("TAG", "createUserInfoDB: ", e)
                 }
-
             }.addTo(disposable)
     }
-
-    /**
-     *  create Users Saved LocationInfo List
-     *  : LocationInfo.class
-     */
-    fun createUsersSavedLocationListDB(user:User){
-        authRepository.createUsersSavedLocationListDB(dbReference, user)
-            .subscribe {
-                try {
-                    Log.d("TAG", "createUsersSavedLocationListDB: ")
-                } catch (e: Exception) {
-                    Log.e("TAG", "createUsersSavedLocationListDB: ", e)
-                }
-
-            }.addTo(disposable)
-    }
-
 
     // check email validation
     fun onEmailTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
