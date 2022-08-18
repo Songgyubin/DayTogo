@@ -1,18 +1,18 @@
-package gyul.songgyubin.daytogo.auth.view
+package gyul.songgyubin.daytogo.presentation.view
 
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import gyul.songgyubin.daytogo.R
-import gyul.songgyubin.daytogo.auth.viewmodel.AuthViewModel
+import gyul.songgyubin.daytogo.presentation.viewmodel.AuthViewModel
 import gyul.songgyubin.daytogo.base.view.BaseActivity
 import gyul.songgyubin.daytogo.databinding.ActivitySignUpBinding
-import gyul.songgyubin.daytogo.models.User
-import gyul.songgyubin.daytogo.repositories.AuthRepository
+import gyul.songgyubin.daytogo.domain.models.User
+import gyul.songgyubin.daytogo.data.repository.auth.AuthRepositoryImpl
 import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
 
 class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sign_up) {
-    private val authRepository by lazy { AuthRepository() }
+    private val authRepository by lazy { AuthRepositoryImpl() }
     private val viewModel by lazy {
         ViewModelProvider(
             this,

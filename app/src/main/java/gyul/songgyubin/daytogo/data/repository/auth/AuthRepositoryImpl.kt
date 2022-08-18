@@ -1,17 +1,16 @@
-package gyul.songgyubin.daytogo.repositories
+package gyul.songgyubin.daytogo.data.repository.auth
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import durdinapps.rxfirebase2.RxFirebaseAuth
 import durdinapps.rxfirebase2.RxFirebaseDatabase
-import gyul.songgyubin.daytogo.models.LocationInfo
-import gyul.songgyubin.daytogo.models.User
+import gyul.songgyubin.daytogo.domain.models.User
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class AuthRepository() {
+class AuthRepositoryImpl() {
 
     fun firebaseLogin(
         auth: FirebaseAuth,

@@ -1,4 +1,4 @@
-package gyul.songgyubin.daytogo.models
+package gyul.songgyubin.daytogo.domain.models
 
 /**
  * locationId: latitude.toString()_longitude.toString()

@@ -1,4 +1,4 @@
-package gyul.songgyubin.daytogo.main.view
+package gyul.songgyubin.daytogo.presentation.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,17 +8,21 @@ import androidx.fragment.app.activityViewModels
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.base.view.BaseFragment
 import gyul.songgyubin.daytogo.databinding.FragmentLocationInfoBinding
-import gyul.songgyubin.daytogo.main.viewmodel.MainViewModel
-import gyul.songgyubin.daytogo.models.LocationInfo
-import gyul.songgyubin.daytogo.repositories.MainRepository
+import gyul.songgyubin.daytogo.domain.models.LocationInfo
+import gyul.songgyubin.daytogo.data.repository.location.LocationRepositoryImpl
+import gyul.songgyubin.daytogo.domain.usecases.AddLocationInfoUseCase
+import gyul.songgyubin.daytogo.domain.usecases.GetRemoteSavedLocationInfoUseCase
+import gyul.songgyubin.daytogo.presentation.viewmodel.LocationViewModel
 import gyul.songgyubin.daytogo.utils.LocationEditMode
 import gyul.songgyubin.daytogo.utils.toLatLng
 
 class LocationInfoFragment :
     BaseFragment<FragmentLocationInfoBinding>(R.layout.fragment_location_info) {
-    private val viewModel by activityViewModels<MainViewModel>(null, { viewModelFactory })
-    private val repository by lazy { MainRepository() }
-    private val viewModelFactory by lazy { MainViewModel.ViewModelFactory(repository) }
+    private val viewModel by activityViewModels<LocationViewModel>(null, { viewModelFactory })
+    private val repository by lazy { LocationRepositoryImpl() }
+    private val viewModelFactory by lazy { LocationViewModel.ViewModelFactory(AddLocationInfoUseCase(repository),
+        GetRemoteSavedLocationInfoUseCase(repository)
+    ) }
 
     override fun onCreateView(
         inflater: LayoutInflater,

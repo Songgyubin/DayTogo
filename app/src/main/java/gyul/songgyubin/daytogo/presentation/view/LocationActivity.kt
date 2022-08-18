@@ -1,4 +1,4 @@
-package gyul.songgyubin.daytogo.main.view
+package gyul.songgyubin.daytogo.presentation.view
 
 import android.os.Bundle
 import android.util.Log
@@ -12,21 +12,27 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.base.view.BaseActivity
-import gyul.songgyubin.daytogo.databinding.ActivityMainBinding
-import gyul.songgyubin.daytogo.main.viewmodel.MainViewModel
-import gyul.songgyubin.daytogo.repositories.MainRepository
+import gyul.songgyubin.daytogo.data.repository.location.LocationRepositoryImpl
+import gyul.songgyubin.daytogo.databinding.ActivityLocationBinding
+import gyul.songgyubin.daytogo.domain.usecases.AddLocationInfoUseCase
+import gyul.songgyubin.daytogo.domain.usecases.GetRemoteSavedLocationInfoUseCase
+import gyul.songgyubin.daytogo.presentation.viewmodel.LocationViewModel
+
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 
-class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main), OnMapReadyCallback {
+class LocationActivity : BaseActivity<ActivityLocationBinding>(R.layout.activity_location), OnMapReadyCallback {
     private var backKeyPressedTime = 0L
     private lateinit var naverMap: NaverMap
 
-    private val viewModel by viewModels<MainViewModel>(null, { viewModelFactory })
-    private val repository by lazy { MainRepository() }
-    private val viewModelFactory by lazy { MainViewModel.ViewModelFactory(repository) }
+    private val viewModel by viewModels<LocationViewModel>(null, { viewModelFactory })
+    private val repository by lazy { LocationRepositoryImpl() }
+    private val viewModelFactory by lazy { LocationViewModel.ViewModelFactory(
+        AddLocationInfoUseCase(repository),
+        GetRemoteSavedLocationInfoUseCase(repository)
+    ) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,11 +59,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main), 
         viewModel.savedLocationList.observe(this) { stationList ->
             Observable.fromArray(*stationList.toTypedArray())
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
                 .filter {
-                    it.latitude != 0.0 || it.longitude != 0.0
+                    // filtering empty title and description
+                    it.title.isNotEmpty() || it.description.isNotEmpty()
                 }.map { location ->
+                    // 클릭 시 장소 정보를 보여주기 위해 locationId와 함께 locationInfo 저장
                     viewModel.setSavedLocationInfo(location)
+                    // 저장된 위치에 마커 생성
                     Marker().apply {
                         position = LatLng(location.latitude, location.longitude)
                         icon = OverlayImage.fromResource(R.drawable.check)

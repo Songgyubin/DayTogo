@@ -5,7 +5,7 @@
 
         <variable
             name="fragment"
-            type="gyul.songgyubin.daytogo.main.view.LocationInfoFragment" />
+            type="gyul.songgyubin.daytogo.presentation.view.LocationInfoFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

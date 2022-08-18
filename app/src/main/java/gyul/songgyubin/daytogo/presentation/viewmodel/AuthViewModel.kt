@@ -1,4 +1,4 @@
-package gyul.songgyubin.daytogo.auth.viewmodel
+package gyul.songgyubin.daytogo.presentation.viewmodel
 
 import android.util.Log
 import android.util.Patterns
@@ -12,13 +12,13 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import gyul.songgyubin.daytogo.base.viewmodel.BaseViewModel
-import gyul.songgyubin.daytogo.models.User
-import gyul.songgyubin.daytogo.repositories.AuthRepository
+import gyul.songgyubin.daytogo.domain.models.User
+import gyul.songgyubin.daytogo.data.repository.auth.AuthRepositoryImpl
 import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
 import io.reactivex.rxkotlin.addTo
 import java.lang.Exception
 
-class AuthViewModel(private val authRepository: AuthRepository) : BaseViewModel() {
+class AuthViewModel(private val authRepository: AuthRepositoryImpl) : BaseViewModel() {
     private val auth: FirebaseAuth by lazy { Firebase.auth }
     private val dbReference by lazy { Firebase.database.reference }
 
@@ -93,7 +93,7 @@ class AuthViewModel(private val authRepository: AuthRepository) : BaseViewModel(
     }
 
 
-    class ViewModelFactory(private val repository: AuthRepository) : ViewModelProvider.Factory {
+    class ViewModelFactory(private val repository: AuthRepositoryImpl) : ViewModelProvider.Factory {
 
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(AuthViewModel::class.java)) {

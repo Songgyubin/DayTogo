@@ -1,14 +1,13 @@
-package gyul.songgyubin.daytogo.auth.view
+package gyul.songgyubin.daytogo.presentation.view
 
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import gyul.songgyubin.daytogo.R
-import gyul.songgyubin.daytogo.auth.viewmodel.AuthViewModel
+import gyul.songgyubin.daytogo.presentation.viewmodel.AuthViewModel
 import gyul.songgyubin.daytogo.base.view.BaseActivity
 import gyul.songgyubin.daytogo.databinding.ActivitySignInBinding
-import gyul.songgyubin.daytogo.main.view.MainActivity
-import gyul.songgyubin.daytogo.repositories.AuthRepository
+import gyul.songgyubin.daytogo.data.repository.auth.AuthRepositoryImpl
 import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
 
 class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sign_in) {
@@ -20,7 +19,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
         ).get(AuthViewModel::class.java)
     }
     private val viewModelFactory by lazy { AuthViewModel.ViewModelFactory(authRepository) }
-    private val authRepository by lazy { AuthRepository() }
+    private val authRepository by lazy { AuthRepositoryImpl() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,7 +80,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
     private fun observeFirebaseLogin() {
         viewModel.run {
             authenticatedUser.observe(this@SignInActivity) { user ->
-                startOtherActivity(this@SignInActivity, MainActivity())
+                startOtherActivity(this@SignInActivity, LocationActivity())
                 finish()
             }
             loginErrorMsg.observe(this@SignInActivity) { error ->
