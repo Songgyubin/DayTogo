@@ -58,34 +58,31 @@ class LocationViewModel(
         savedLocationInfo[locationInfo.locationId] = locationInfo
     }
 
-    fun setEditMode(){
+    fun setEditMode() {
         _isEditMode.value = true
     }
-    fun setNotEditMode(){
+
+    fun setNotEditMode() {
         _isEditMode.value = false
     }
 
     fun getSavedLocationList() {
-        currentUser?.let {
-            getRemoteSavedLocationInfoUseCase.invoke(
-                dbReference, auth.currentUser!!.uid
-            )
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { showProgress() }
-                .doAfterTerminate { hideProgress() }
-                .subscribe({ locationList ->
-                    _savedLocationList.value = locationList
-                    Log.d("TAG", "getSavedLocationList: ${locationList.size}")
-                }, { error ->
-                    _savedLocationListErrorMsg.value = error.message
-                    Log.e("TAG", "getSavedLocationList: ", error)
-                }
-                ).addTo(disposable)
-        }
+        getRemoteSavedLocationInfoUseCase.invoke()
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { showProgress() }
+            .doAfterTerminate { hideProgress() }
+            .subscribe({ locationList ->
+                _savedLocationList.value = locationList
+                Log.d("TAG", "getSavedLocationList: ${locationList.size}")
+            }, { error ->
+                _savedLocationListErrorMsg.value = error.message
+                Log.e("TAG", "getSavedLocationList: ", error)
+            }
+            ).addTo(disposable)
     }
 
     fun savedLocationDB(locationInfo: LocationInfo) {
-        addLocationInfoUseCase.invoke(dbReference, currentUser!!.uid, locationInfo)
+        addLocationInfoUseCase.invoke(locationInfo)
             .observeOn(Schedulers.io())
             .subscribe(
                 {

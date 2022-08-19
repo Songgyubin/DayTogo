@@ -28,9 +28,6 @@ class AuthViewModel(
     private val firebaseCreateUserInfoDbUseCase: FirebaseCreateUserInfoDbUseCase
 ) : BaseViewModel() {
 
-    private val auth: FirebaseAuth by lazy { Firebase.auth }
-    private val dbReference by lazy { Firebase.database.reference }
-
     private val _isValidEmail = MutableLiveData<Boolean>(true)
     private val _loginErrorMsg = MutableLiveData<String>()
     private val _dbErrorMsg = MutableLiveData<String>()
@@ -47,7 +44,7 @@ class AuthViewModel(
     var inputPassword: String = ""
 
     fun firebaseLogin(inputEmail: String, inputPassword: String) {
-        firebaseLoginUseCase.invoke(auth, inputEmail, inputPassword)
+        firebaseLoginUseCase.invoke(inputEmail, inputPassword)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ user ->
                 _authenticatedUser.value = user
@@ -60,7 +57,7 @@ class AuthViewModel(
     // sign up And firebase DB create
     // firebase DB root element is userEmail
     fun createUser(inputEmail: String, inputPassword: String) {
-        firebaseCreateUserUseCase.invoke(auth, inputEmail, inputPassword)
+        firebaseCreateUserUseCase.invoke(inputEmail, inputPassword)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ user ->
                 _authenticatedUser.value = user
@@ -73,7 +70,7 @@ class AuthViewModel(
     }
 
     fun createUserInfoDB(user: User) {
-        firebaseCreateUserInfoDbUseCase.invoke(dbReference, user)
+        firebaseCreateUserInfoDbUseCase.invoke(user)
         .observeOn(Schedulers.io())
             .subscribe {
                 try {

@@ -1,7 +1,10 @@
 package gyul.songgyubin.daytogo.data.repository.auth
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import durdinapps.rxfirebase2.RxFirebaseAuth
 import durdinapps.rxfirebase2.RxFirebaseDatabase
 import gyul.songgyubin.daytogo.data.mapper.UserMapper
@@ -12,9 +15,10 @@ import io.reactivex.Maybe
 import io.reactivex.schedulers.Schedulers
 
 class AuthRepositoryImpl : AuthRepository {
+    private val auth: FirebaseAuth by lazy { Firebase.auth }
+    private val dbReference by lazy { Firebase.database.reference }
 
     override fun firebaseLogin(
-        auth: FirebaseAuth,
         inputEmail: String,
         inputPassword: String
     ): Maybe<User> {
@@ -31,7 +35,6 @@ class AuthRepositoryImpl : AuthRepository {
     }
 
     override fun createUser(
-        auth: FirebaseAuth,
         inputEmail: String,
         inputPassword: String
     ): Maybe<User> {
@@ -44,7 +47,6 @@ class AuthRepositoryImpl : AuthRepository {
     }
 
     override fun createUserInfoDB(
-        dbReference: DatabaseReference,
         user: User
     ): Completable {
         return RxFirebaseDatabase.setValue(
