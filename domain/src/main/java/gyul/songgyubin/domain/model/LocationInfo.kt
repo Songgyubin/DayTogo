@@ -1,8 +1,13 @@
 package gyul.songgyubin.domain.model
 
+
+/**
+ * 실제 사용하는 Data Class
+ */
 /**
  * locationId: latitude.toString()_longitude.toString()
  */
+
 data class LocationInfo(
     var locationId: String = "",
     var title: String = "",
