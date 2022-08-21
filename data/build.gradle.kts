@@ -1,8 +1,8 @@
 import Dependencies.applyAndroidX
+import Dependencies.applyFirebase
+import Dependencies.applyHilt
 import Dependencies.applyRx
 import Dependencies.applyTest
-import Dependencies.applyFirebase
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
     id("com.android.library")
@@ -47,5 +47,6 @@ dependencies {
     applyRx()
     applyTest()
     applyFirebase()
+    applyHilt()
 
 }

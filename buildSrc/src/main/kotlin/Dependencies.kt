@@ -81,6 +81,34 @@ object Dependencies {
         implementation(Kakao.LOGIN)
     }
 
+    object Hilt{
+        const val VERSION = "2.38.1"
+
+        const val CORE = "com.google.dagger:hilt-android:$VERSION"
+        const val COMPILER = "com.google.dagger:hilt-compiler:$VERSION"
+
+        // For instrumentation tests
+        const val ANDROID_TESTING = "com.google.dagger:hilt-android-testing:$VERSION"
+        const val ANDROID_TESTING_COMPILER = "com.google.dagger:hilt-compiler:$VERSION"
+
+        // For local unit tests
+        const val LOCAL_TESTING = "com.google.dagger:hilt-android-testing:$VERSION"
+        const val LOCAL_TESTING_COMPILER = "com.google.dagger:hilt-compiler:$VERSION"
+    }
+
+    fun DependencyHandlerScope.applyHilt(){
+        implementation(Hilt.CORE)
+        kapt(Hilt.COMPILER)
+
+        kaptTest(Hilt.LOCAL_TESTING_COMPILER)
+        testImplementation(Hilt.LOCAL_TESTING)
+
+        androidTestImplementation(Hilt.ANDROID_TESTING)
+        kaptAndroidTest(Hilt.ANDROID_TESTING_COMPILER)
+    }
+
+
+
     object Test {
         const val JUNIT = "junit:junit:4.13.2"
         const val ANDROID_EXT_JUNIT = "androidx.test.ext:junit:1.1.3"

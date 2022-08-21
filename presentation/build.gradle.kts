@@ -4,6 +4,7 @@ import Dependencies.applyTest
 import Dependencies.applyFirebase
 import Dependencies.applyNaver
 import Dependencies.applyKakao
+import Dependencies.applyHilt
 import java.util.Properties
 import java.io.FileInputStream
 
@@ -11,6 +12,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+    id ("kotlin-kapt")
+    id ("dagger.hilt.android.plugin")
 }
 
 android {
@@ -75,5 +78,11 @@ dependencies {
     applyFirebase()
     applyNaver()
     applyKakao()
-
+    applyHilt()
+}
+kapt {
+    correctErrorTypes = true
+}
+hilt {
+    enableTransformForLocalTests = true
 }
