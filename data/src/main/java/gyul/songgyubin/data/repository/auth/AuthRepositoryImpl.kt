@@ -12,8 +12,10 @@ import gyul.songgyubin.domain.repository.AuthRepository
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class AuthRepositoryImpl : AuthRepository {
+
+class AuthRepositoryImpl @Inject constructor() : AuthRepository {
     private val auth: FirebaseAuth by lazy { Firebase.auth }
     private val dbReference by lazy { Firebase.database.reference }
 

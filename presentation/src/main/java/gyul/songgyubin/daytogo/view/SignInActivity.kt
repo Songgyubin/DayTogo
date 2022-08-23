@@ -3,6 +3,7 @@ package gyul.songgyubin.daytogo.view
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import dagger.hilt.android.AndroidEntryPoint
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.viewmodel.AuthViewModel
 import gyul.songgyubin.daytogo.base.view.BaseActivity
@@ -12,9 +13,12 @@ import gyul.songgyubin.domain.usecase.FirebaseCreateUserInfoDbUseCase
 import gyul.songgyubin.domain.usecase.FirebaseCreateUserUseCase
 import gyul.songgyubin.domain.usecase.FirebaseLoginUseCase
 import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
+import javax.inject.Inject
 
 //TODO: two way binding으로 view 단 코드 감축
 //TODO: liveData로 ToastMsg 관리
+
+@AndroidEntryPoint
 class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sign_in) {
 
     private val viewModel by lazy {
@@ -27,10 +31,11 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
         AuthViewModel.ViewModelFactory(
             FirebaseLoginUseCase(authRepository),
             FirebaseCreateUserUseCase(authRepository),
-            FirebaseCreateUserInfoDbUseCase(authRepository)
-        )
+            FirebaseCreateUserInfoDbUseCase(authRepository))
     }
-    private val authRepository by lazy { AuthRepositoryImpl() }
+
+    @Inject
+    lateinit var authRepository: AuthRepositoryImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

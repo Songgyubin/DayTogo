@@ -9,6 +9,7 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
+import dagger.hilt.android.AndroidEntryPoint
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.base.view.BaseActivity
 import gyul.songgyubin.data.repository.location.LocationRepositoryImpl
@@ -23,6 +24,7 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 
 
+@AndroidEntryPoint
 class LocationActivity : BaseActivity<ActivityLocationBinding>(R.layout.activity_location), OnMapReadyCallback {
     private var backKeyPressedTime = 0L
     private lateinit var naverMap: NaverMap

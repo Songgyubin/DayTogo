@@ -31,10 +31,6 @@ class LocationViewModel(
     private val getRemoteSavedLocationInfoUseCase: GetRemoteSavedLocationInfoUseCase
 ) : BaseViewModel() {
 
-    private val dbReference by lazy { Firebase.database.reference }
-    private val auth: FirebaseAuth by lazy { Firebase.auth }
-    private val currentUser by lazy { auth.currentUser }
-
     val savedLocationList: LiveData<List<LocationInfo>> get() = _savedLocationList
     private val _savedLocationList = MutableLiveData<List<LocationInfo>>()
 

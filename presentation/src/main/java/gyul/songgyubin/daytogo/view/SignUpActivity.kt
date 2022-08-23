@@ -3,6 +3,7 @@ package gyul.songgyubin.daytogo.view
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import dagger.hilt.android.AndroidEntryPoint
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.viewmodel.AuthViewModel
 import gyul.songgyubin.daytogo.base.view.BaseActivity
@@ -13,11 +14,15 @@ import gyul.songgyubin.domain.usecase.FirebaseCreateUserInfoDbUseCase
 import gyul.songgyubin.domain.usecase.FirebaseCreateUserUseCase
 import gyul.songgyubin.domain.usecase.FirebaseLoginUseCase
 import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
+import javax.inject.Inject
 
 //TODO: two way binding으로 view 단 코드 감축
+@AndroidEntryPoint
 class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sign_up) {
 
-    private val authRepository by lazy { AuthRepositoryImpl() }
+    @Inject
+    lateinit var authRepository :AuthRepositoryImpl
+
     private val viewModel by lazy {
         ViewModelProvider(
             this,

@@ -17,7 +17,7 @@ object Dependencies {
     private const val kaptAndroidTest = "kaptAndroidTest"
 
     object Kotlin{
-        const val VERSION = "1.5.21"
+        const val VERSION = "1.7.10"
     }
 
 
@@ -82,7 +82,7 @@ object Dependencies {
     }
 
     object Hilt{
-        const val VERSION = "2.38.1"
+        const val VERSION = "2.42"
 
         const val CORE = "com.google.dagger:hilt-android:$VERSION"
         const val COMPILER = "com.google.dagger:hilt-compiler:$VERSION"
