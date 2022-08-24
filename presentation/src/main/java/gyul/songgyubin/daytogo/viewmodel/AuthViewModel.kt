@@ -5,20 +5,21 @@ import android.util.Patterns
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import dagger.hilt.android.lifecycle.HiltViewModel
 import gyul.songgyubin.daytogo.base.viewmodel.BaseViewModel
+import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
 import gyul.songgyubin.domain.model.User
 import gyul.songgyubin.domain.usecase.FirebaseCreateUserInfoDbUseCase
 import gyul.songgyubin.domain.usecase.FirebaseCreateUserUseCase
 import gyul.songgyubin.domain.usecase.FirebaseLoginUseCase
-import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
-import java.lang.Exception
+import javax.inject.Inject
 
-class AuthViewModel(
+
+@HiltViewModel
+class AuthViewModel @Inject constructor(
     private val firebaseLoginUseCase: FirebaseLoginUseCase,
     private val firebaseCreateUserUseCase: FirebaseCreateUserUseCase,
     private val firebaseCreateUserInfoDbUseCase: FirebaseCreateUserInfoDbUseCase
@@ -40,7 +41,7 @@ class AuthViewModel(
     var inputPassword: String = ""
 
     fun firebaseLogin(inputEmail: String, inputPassword: String) {
-        firebaseLoginUseCase.invoke(inputEmail, inputPassword)
+        firebaseLoginUseCase(inputEmail, inputPassword)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ user ->
                 _authenticatedUser.value = user
@@ -53,7 +54,7 @@ class AuthViewModel(
     // sign up And firebase DB create
     // firebase DB root element is userEmail
     fun createUser(inputEmail: String, inputPassword: String) {
-        firebaseCreateUserUseCase.invoke(inputEmail, inputPassword)
+        firebaseCreateUserUseCase(inputEmail, inputPassword)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ user ->
                 _authenticatedUser.value = user
@@ -66,8 +67,8 @@ class AuthViewModel(
     }
 
     fun createUserInfoDB(user: User) {
-        firebaseCreateUserInfoDbUseCase.invoke(user)
-        .observeOn(Schedulers.io())
+        firebaseCreateUserInfoDbUseCase(user)
+            .observeOn(Schedulers.io())
             .subscribe {
                 try {
                     Log.d("TAG", "createUserInfoDB: ")
@@ -92,26 +93,5 @@ class AuthViewModel(
     fun signUpSingleClickEvent(view: View) {
         viewEvent(SingleClickEventFlag.SIGN_UP)
     }
-
-
-    class ViewModelFactory(
-        private val firebaseLoginUseCase: FirebaseLoginUseCase,
-        private val firebaseCreateUserUseCase: FirebaseCreateUserUseCase,
-        private val firebaseCreateUserInfoDbUseCase: FirebaseCreateUserInfoDbUseCase
-    ) : ViewModelProvider.Factory {
-
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(AuthViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return AuthViewModel(
-                    firebaseLoginUseCase,
-                    firebaseCreateUserUseCase,
-                    firebaseCreateUserInfoDbUseCase
-                ) as T
-            }
-            throw IllegalArgumentException("Unknown ViewModel class")
-        }
-    }
-
 
 }

@@ -2,40 +2,20 @@ package gyul.songgyubin.daytogo.view
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import gyul.songgyubin.daytogo.R
-import gyul.songgyubin.daytogo.viewmodel.AuthViewModel
 import gyul.songgyubin.daytogo.base.view.BaseActivity
 import gyul.songgyubin.daytogo.databinding.ActivitySignUpBinding
-import gyul.songgyubin.domain.model.User
-import gyul.songgyubin.data.repository.auth.AuthRepositoryImpl
-import gyul.songgyubin.domain.usecase.FirebaseCreateUserInfoDbUseCase
-import gyul.songgyubin.domain.usecase.FirebaseCreateUserUseCase
-import gyul.songgyubin.domain.usecase.FirebaseLoginUseCase
 import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
-import javax.inject.Inject
+import gyul.songgyubin.daytogo.viewmodel.AuthViewModel
+import gyul.songgyubin.domain.model.User
 
 //TODO: two way binding으로 view 단 코드 감축
 @AndroidEntryPoint
 class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sign_up) {
 
-    @Inject
-    lateinit var authRepository :AuthRepositoryImpl
-
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            viewModelFactory
-        ).get(AuthViewModel::class.java)
-    }
-    private val viewModelFactory by lazy {
-        AuthViewModel.ViewModelFactory(
-            FirebaseLoginUseCase(authRepository),
-            FirebaseCreateUserUseCase(authRepository),
-            FirebaseCreateUserInfoDbUseCase(authRepository)
-        )
-    }
+    private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

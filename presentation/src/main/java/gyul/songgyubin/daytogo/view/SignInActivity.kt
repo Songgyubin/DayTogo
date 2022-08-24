@@ -2,18 +2,13 @@ package gyul.songgyubin.daytogo.view
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import gyul.songgyubin.daytogo.R
-import gyul.songgyubin.daytogo.viewmodel.AuthViewModel
 import gyul.songgyubin.daytogo.base.view.BaseActivity
 import gyul.songgyubin.daytogo.databinding.ActivitySignInBinding
-import gyul.songgyubin.data.repository.auth.AuthRepositoryImpl
-import gyul.songgyubin.domain.usecase.FirebaseCreateUserInfoDbUseCase
-import gyul.songgyubin.domain.usecase.FirebaseCreateUserUseCase
-import gyul.songgyubin.domain.usecase.FirebaseLoginUseCase
 import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
-import javax.inject.Inject
+import gyul.songgyubin.daytogo.viewmodel.AuthViewModel
 
 //TODO: two way binding으로 view 단 코드 감축
 //TODO: liveData로 ToastMsg 관리
@@ -21,21 +16,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sign_in) {
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            viewModelFactory
-        ).get(AuthViewModel::class.java)
-    }
-    private val viewModelFactory by lazy {
-        AuthViewModel.ViewModelFactory(
-            FirebaseLoginUseCase(authRepository),
-            FirebaseCreateUserUseCase(authRepository),
-            FirebaseCreateUserInfoDbUseCase(authRepository))
-    }
-
-    @Inject
-    lateinit var authRepository: AuthRepositoryImpl
+    private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

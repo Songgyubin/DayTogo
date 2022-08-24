@@ -63,7 +63,7 @@ class LocationViewModel(
     }
 
     fun getSavedLocationList() {
-        getRemoteSavedLocationInfoUseCase.invoke()
+        getRemoteSavedLocationInfoUseCase()
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { showProgress() }
             .doAfterTerminate { hideProgress() }
@@ -78,7 +78,7 @@ class LocationViewModel(
     }
 
     fun savedLocationDB(locationInfo: LocationInfo) {
-        addLocationInfoUseCase.invoke(locationInfo)
+        addLocationInfoUseCase(locationInfo)
             .observeOn(Schedulers.io())
             .subscribe(
                 {
