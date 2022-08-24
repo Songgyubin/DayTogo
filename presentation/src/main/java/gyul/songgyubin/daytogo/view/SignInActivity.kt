@@ -10,8 +10,6 @@ import gyul.songgyubin.daytogo.databinding.ActivitySignInBinding
 import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
 import gyul.songgyubin.daytogo.viewmodel.AuthViewModel
 
-//TODO: two way binding으로 view 단 코드 감축
-//TODO: liveData로 ToastMsg 관리
 
 @AndroidEntryPoint
 class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sign_in) {
@@ -47,7 +45,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
     // observing viewModel data
     private fun setObserveLoginViewModel() {
         observeSingleClickEvent()
-        observeEmailValidation()
         observeFirebaseLogin()
     }
 
@@ -64,14 +61,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
         }
     }
 
-    private fun observeEmailValidation() {
-        binding.tvWarningEmail.run {
-            viewModel.isValidEmail.observe(this@SignInActivity) { isValidEmail ->
-                if (isValidEmail) visibility = View.GONE
-                else visibility = View.VISIBLE
-            }
-        }
-    }
 
     private fun observeFirebaseLogin() {
         viewModel.run {
@@ -85,7 +74,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
         }
     }
 
-    // two way binding
     fun startSignUp(view: View) {
         startOtherActivity(this@SignInActivity, SignUpActivity())
     }

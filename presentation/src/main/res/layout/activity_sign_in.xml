@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewmodel"
             type="gyul.songgyubin.daytogo.viewmodel.AuthViewModel" />
@@ -38,7 +40,7 @@
             android:layout_height="wrap_content"
             android:text="@string/enter_valid_email"
             android:textColor="#ff0000"
-            android:visibility="gone"
+            android:visibility="@{viewmodel.isValidEmail() ? View.GONE : View.VISIBLE}"
             app:layout_constraintLeft_toLeftOf="@+id/ed_email"
             app:layout_constraintTop_toBottomOf="@id/ed_email" />
 
