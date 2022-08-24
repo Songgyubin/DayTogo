@@ -57,12 +57,12 @@ class LocationViewModel @Inject constructor(
         _selectedLocationId.value = "${latitude}_$longitude"
     }
 
+    /**
+     * 클릭된 장소의 loactionInfo를
+     * LocationId라는 구분자로 보여주기 위해 Map에 세팅
+     */
     fun setSavedLocationInfo(locationInfo: LocationInfo) {
         savedLocationInfo[locationInfo.locationId] = locationInfo
-    }
-
-    fun setEditMode(view: View) {
-        _isEditMode.value = true
     }
 
     fun getSavedLocationList() {
@@ -92,6 +92,10 @@ class LocationViewModel @Inject constructor(
                 }
             )
             .addTo(disposable)
+    }
+
+    fun setEditMode(view: View) {
+        _isEditMode.value = true
     }
 
     override fun onCleared() {

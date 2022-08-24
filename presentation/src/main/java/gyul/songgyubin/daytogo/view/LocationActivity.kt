@@ -35,22 +35,12 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(R.layout.activity
         loadSavedLocation()
     }
 
-    private fun initNaverMap() {
-        val fm = supportFragmentManager
-        val naverMapFragment = fm.findFragmentById(R.id.naver_map) as MapFragment
-        naverMapFragment.getMapAsync(this)
-    }
 
-    // load User's place stored in db
-    private fun loadSavedLocation() {
-        viewModel.getSavedLocationList()
-        observeSavedLocation()
-    }
-
-
-    // observing saved Location
-    // drawing marker with location's lat & lng
-    // save locationInfo  to show information of saved location when clicked
+    /**
+     *  observing saved Location
+     *  drawing marker with location's lat & lng
+     *  save locationInfo  to show information of saved location when clicked
+     */
     private fun observeSavedLocation() {
         viewModel.savedLocationList.observe(this) { stationList ->
             Observable.fromArray(*stationList.toTypedArray())
@@ -89,6 +79,20 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(R.layout.activity
             }
         }
     }
+
+
+    private fun initNaverMap() {
+        val fm = supportFragmentManager
+        val naverMapFragment = fm.findFragmentById(R.id.naver_map) as MapFragment
+        naverMapFragment.getMapAsync(this)
+    }
+
+    // load User's place stored in db
+    private fun loadSavedLocation() {
+        viewModel.getSavedLocationList()
+        observeSavedLocation()
+    }
+
 
     // NaverMap 세팅
     @UiThread

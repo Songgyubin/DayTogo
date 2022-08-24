@@ -14,6 +14,7 @@ import gyul.songgyubin.daytogo.viewmodel.LocationViewModel
 import gyul.songgyubin.daytogo.utils.toLatLng
 
 
+
 @AndroidEntryPoint
 class LocationInfoFragment :
     BaseFragment<FragmentLocationInfoBinding>(R.layout.fragment_location_info) {
@@ -33,6 +34,11 @@ class LocationInfoFragment :
         super.onViewCreated(view, savedInstanceState)
     }
 
+    /**
+     * 선택(클릭)된 장소의 정보와 사용자가 입력한 정보로
+     * 새롭게 LocationInfo를 만들어
+     * DB에 저장한다.
+     */
     fun saveLocation(view: View) {
         with(viewModel) {
             selectedLocationId.value?.let {
