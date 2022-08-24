@@ -11,7 +11,6 @@ import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
 import gyul.songgyubin.daytogo.viewmodel.AuthViewModel
 import gyul.songgyubin.domain.model.User
 
-//TODO: two way binding으로 view 단 코드 감축
 @AndroidEntryPoint
 class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sign_up) {
 
@@ -30,7 +29,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sig
     private fun setObserve() {
         observeSingleClickEvent()
         observeCreateUser()
-        observeEmailValidation()
     }
 
     // create db after create user
@@ -55,15 +53,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sig
                         return@let
                     }
                 }
-            }
-        }
-    }
-
-    private fun observeEmailValidation() {
-        binding.tvWarningEmail.run {
-            viewModel.isValidEmail.observe(this@SignUpActivity) { isValidEmail ->
-                if (isValidEmail) visibility = View.GONE
-                else visibility = View.VISIBLE
             }
         }
     }
