@@ -5,35 +5,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import dagger.hilt.android.AndroidEntryPoint
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.base.view.BaseFragment
 import gyul.songgyubin.domain.model.LocationInfo
-import gyul.songgyubin.data.repository.location.LocationRepositoryImpl
 import gyul.songgyubin.daytogo.databinding.FragmentLocationInfoBinding
-import gyul.songgyubin.domain.usecase.AddLocationInfoUseCase
-import gyul.songgyubin.domain.usecase.GetRemoteSavedLocationInfoUseCase
 import gyul.songgyubin.daytogo.viewmodel.LocationViewModel
-import gyul.songgyubin.daytogo.utils.LocationEditMode
 import gyul.songgyubin.daytogo.utils.toLatLng
 
-//TODO: two way binidng 으로 편집모드, title,description 수정
+
+@AndroidEntryPoint
 class LocationInfoFragment :
     BaseFragment<FragmentLocationInfoBinding>(R.layout.fragment_location_info) {
-    private val viewModel by activityViewModels<LocationViewModel>(null) { viewModelFactory }
-    private val repository by lazy { LocationRepositoryImpl() }
-    private val viewModelFactory by lazy {
-        LocationViewModel.ViewModelFactory(
-            AddLocationInfoUseCase(repository),
-            GetRemoteSavedLocationInfoUseCase(repository)
-        )
-    }
+    private val viewModel: LocationViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        observeSelectedLocation()
+        findSelectedLocationInfo()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -47,23 +38,25 @@ class LocationInfoFragment :
             selectedLocationId.value?.let {
                 val selectedLocationId = selectedLocationId.value!!
                 val latLng = selectedLocationId.toLatLng()
-                val locationInfo = LocationInfo().also {
-                    it.locationId = selectedLocationId
-                    it.title = binding.edLocationTitle.text.toString()
-                    it.description = binding.edLocationDescription.text.toString()
-                    it.latitude = latLng.latitude
-                    it.longitude = latLng.longitude
-                }
-                changeViewMode(LocationEditMode.SAVE)
+                val locationInfo = LocationInfo(
+                    locationId = selectedLocationId,
+                    title = binding.edLocationTitle.text.toString(),
+                    description = binding.edLocationDescription.text.toString(),
+                    latitude = latLng.latitude,
+                    longitude = latLng.longitude
+                )
                 savedLocationDB(locationInfo)
             }
         }
     }
 
-    fun editLocation(view: View) {
-        changeViewMode(LocationEditMode.EDIT)
-    }
-    private fun observeSelectedLocation() {
+
+    /**
+     * setNaverMapOnClickListener로 생성한 locationId로
+     * DB에서 꺼내와 저장한 savedLocationInfo를 가져옴
+     * savedLocationId : HashMap <LoactionId, LocationInfo>
+     */
+    private fun findSelectedLocationInfo() {
         with(viewModel) {
             selectedLocationId.observe(viewLifecycleOwner) { locationId ->
                 savedLocationInfo[locationId]?.run {
@@ -73,25 +66,9 @@ class LocationInfoFragment :
             }
         }
     }
-    private fun changeViewMode(mode: LocationEditMode) {
-        with(binding) {
-            when (mode) {
-                LocationEditMode.EDIT -> {
-                    ibEdit.visibility = View.GONE
-                    ibSave.visibility = View.VISIBLE
-                    edLocationTitle.isEnabled = true
-                    edLocationDescription.isEnabled = true
-                }
-                LocationEditMode.SAVE -> {
-                    ibEdit.visibility = View.VISIBLE
-                    ibSave.visibility = View.GONE
-                    edLocationTitle.isEnabled = false
-                    edLocationDescription.isEnabled = false
-                }
-            }
-        }
-    }
+
     private fun setView() {
         binding.fragment = this@LocationInfoFragment
+        binding.viewModel = viewModel
     }
 }

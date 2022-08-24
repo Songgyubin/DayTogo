@@ -1,6 +1,7 @@
 package gyul.songgyubin.daytogo.viewmodel
 
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import gyul.songgyubin.daytogo.base.viewmodel.BaseViewModel
 import gyul.songgyubin.domain.model.LocationInfo
 import gyul.songgyubin.domain.usecase.AddLocationInfoUseCase
@@ -17,6 +19,7 @@ import gyul.songgyubin.daytogo.utils.LocationId
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 
 /**
@@ -25,8 +28,8 @@ import io.reactivex.schedulers.Schedulers
  * (MainActivity, LocationFragment...)
  */
 
-
-class LocationViewModel(
+@HiltViewModel
+class LocationViewModel @Inject constructor(
     private val addLocationInfoUseCase: AddLocationInfoUseCase,
     private val getRemoteSavedLocationInfoUseCase: GetRemoteSavedLocationInfoUseCase
 ) : BaseViewModel() {
@@ -46,7 +49,11 @@ class LocationViewModel(
     private val _isEditMode = MutableLiveData<Boolean>(false)
 
 
-    fun selectLocation(latitude: Double, longitude: Double) {
+    /**
+     * 장소를 구분하기위해
+     * 클릭된 장소의 LocationId 생성
+     */
+    fun createLocationId(latitude: Double, longitude: Double) {
         _selectedLocationId.value = "${latitude}_$longitude"
     }
 
@@ -54,12 +61,8 @@ class LocationViewModel(
         savedLocationInfo[locationInfo.locationId] = locationInfo
     }
 
-    fun setEditMode() {
+    fun setEditMode(view: View) {
         _isEditMode.value = true
-    }
-
-    fun setNotEditMode() {
-        _isEditMode.value = false
     }
 
     fun getSavedLocationList() {
@@ -78,6 +81,7 @@ class LocationViewModel(
     }
 
     fun savedLocationDB(locationInfo: LocationInfo) {
+        _isEditMode.value = false
         addLocationInfoUseCase(locationInfo)
             .observeOn(Schedulers.io())
             .subscribe(
@@ -88,25 +92,6 @@ class LocationViewModel(
                 }
             )
             .addTo(disposable)
-    }
-
-
-    class ViewModelFactory(
-        private val addLocationInfoUseCase: AddLocationInfoUseCase,
-        private val getRemoteSavedLocationInfoUseCase: GetRemoteSavedLocationInfoUseCase
-    ) :
-        ViewModelProvider.Factory {
-
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(LocationViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return LocationViewModel(
-                    addLocationInfoUseCase,
-                    getRemoteSavedLocationInfoUseCase
-                ) as T
-            }
-            throw IllegalArgumentException("Unknown ViewModel class")
-        }
     }
 
     override fun onCleared() {

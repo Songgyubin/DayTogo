@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="gyul.songgyubin.daytogo.viewmodel.LocationViewModel" />
@@ -23,7 +26,11 @@
             app:layout_constraintBottom_toTopOf="@+id/location_info"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="spread"
-            app:layout_constraintVertical_weight="0.8" />
+            app:layout_constraintVertical_weight="0.8"
+            app:navermap_locationButtonEnabled="false"
+            app:navermap_scaleBarEnabled="false"
+            app:navermap_compassEnabled="false"
+            app:navermap_zoomControlEnabled="false" />
 
         <fragment
             android:id="@+id/location_info"

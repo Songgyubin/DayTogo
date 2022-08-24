@@ -12,10 +12,7 @@ import com.naver.maps.map.overlay.OverlayImage
 import dagger.hilt.android.AndroidEntryPoint
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.base.view.BaseActivity
-import gyul.songgyubin.data.repository.location.LocationRepositoryImpl
 import gyul.songgyubin.daytogo.databinding.ActivityLocationBinding
-import gyul.songgyubin.domain.usecase.AddLocationInfoUseCase
-import gyul.songgyubin.domain.usecase.GetRemoteSavedLocationInfoUseCase
 import gyul.songgyubin.daytogo.viewmodel.LocationViewModel
 
 import io.reactivex.Observable
@@ -29,18 +26,13 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(R.layout.activity
     private var backKeyPressedTime = 0L
     private lateinit var naverMap: NaverMap
 
-    private val viewModel by viewModels<LocationViewModel>(null) { viewModelFactory }
-    private val repository by lazy { LocationRepositoryImpl() }
-    private val viewModelFactory by lazy { LocationViewModel.ViewModelFactory(
-        AddLocationInfoUseCase(repository),
-        GetRemoteSavedLocationInfoUseCase(repository)
-    ) }
+    private val viewModel:LocationViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initNaverMap()
         loadSavedLocation()
-        observeSavedLocation()
     }
 
     private fun initNaverMap() {
@@ -52,7 +44,9 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(R.layout.activity
     // load User's place stored in db
     private fun loadSavedLocation() {
         viewModel.getSavedLocationList()
+        observeSavedLocation()
     }
+
 
     // observing saved Location
     // drawing marker with location's lat & lng
@@ -81,24 +75,26 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(R.layout.activity
         }
     }
 
-
-    @UiThread
-    override fun onMapReady(p0: NaverMap) {
-        naverMap = p0
+    /**
+     * 맵 클릭 시 해당 장소의 위도,경도를 저장
+     */
+    private fun setNaverMapOnClickListener(){
         with(naverMap){
-            uiSettings.run {
-                isScaleBarEnabled = false
-                isZoomControlEnabled = false
-                isLocationButtonEnabled = true
-            }
             setOnMapClickListener { pointF, latLng ->
-                viewModel.selectLocation(latLng.latitude, latLng.longitude)
+                viewModel.createLocationId(latLng.latitude, latLng.longitude)
             }
             setOnSymbolClickListener { symbol ->
-                viewModel.selectLocation(symbol.position.latitude, symbol.position.longitude)
+                viewModel.createLocationId(symbol.position.latitude, symbol.position.longitude)
                 true
             }
         }
+    }
+
+    // NaverMap 세팅
+    @UiThread
+    override fun onMapReady(p0: NaverMap) {
+        naverMap = p0
+        setNaverMapOnClickListener()
     }
 
     override fun onBackPressed() {

@@ -30,8 +30,9 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:contentDescription="@string/edit_location"
-            android:onClick="@{fragment::editLocation}"
+            android:onClick="@{viewModel::setEditMode}"
             android:src="@drawable/edit"
+            android:visibility="@{viewModel.isEditMode() ? View.GONE : View.VISIBLE}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,8 +43,8 @@
             android:background="@color/white"
             android:contentDescription="@string/save_location"
             android:onClick="@{fragment::saveLocation}"
-            android:visibility="gone"
             android:src="@drawable/finish"
+            android:visibility="@{viewModel.isEditMode() ? View.VISIBLE : View.GONE}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,9 +61,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="@null"
+            android:enabled="@{viewModel.isEditMode()}"
             android:hint="@string/enter_location_title"
             android:inputType="text"
-            android:enabled="false"
             android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -74,7 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:enabled="false"
+            android:enabled="@{viewModel.isEditMode()}"
             android:hint="@string/enter_location_description"
             android:inputType="text"
             android:textColor="@color/black"
