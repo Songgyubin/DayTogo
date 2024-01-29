@@ -14,7 +14,7 @@
 간편하게 저장하고 한 눈에 볼 수 있는 서비스를 제공합니다.
 
 ### Skils
-Kotlin / Clean Architecture / MVVM / Firebase / Naver Maps API / AAC / Hilt
+Kotlin / Clean Architecture / MVVM / AAC / Coroutine / Hilt / Firebase / Naver Maps API
 
 
 ### 핵심 기능
