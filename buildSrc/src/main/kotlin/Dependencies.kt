@@ -73,14 +73,6 @@ object Dependencies {
         implementation(platform(Firebase.BOM))
     }
 
-    object Kakao {
-        const val LOGIN = "com.kakao.sdk:v2-user-rx:2.11.0"
-    }
-
-    fun DependencyHandlerScope.applyKakao() {
-        implementation(Kakao.LOGIN)
-    }
-
     object Hilt{
         const val VERSION = "2.42"
 
