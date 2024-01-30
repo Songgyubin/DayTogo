@@ -4,9 +4,9 @@ import org.gradle.kotlin.dsl.project
 
 object Dependencies {
 
-    const val COMPILE_SDK = 32
-    const val MIN_SDK = 27
-    const val TARGET_SDK = 32
+    const val COMPILE_SDK = 33
+    const val MIN_SDK = 24
+    const val TARGET_SDK = 33
 
     private const val implementation = "implementation"
     private const val testImplementation = "testImplementation"
@@ -41,7 +41,7 @@ object Dependencies {
     }
 
     object Naver {
-        const val MAP = "com.naver.maps:map-sdk:3.15.0"
+        const val MAP = "com.naver.maps:map-sdk:3.17.0"
     }
 
     fun DependencyHandlerScope.applyNaver() {
