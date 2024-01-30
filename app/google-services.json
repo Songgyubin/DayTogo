@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "200452947501",
+    "firebase_url": "https://daytogo-ee1d6-default-rtdb.firebaseio.com",
+    "project_id": "daytogo-ee1d6",
+    "storage_bucket": "daytogo-ee1d6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200452947501:android:a1700e8a747197b7e442a4",
+        "android_client_info": {
+          "package_name": "gyul.songgyubin.daytogo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "200452947501-ak58gp3rroamna1di21unbfilblj5mu9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "gyul.songgyubin.daytogo",
+            "certificate_hash": "721e0038e888f49df586693ab40c241f025b3c00"
+          }
+        },
+        {
+          "client_id": "200452947501-acf4q4sfoj30sf8mgg68v0t8q55vktlt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhecYyE9htSsrMg0KFZMYxewAN-jE_IxI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "200452947501-acf4q4sfoj30sf8mgg68v0t8q55vktlt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
