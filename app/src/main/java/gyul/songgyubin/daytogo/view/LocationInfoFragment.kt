@@ -8,7 +8,7 @@ import androidx.fragment.app.activityViewModels
 import dagger.hilt.android.AndroidEntryPoint
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.base.view.BaseFragment
-import gyul.songgyubin.domain.model.LocationInfo
+import gyul.songgyubin.domain.model.LocationInfoEntity
 import gyul.songgyubin.daytogo.databinding.FragmentLocationInfoBinding
 import gyul.songgyubin.daytogo.viewmodel.LocationViewModel
 import gyul.songgyubin.daytogo.utils.toLatLng
@@ -44,14 +44,14 @@ class LocationInfoFragment :
             selectedLocationId.value?.let {
                 val selectedLocationId = selectedLocationId.value!!
                 val latLng = selectedLocationId.toLatLng()
-                val locationInfo = LocationInfo(
+                val locationInfoEntity = LocationInfoEntity(
                     locationId = selectedLocationId,
                     title = binding.edLocationTitle.text.toString(),
                     description = binding.edLocationDescription.text.toString(),
                     latitude = latLng.latitude,
                     longitude = latLng.longitude
                 )
-                savedLocationDB(locationInfo)
+                savedLocationDB(locationInfoEntity)
             }
         }
     }
@@ -65,7 +65,7 @@ class LocationInfoFragment :
     private fun findSelectedLocationInfo() {
         with(viewModel) {
             selectedLocationId.observe(viewLifecycleOwner) { locationId ->
-                savedLocationInfo[locationId]?.run {
+                savedLocationInfoEntity[locationId]?.run {
                     binding.edLocationTitle.setText(title)
                     binding.edLocationDescription.setText(description)
                 }

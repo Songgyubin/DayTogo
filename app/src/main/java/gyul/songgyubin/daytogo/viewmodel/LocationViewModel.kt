@@ -4,15 +4,9 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gyul.songgyubin.daytogo.base.viewmodel.BaseViewModel
-import gyul.songgyubin.domain.model.LocationInfo
+import gyul.songgyubin.domain.model.LocationInfoEntity
 import gyul.songgyubin.domain.usecase.AddLocationInfoUseCase
 import gyul.songgyubin.domain.usecase.GetRemoteSavedLocationInfoUseCase
 import gyul.songgyubin.daytogo.utils.LocationId
@@ -34,10 +28,10 @@ class LocationViewModel @Inject constructor(
     private val getRemoteSavedLocationInfoUseCase: GetRemoteSavedLocationInfoUseCase
 ) : BaseViewModel() {
 
-    val savedLocationList: LiveData<List<LocationInfo>> get() = _savedLocationList
-    private val _savedLocationList = MutableLiveData<List<LocationInfo>>()
+    val savedLocationList: LiveData<List<LocationInfoEntity>> get() = _savedLocationList
+    private val _savedLocationList = MutableLiveData<List<LocationInfoEntity>>()
 
-    val savedLocationInfo: HashMap<LocationId, LocationInfo> = HashMap()
+    val savedLocationInfoEntity: HashMap<LocationId, LocationInfoEntity> = HashMap()
 
     val savedLocationListErrorMsg: LiveData<String> get() = _savedLocationListErrorMsg
     private val _savedLocationListErrorMsg = MutableLiveData<String>()
@@ -61,8 +55,8 @@ class LocationViewModel @Inject constructor(
      * 클릭된 장소의 loactionInfo를
      * LocationId라는 구분자로 보여주기 위해 Map에 세팅
      */
-    fun setSavedLocationInfo(locationInfo: LocationInfo) {
-        savedLocationInfo[locationInfo.locationId] = locationInfo
+    fun setSavedLocationInfo(locationInfoEntity: LocationInfoEntity) {
+        savedLocationInfoEntity[locationInfoEntity.locationId] = locationInfoEntity
     }
 
     fun getSavedLocationList() {
@@ -80,9 +74,9 @@ class LocationViewModel @Inject constructor(
             ).addTo(disposable)
     }
 
-    fun savedLocationDB(locationInfo: LocationInfo) {
+    fun savedLocationDB(locationInfoEntity: LocationInfoEntity) {
         _isEditMode.value = false
-        addLocationInfoUseCase(locationInfo)
+        addLocationInfoUseCase(locationInfoEntity)
             .observeOn(Schedulers.io())
             .subscribe(
                 {
