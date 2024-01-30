@@ -8,7 +8,7 @@ package gyul.songgyubin.domain.model
  * locationId: latitude.toString()_longitude.toString()
  */
 
-data class LocationInfo(
+data class LocationInfoEntity(
     var locationId: String = "",
     var title: String = "",
     var description: String = "",
