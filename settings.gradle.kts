@@ -13,7 +13,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "DayTogo"
 include(
-    ":presentation",
+    ":app",
     ":data",
     ":domain"
 )
