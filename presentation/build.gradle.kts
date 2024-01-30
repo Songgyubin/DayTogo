@@ -1,12 +1,11 @@
 import Dependencies.applyAndroidX
+import Dependencies.applyFirebase
+import Dependencies.applyHilt
+import Dependencies.applyNaver
 import Dependencies.applyRx
 import Dependencies.applyTest
-import Dependencies.applyFirebase
-import Dependencies.applyNaver
-import Dependencies.applyKakao
-import Dependencies.applyHilt
-import java.util.Properties
 import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -28,8 +27,6 @@ android {
 
     val naver_map_client_id = localProperties.getProperty("naver_map_client_id")
     val naver_map_client_id_manifest = localProperties.getProperty("naver_map_client_id_manifest")
-    val kakaoSdkKey = localProperties.getProperty("kakao_sdk_key")
-    val kakao_sdk_key_manifest = localProperties.getProperty("kakao_sdk_key_manifest")
 
     defaultConfig {
         applicationId = "gyul.songgyubin.daytogo"
@@ -38,9 +35,6 @@ android {
         versionCode = 1
         versionName = "1.0"
         manifestPlaceholders["naverMapClientId"] = naver_map_client_id_manifest
-        manifestPlaceholders["kakaoSdkKeyManifest"] = kakao_sdk_key_manifest
-
-        buildConfigField("String", "KakaoSdkKey", kakaoSdkKey)
         buildConfigField("String", "NaverMapClientId", naver_map_client_id)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -77,7 +71,6 @@ dependencies {
     applyRx()
     applyFirebase()
     applyNaver()
-    applyKakao()
     applyHilt()
 }
 kapt {
