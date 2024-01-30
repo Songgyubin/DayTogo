@@ -1,6 +1,6 @@
 package gyul.songgyubin.domain.usecase
 
-import gyul.songgyubin.domain.model.UserEntity
+import gyul.songgyubin.domain.auth.model.UserEntity
 import gyul.songgyubin.domain.repository.AuthRepository
 import io.reactivex.Completable
 

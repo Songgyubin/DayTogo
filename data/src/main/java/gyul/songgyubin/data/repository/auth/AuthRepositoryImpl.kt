@@ -7,7 +7,7 @@ import com.google.firebase.ktx.Firebase
 import durdinapps.rxfirebase2.RxFirebaseAuth
 import durdinapps.rxfirebase2.RxFirebaseDatabase
 import gyul.songgyubin.data.mapper.UserMapper
-import gyul.songgyubin.domain.model.User
+import gyul.songgyubin.domain.auth.model.UserEntity
 import gyul.songgyubin.domain.repository.AuthRepository
 import io.reactivex.Completable
 import io.reactivex.Maybe
@@ -22,7 +22,7 @@ class AuthRepositoryImpl @Inject constructor() : AuthRepository {
     override fun firebaseLogin(
         inputEmail: String,
         inputPassword: String
-    ): Maybe<User> {
+    ): Maybe<UserEntity> {
         return RxFirebaseAuth.signInWithEmailAndPassword(
             auth,
             inputEmail,
@@ -38,7 +38,7 @@ class AuthRepositoryImpl @Inject constructor() : AuthRepository {
     override fun createUser(
         inputEmail: String,
         inputPassword: String
-    ): Maybe<User> {
+    ): Maybe<UserEntity> {
         return RxFirebaseAuth.createUserWithEmailAndPassword(auth, inputEmail, inputPassword)
             .observeOn(Schedulers.io())
             .map { authResult ->
@@ -48,10 +48,10 @@ class AuthRepositoryImpl @Inject constructor() : AuthRepository {
     }
 
     override fun createUserInfoDB(
-        user: User
+        user: UserEntity
     ): Completable {
         return RxFirebaseDatabase.setValue(
-            dbReference.child("users").child(user.uid).child("userInfo"), user
+            dbReference.child("users").child(user.uid.orEmpty()).child("userInfo"), user
         )
 
     }
