@@ -1,6 +1,6 @@
 package gyul.songgyubin.domain.repository
 
-import gyul.songgyubin.domain.model.User
+import gyul.songgyubin.domain.model.UserEntity
 import io.reactivex.Completable
 import io.reactivex.Maybe
 
@@ -14,14 +14,14 @@ interface AuthRepository {
     fun firebaseLogin(
         inputEmail: String,
         inputPassword: String
-    ): Maybe<User>
+    ): Maybe<UserEntity>
 
     fun createUser(
         inputEmail: String,
         inputPassword: String
-    ): Maybe<User>
+    ): Maybe<UserEntity>
 
     fun createUserInfoDB(
-        user: User
+        userEntity: UserEntity
     ): Completable
 }
