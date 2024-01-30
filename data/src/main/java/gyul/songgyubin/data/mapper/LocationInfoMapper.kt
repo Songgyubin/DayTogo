@@ -5,8 +5,11 @@ import gyul.songgyubin.domain.model.LocationInfoEntity
 
 object LocationInfoMapper {
 
+    /**
+     *
+     */
     fun mapperToLocationInfo(dataSnapShotList: Iterable<DataSnapshot>): List<LocationInfoEntity> {
-        return dataSnapShotList.map { it.value as HashMap<String,Any> }
+        return dataSnapShotList.map { it.value as HashMap<*, *> }
             .map { hashMap->
                 val locationInfoEntity = LocationInfoEntity()
                 val clazz = LocationInfoEntity::class.java

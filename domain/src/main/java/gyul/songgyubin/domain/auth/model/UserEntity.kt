@@ -1,7 +1,7 @@
-package gyul.songgyubin.domain.model
+package gyul.songgyubin.domain.auth.model
 
 
 data class UserEntity(
-    var uid: String="",
-    var email: String="",
+    var uid: String?,
+    var email: String?,
 )

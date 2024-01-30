@@ -1,6 +1,6 @@
 package gyul.songgyubin.domain.repository
 
-import gyul.songgyubin.domain.model.UserEntity
+import gyul.songgyubin.domain.auth.model.UserEntity
 import io.reactivex.Completable
 import io.reactivex.Maybe
 
