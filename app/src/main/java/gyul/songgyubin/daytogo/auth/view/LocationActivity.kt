@@ -1,4 +1,4 @@
-package gyul.songgyubin.daytogo.view
+package gyul.songgyubin.daytogo.auth.view
 
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.base.view.BaseActivity
 import gyul.songgyubin.daytogo.databinding.ActivityLocationBinding
-import gyul.songgyubin.daytogo.viewmodel.LocationViewModel
+import gyul.songgyubin.daytogo.location.viewmodel.LocationViewModel
 
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -26,7 +26,7 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(R.layout.activity
     private var backKeyPressedTime = 0L
     private lateinit var naverMap: NaverMap
 
-    private val viewModel:LocationViewModel by viewModels()
+    private val viewModel: LocationViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
