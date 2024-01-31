@@ -1,4 +1,4 @@
-package gyul.songgyubin.daytogo.view
+package gyul.songgyubin.daytogo.auth.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.base.view.BaseFragment
 import gyul.songgyubin.domain.model.LocationInfoEntity
 import gyul.songgyubin.daytogo.databinding.FragmentLocationInfoBinding
-import gyul.songgyubin.daytogo.viewmodel.LocationViewModel
+import gyul.songgyubin.daytogo.location.viewmodel.LocationViewModel
 import gyul.songgyubin.daytogo.utils.toLatLng
 
 

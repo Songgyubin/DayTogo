@@ -7,7 +7,7 @@
 
         <variable
             name="viewmodel"
-            type="gyul.songgyubin.daytogo.viewmodel.AuthViewModel" />
+            type="gyul.songgyubin.daytogo.auth.viewmodel.AuthViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

@@ -1,4 +1,4 @@
-package gyul.songgyubin.daytogo.viewmodel
+package gyul.songgyubin.daytogo.location.viewmodel
 
 import android.util.Log
 import android.view.View
@@ -96,5 +96,4 @@ class LocationViewModel @Inject constructor(
         disposable.dispose()
         super.onCleared()
     }
-
 }

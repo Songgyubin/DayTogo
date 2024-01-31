@@ -15,7 +15,7 @@
 
         <variable
             name="viewModel"
-            type="gyul.songgyubin.daytogo.viewmodel.LocationViewModel" />
+            type="gyul.songgyubin.daytogo.location.viewmodel.LocationViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

@@ -1,4 +1,4 @@
-package gyul.songgyubin.daytogo.viewmodel
+package gyul.songgyubin.daytogo.auth.viewmodel
 
 import android.util.Log
 import android.util.Patterns
@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gyul.songgyubin.daytogo.base.viewmodel.BaseViewModel
 import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
-import gyul.songgyubin.domain.model.User
+import gyul.songgyubin.domain.auth.model.UserEntity
 import gyul.songgyubin.domain.usecase.FirebaseCreateUserInfoDbUseCase
 import gyul.songgyubin.domain.usecase.FirebaseCreateUserUseCase
 import gyul.songgyubin.domain.usecase.FirebaseLoginUseCase
@@ -29,10 +29,10 @@ class AuthViewModel @Inject constructor(
     private val _loginErrorMsg = MutableLiveData<String>()
     private val _dbErrorMsg = MutableLiveData<String>()
 
-    private val _authenticatedUser = MutableLiveData<User>()
+    private val _authenticatedUser = MutableLiveData<UserEntity>()
 
     val isValidEmail: LiveData<Boolean> get() = _isValidEmail
-    val authenticatedUser: LiveData<User> get() = _authenticatedUser
+    val authenticatedUser: LiveData<UserEntity> get() = _authenticatedUser
     val loginErrorMsg: LiveData<String> get() = _loginErrorMsg
     val dbErrorMsg: LiveData<String> get() = _dbErrorMsg
 
@@ -66,7 +66,7 @@ class AuthViewModel @Inject constructor(
             ).addTo(disposable)
     }
 
-    fun createUserInfoDB(user: User) {
+    fun createUserInfoDB(user: UserEntity) {
         firebaseCreateUserInfoDbUseCase(user)
             .observeOn(Schedulers.io())
             .subscribe {

@@ -1,14 +1,13 @@
-package gyul.songgyubin.daytogo.view
+package gyul.songgyubin.daytogo.location.view
 
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.base.view.BaseActivity
 import gyul.songgyubin.daytogo.databinding.ActivitySignUpBinding
 import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
-import gyul.songgyubin.daytogo.viewmodel.AuthViewModel
+import gyul.songgyubin.daytogo.auth.viewmodel.AuthViewModel
 import gyul.songgyubin.domain.model.User
 
 @AndroidEntryPoint
