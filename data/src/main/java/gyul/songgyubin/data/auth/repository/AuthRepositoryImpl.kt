@@ -1,58 +1,44 @@
 package gyul.songgyubin.data.auth.repository
 
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import durdinapps.rxfirebase2.RxFirebaseAuth
-import durdinapps.rxfirebase2.RxFirebaseDatabase
-import gyul.songgyubin.data.auth.model.UserMapper
+import gyul.songgyubin.data.auth.model.UserMapper.toEntity
+import gyul.songgyubin.data.auth.source.AuthDataSource
 import gyul.songgyubin.domain.auth.model.UserEntity
 import gyul.songgyubin.domain.repository.AuthRepository
-import io.reactivex.Completable
-import io.reactivex.Maybe
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 
-class AuthRepositoryImpl @Inject constructor() : AuthRepository {
-    private val auth: FirebaseAuth by lazy { Firebase.auth }
-    private val dbReference by lazy { Firebase.database.reference }
+class AuthRepositoryImpl
+@Inject
+constructor(private val authDataSource: AuthDataSource) : AuthRepository {
 
-    override fun firebaseLogin(
-        inputEmail: String,
-        inputPassword: String
-    ): Maybe<UserEntity> {
-        return RxFirebaseAuth.signInWithEmailAndPassword(
-            auth,
-            inputEmail,
-            inputPassword
-        )
-            .observeOn(Schedulers.io())
-            .map { authResult ->
-                UserMapper.mapperToUser(authResult.user!!)
-            }
-
+    /**
+     * 파이어베이스 로그인
+     */
+    override suspend fun firebaseLogin(
+        email: String,
+        password: String
+    ): UserEntity {
+        return authDataSource.firebaseLogin(email, password)
+            .toEntity()
     }
 
-    override fun createUser(
-        inputEmail: String,
-        inputPassword: String
-    ): Maybe<UserEntity> {
-        return RxFirebaseAuth.createUserWithEmailAndPassword(auth, inputEmail, inputPassword)
-            .observeOn(Schedulers.io())
-            .map { authResult ->
-                UserMapper.mapperToUser(authResult.user!!)
-            }
-
+    /**
+     * 유저 생성
+     */
+    override suspend fun createUser(
+        email: String,
+        password: String
+    ): UserEntity {
+        return authDataSource.createUser(email, password)
+            .toEntity()
     }
 
-    override fun createUserInfoDB(
+    /**
+     * 유저 정보 firebase DB에 저장
+     */
+    override suspend fun saveUserInfoDB(
         user: UserEntity
-    ): Completable {
-        return RxFirebaseDatabase.setValue(
-            dbReference.child("users").child(user.uid.orEmpty()).child("userInfo"), user
-        )
-
+    ): Result<Unit> {
+        return authDataSource.saveUserInfoDB(user)
     }
 }

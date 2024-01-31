@@ -1,7 +1,5 @@
 package gyul.songgyubin.data.location.model
 
-import com.google.firebase.database.DataSnapshot
-
 /**
  * Location Reponse
  *
@@ -9,9 +7,9 @@ import com.google.firebase.database.DataSnapshot
  * @created  2024/01/31
  */
 data class LocationResponse(
-    val locationId: String? = "",
-    val title: String? = "",
-    val description: String? = "",
-    val lat: String? = "",
-    val lon: String? = ""
+    val locationId: String?,
+    val title: String?,
+    val description: String?,
+    val lat: Double?,
+    val lon: Double?
 )

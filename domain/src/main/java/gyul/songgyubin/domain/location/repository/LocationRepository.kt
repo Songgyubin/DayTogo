@@ -1,15 +1,20 @@
-package gyul.songgyubin.domain.repository
+package gyul.songgyubin.domain.location.repository
 
 import gyul.songgyubin.domain.location.model.LocationEntity
-import io.reactivex.Completable
-import io.reactivex.Maybe
+import gyul.songgyubin.domain.location.model.LocationRequest
 
 /**
- * 기억하는 장소 로직 관련
+ * 장소 Repository
  */
 interface LocationRepository {
-    fun getSavedLocationList(): Maybe<List<LocationEntity>>
 
-    fun saveLocationDB(locationEntity: LocationEntity): Completable
+    /**
+     * 저장된 장소 리스트 가져오기
+     */
+    suspend fun getSavedLocationList(): List<LocationEntity>
 
+    /**
+     * 장소 저장하기
+     */
+    suspend fun saveLocationDB(locationRequest: LocationRequest): Result<Unit>
 }
