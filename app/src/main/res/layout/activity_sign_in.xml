@@ -7,11 +7,11 @@
 
         <variable
             name="viewmodel"
-            type="gyul.songgyubin.daytogo.viewmodel.AuthViewModel" />
+            type="gyul.songgyubin.daytogo.auth.viewmodel.AuthViewModel" />
 
         <variable
             name="activity"
-            type="gyul.songgyubin.daytogo.view.SignInActivity" />
+            type="gyul.songgyubin.daytogo.location.view.SignInActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

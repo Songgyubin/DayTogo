@@ -17,3 +17,4 @@ include(
     ":data",
     ":domain"
 )
+include(":common")
