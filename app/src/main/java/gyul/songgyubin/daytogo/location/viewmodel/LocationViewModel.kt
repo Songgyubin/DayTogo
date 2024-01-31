@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gyul.songgyubin.daytogo.base.viewmodel.BaseViewModel
-import gyul.songgyubin.domain.location.model.LocationInfoEntity
+import gyul.songgyubin.domain.location.model.LocationEntity
 import gyul.songgyubin.domain.usecase.AddLocationInfoUseCase
 import gyul.songgyubin.domain.usecase.GetRemoteSavedLocationInfoUseCase
 import gyul.songgyubin.daytogo.utils.LocationId
@@ -28,10 +28,10 @@ class LocationViewModel @Inject constructor(
     private val getRemoteSavedLocationInfoUseCase: GetRemoteSavedLocationInfoUseCase
 ) : BaseViewModel() {
 
-    val savedLocationList: LiveData<List<LocationInfoEntity>> get() = _savedLocationList
-    private val _savedLocationList = MutableLiveData<List<LocationInfoEntity>>()
+    val savedLocationList: LiveData<List<LocationEntity>> get() = _savedLocationList
+    private val _savedLocationList = MutableLiveData<List<LocationEntity>>()
 
-    val savedLocationInfoEntity: HashMap<LocationId, LocationInfoEntity> = HashMap()
+    val savedLocationEntity: HashMap<LocationId, LocationEntity> = HashMap()
 
     val savedLocationListErrorMsg: LiveData<String> get() = _savedLocationListErrorMsg
     private val _savedLocationListErrorMsg = MutableLiveData<String>()
@@ -55,8 +55,8 @@ class LocationViewModel @Inject constructor(
      * 클릭된 장소의 loactionInfo를
      * LocationId라는 구분자로 보여주기 위해 Map에 세팅
      */
-    fun setSavedLocationInfo(locationInfoEntity: LocationInfoEntity) {
-        savedLocationInfoEntity[locationInfoEntity.locationId] = locationInfoEntity
+    fun setSavedLocationInfo(locationEntity: LocationEntity) {
+        savedLocationEntity[locationEntity.locationId] = locationEntity
     }
 
     fun getSavedLocationList() {
@@ -74,9 +74,9 @@ class LocationViewModel @Inject constructor(
             ).addTo(disposable)
     }
 
-    fun savedLocationDB(locationInfoEntity: LocationInfoEntity) {
+    fun savedLocationDB(locationEntity: LocationEntity) {
         _isEditMode.value = false
-        addLocationInfoUseCase(locationInfoEntity)
+        addLocationInfoUseCase(locationEntity)
             .observeOn(Schedulers.io())
             .subscribe(
                 {

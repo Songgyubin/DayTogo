@@ -1,11 +1,11 @@
 package gyul.songgyubin.domain.location.model
 
 /**
- * Location Info Entity
+ * Location Entity
  *
  * cf) locationId: latitude.toString()_longitude.toString()
  */
-data class LocationInfoEntity(
+data class LocationEntity(
     var locationId: String = "",
     var title: String = "",
     var description: String = "",

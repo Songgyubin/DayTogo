@@ -6,7 +6,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import durdinapps.rxfirebase2.RxFirebaseDatabase
 import gyul.songgyubin.data.location.model.LocationInfoMapper
-import gyul.songgyubin.domain.location.model.LocationInfoEntity
+import gyul.songgyubin.domain.location.model.LocationEntity
 import gyul.songgyubin.domain.repository.LocationRepository
 import io.reactivex.Completable
 import io.reactivex.Maybe
@@ -17,7 +17,7 @@ class LocationRepositoryImpl : LocationRepository {
     private val auth: FirebaseAuth by lazy { Firebase.auth }
     private val currentUser by lazy { auth.currentUser }
 
-    override fun getSavedLocationList(): Maybe<List<LocationInfoEntity>> {
+    override fun getSavedLocationList(): Maybe<List<LocationEntity>> {
         return RxFirebaseDatabase.observeSingleValueEvent(
             dbReference.child("users").child(currentUser!!.uid).child("locationInfoList")
         ) { dataSnapShot ->
@@ -30,11 +30,11 @@ class LocationRepositoryImpl : LocationRepository {
     }
 
     override fun saveLocationDB(
-        locationInfoEntity: LocationInfoEntity
+        locationEntity: LocationEntity
     ): Completable {
         return RxFirebaseDatabase.setValue(
             dbReference.child("users").child(currentUser!!.uid).child("locationInfoList").push(),
-            locationInfoEntity
+            locationEntity
         )
     }
 }

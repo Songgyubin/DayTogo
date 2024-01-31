@@ -7,7 +7,7 @@
 
         <variable
             name="locationInfo"
-            type="gyul.songgyubin.domain.location.model.LocationInfoEntity" />
+            type="gyul.songgyubin.domain.location.model.LocationEntity" />
 
         <variable
             name="fragment"

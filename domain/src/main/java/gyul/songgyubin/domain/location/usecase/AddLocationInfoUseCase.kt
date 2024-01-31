@@ -1,6 +1,6 @@
 package gyul.songgyubin.domain.usecase
 
-import gyul.songgyubin.domain.location.model.LocationInfoEntity
+import gyul.songgyubin.domain.location.model.LocationEntity
 import gyul.songgyubin.domain.repository.LocationRepository
 import io.reactivex.Completable
 
@@ -12,7 +12,7 @@ import io.reactivex.Completable
 class AddLocationInfoUseCase(private val repository: LocationRepository) {
 
     operator fun invoke(
-        locationInfoEntity: LocationInfoEntity
-    ):Completable = repository.saveLocationDB(locationInfoEntity)
+        locationEntity: LocationEntity
+    ):Completable = repository.saveLocationDB(locationEntity)
 
 }
