@@ -1,6 +1,10 @@
+import Dependencies.applyCoroutines
+import Dependencies.applyHilt
+
 plugins {
     id("com.android.library")
     id("kotlin-android")
+    id("kotlin-kapt")
 }
 android {
     compileSdk = Dependencies.COMPILE_SDK
@@ -17,5 +21,6 @@ android {
 }
 
 dependencies {
-
+    applyHilt()
+    applyCoroutines()
 }

@@ -1,4 +1,5 @@
 import Dependencies.applyAndroidX
+import Dependencies.applyCoroutines
 import Dependencies.applyFirebase
 import Dependencies.applyHilt
 import Dependencies.applyNaver
@@ -70,6 +71,7 @@ dependencies {
     applyFirebase()
     applyNaver()
     applyHilt()
+    applyCoroutines()
 }
 kapt {
     correctErrorTypes = true

@@ -1,4 +1,5 @@
 import Dependencies.applyAndroidX
+import Dependencies.applyCoroutines
 import Dependencies.applyFirebase
 import Dependencies.applyHilt
 import Dependencies.applyTest
@@ -45,5 +46,5 @@ dependencies {
     applyTest()
     applyFirebase()
     applyHilt()
-
+    applyCoroutines()
 }

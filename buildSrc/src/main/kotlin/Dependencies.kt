@@ -16,7 +16,7 @@ object Dependencies {
     private const val kaptTest = "kaptTest"
     private const val kaptAndroidTest = "kaptAndroidTest"
 
-    object Kotlin{
+    object Kotlin {
         const val VERSION = "1.7.10"
     }
 
@@ -53,6 +53,7 @@ object Dependencies {
         const val REALTIME_DATABASE = "com.google.firebase:firebase-database-ktx"
         const val AUTH = "com.google.firebase:firebase-auth-ktx"
         const val RX_FIREBASE = "com.github.FrangSierra:RxFirebase:1.5.6"
+        const val COROUTINES_FIREBASE = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.2"
         const val ANALYTICS = "com.google.firebase:firebase-analytics"
     }
 
@@ -61,9 +62,10 @@ object Dependencies {
         implementation(Firebase.AUTH)
         implementation(Firebase.RX_FIREBASE)
         implementation(platform(Firebase.BOM))
+        implementation(Firebase.COROUTINES_FIREBASE)
     }
 
-    object Hilt{
+    object Hilt {
         const val VERSION = "2.42"
 
         const val CORE = "com.google.dagger:hilt-android:$VERSION"
@@ -78,7 +80,7 @@ object Dependencies {
         const val LOCAL_TESTING_COMPILER = "com.google.dagger:hilt-compiler:$VERSION"
     }
 
-    fun DependencyHandlerScope.applyHilt(){
+    fun DependencyHandlerScope.applyHilt() {
         implementation(Hilt.CORE)
         kapt(Hilt.COMPILER)
 
@@ -89,6 +91,15 @@ object Dependencies {
         kaptAndroidTest(Hilt.ANDROID_TESTING_COMPILER)
     }
 
+    object Coroutines {
+        const val COROUTINES_ANDROID = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.2"
+        const val COROUTINES_CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2"
+    }
+
+    fun DependencyHandlerScope.applyCoroutines() {
+        implementation(Coroutines.COROUTINES_ANDROID)
+        implementation(Coroutines.COROUTINES_CORE)
+    }
 
 
     object Test {
