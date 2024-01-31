@@ -7,8 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gyul.songgyubin.daytogo.base.viewmodel.BaseViewModel
 import gyul.songgyubin.domain.location.model.LocationEntity
-import gyul.songgyubin.domain.usecase.AddLocationInfoUseCase
-import gyul.songgyubin.domain.usecase.GetRemoteSavedLocationInfoUseCase
+import gyul.songgyubin.domain.location.usecase.AddLocationInfoUseCase
+import gyul.songgyubin.domain.location.usecase.GetRemoteSavedLocationInfoUseCase
 import gyul.songgyubin.daytogo.utils.LocationId
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo

@@ -48,8 +48,8 @@ class LocationInfoFragment :
                     locationId = selectedLocationId,
                     title = binding.edLocationTitle.text.toString(),
                     description = binding.edLocationDescription.text.toString(),
-                    latitude = latLng.latitude,
-                    longitude = latLng.longitude
+                    lat = latLng.latitude,
+                    lon = latLng.longitude
                 )
                 savedLocationDB(locationEntity)
             }

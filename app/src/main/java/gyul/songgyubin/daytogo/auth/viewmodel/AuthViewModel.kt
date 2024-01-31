@@ -10,7 +10,7 @@ import gyul.songgyubin.daytogo.base.viewmodel.BaseViewModel
 import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
 import gyul.songgyubin.domain.auth.model.UserEntity
 import gyul.songgyubin.domain.usecase.FirebaseCreateUserInfoDbUseCase
-import gyul.songgyubin.domain.usecase.FirebaseCreateUserUseCase
+import gyul.songgyubin.domain.auth.usecase.FirebaseCreateUserUseCase
 import gyul.songgyubin.domain.usecase.FirebaseLoginUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo

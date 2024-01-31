@@ -6,9 +6,9 @@ package gyul.songgyubin.domain.location.model
  * cf) locationId: latitude.toString()_longitude.toString()
  */
 data class LocationEntity(
-    var locationId: String = "",
-    var title: String = "",
-    var description: String = "",
-    var latitude: Double = 0.0,
-    var longitude: Double = 0.0
+    val locationId: String?,
+    val title: String?,
+    val description: String?,
+    val lat: Double?,
+    val lon: Double?
 )
