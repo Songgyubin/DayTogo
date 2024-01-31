@@ -1,6 +1,6 @@
 package gyul.songgyubin.domain.repository
 
-import gyul.songgyubin.domain.model.LocationInfoEntity
+import gyul.songgyubin.domain.location.model.LocationInfoEntity
 import io.reactivex.Completable
 import io.reactivex.Maybe
 

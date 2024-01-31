@@ -1,7 +1,7 @@
 package gyul.songgyubin.data.location.model
 
 import com.google.firebase.database.DataSnapshot
-import gyul.songgyubin.domain.model.LocationInfoEntity
+import gyul.songgyubin.domain.location.model.LocationInfoEntity
 
 object LocationInfoMapper {
 

@@ -8,7 +8,7 @@ import androidx.fragment.app.activityViewModels
 import dagger.hilt.android.AndroidEntryPoint
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.base.view.BaseFragment
-import gyul.songgyubin.domain.model.LocationInfoEntity
+import gyul.songgyubin.domain.location.model.LocationInfoEntity
 import gyul.songgyubin.daytogo.databinding.FragmentLocationInfoBinding
 import gyul.songgyubin.daytogo.location.viewmodel.LocationViewModel
 import gyul.songgyubin.daytogo.utils.toLatLng

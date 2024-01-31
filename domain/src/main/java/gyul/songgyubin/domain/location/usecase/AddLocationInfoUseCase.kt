@@ -1,6 +1,6 @@
 package gyul.songgyubin.domain.usecase
 
-import gyul.songgyubin.domain.model.LocationInfoEntity
+import gyul.songgyubin.domain.location.model.LocationInfoEntity
 import gyul.songgyubin.domain.repository.LocationRepository
 import io.reactivex.Completable
 

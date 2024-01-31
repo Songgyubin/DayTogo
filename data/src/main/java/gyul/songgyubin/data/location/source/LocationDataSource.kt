@@ -7,6 +7,7 @@ package gyul.songgyubin.data.location.source
  * @created  2024/01/31
  */
 class LocationDataSource {
+
     fun getSavedLocationList() {
 
     }

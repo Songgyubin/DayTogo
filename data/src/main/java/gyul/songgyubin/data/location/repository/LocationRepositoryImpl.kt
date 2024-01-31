@@ -6,7 +6,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import durdinapps.rxfirebase2.RxFirebaseDatabase
 import gyul.songgyubin.data.location.model.LocationInfoMapper
-import gyul.songgyubin.domain.model.LocationInfoEntity
+import gyul.songgyubin.domain.location.model.LocationInfoEntity
 import gyul.songgyubin.domain.repository.LocationRepository
 import io.reactivex.Completable
 import io.reactivex.Maybe
@@ -36,8 +36,5 @@ class LocationRepositoryImpl : LocationRepository {
             dbReference.child("users").child(currentUser!!.uid).child("locationInfoList").push(),
             locationInfoEntity
         )
-
-
     }
-
 }

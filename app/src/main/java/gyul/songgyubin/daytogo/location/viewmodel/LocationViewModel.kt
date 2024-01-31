@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gyul.songgyubin.daytogo.base.viewmodel.BaseViewModel
-import gyul.songgyubin.domain.model.LocationInfoEntity
+import gyul.songgyubin.domain.location.model.LocationInfoEntity
 import gyul.songgyubin.domain.usecase.AddLocationInfoUseCase
 import gyul.songgyubin.domain.usecase.GetRemoteSavedLocationInfoUseCase
 import gyul.songgyubin.daytogo.utils.LocationId

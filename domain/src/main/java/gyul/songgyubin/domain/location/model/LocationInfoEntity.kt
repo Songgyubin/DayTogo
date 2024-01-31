@@ -1,13 +1,10 @@
-package gyul.songgyubin.domain.model
-
+package gyul.songgyubin.domain.location.model
 
 /**
- * 실제 사용하는 Data Class
+ * Location Info Entity
+ *
+ * cf) locationId: latitude.toString()_longitude.toString()
  */
-/**
- * locationId: latitude.toString()_longitude.toString()
- */
-
 data class LocationInfoEntity(
     var locationId: String = "",
     var title: String = "",
