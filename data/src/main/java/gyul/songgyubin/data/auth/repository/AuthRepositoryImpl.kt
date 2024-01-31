@@ -1,4 +1,4 @@
-package gyul.songgyubin.data.repository.auth
+package gyul.songgyubin.data.auth.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -6,7 +6,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import durdinapps.rxfirebase2.RxFirebaseAuth
 import durdinapps.rxfirebase2.RxFirebaseDatabase
-import gyul.songgyubin.data.mapper.UserMapper
+import gyul.songgyubin.data.auth.model.UserMapper
 import gyul.songgyubin.domain.auth.model.UserEntity
 import gyul.songgyubin.domain.repository.AuthRepository
 import io.reactivex.Completable

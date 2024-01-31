@@ -7,7 +7,7 @@ import gyul.songgyubin.daytogo.utils.SingleClickEvent
 import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class BaseViewModel() : ViewModel() {
+abstract class BaseViewModel : ViewModel() {
     protected val disposable = CompositeDisposable()
 
     private val _viewSingleEvent = MutableLiveData<SingleClickEvent<SingleClickEventFlag>>()

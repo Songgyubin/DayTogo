@@ -1,4 +1,4 @@
-package gyul.songgyubin.data.mapper
+package gyul.songgyubin.data.location.model
 
 import com.google.firebase.database.DataSnapshot
 import gyul.songgyubin.domain.model.LocationInfoEntity

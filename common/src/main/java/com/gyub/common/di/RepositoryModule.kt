@@ -1,8 +1,8 @@
 package com.gyub.common.di
 
 import dagger.Provides
-import gyul.songgyubin.data.repository.auth.AuthRepositoryImpl
-import gyul.songgyubin.data.repository.location.LocationRepositoryImpl
+import gyul.songgyubin.data.auth.repository.AuthRepositoryImpl
+import gyul.songgyubin.data.location.repository.LocationRepositoryImpl
 import gyul.songgyubin.domain.repository.AuthRepository
 import gyul.songgyubin.domain.repository.LocationRepository
 import gyul.songgyubin.domain.usecase.AddLocationInfoUseCase
