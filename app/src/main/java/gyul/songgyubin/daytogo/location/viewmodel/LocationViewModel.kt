@@ -4,15 +4,17 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import gyul.songgyubin.daytogo.base.viewmodel.BaseViewModel
+import gyul.songgyubin.daytogo.utils.LocationId
 import gyul.songgyubin.domain.location.model.LocationEntity
 import gyul.songgyubin.domain.location.usecase.AddLocationInfoUseCase
 import gyul.songgyubin.domain.location.usecase.GetRemoteSavedLocationInfoUseCase
-import gyul.songgyubin.daytogo.utils.LocationId
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.flow.observeOn
+import kotlinx.coroutines.flow.subscribe
 import javax.inject.Inject
 
 
@@ -26,7 +28,7 @@ import javax.inject.Inject
 class LocationViewModel @Inject constructor(
     private val addLocationInfoUseCase: AddLocationInfoUseCase,
     private val getRemoteSavedLocationInfoUseCase: GetRemoteSavedLocationInfoUseCase
-) : BaseViewModel() {
+) : ViewModel() {
 
     val savedLocationList: LiveData<List<LocationEntity>> get() = _savedLocationList
     private val _savedLocationList = MutableLiveData<List<LocationEntity>>()
@@ -90,10 +92,5 @@ class LocationViewModel @Inject constructor(
 
     fun setEditMode(view: View) {
         _isEditMode.value = true
-    }
-
-    override fun onCleared() {
-        disposable.dispose()
-        super.onCleared()
     }
 }

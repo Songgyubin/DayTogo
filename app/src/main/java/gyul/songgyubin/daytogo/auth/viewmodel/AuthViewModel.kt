@@ -5,16 +5,20 @@ import android.util.Patterns
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gyul.songgyubin.daytogo.base.viewmodel.BaseViewModel
 import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
 import gyul.songgyubin.domain.auth.model.UserEntity
 import gyul.songgyubin.domain.usecase.FirebaseCreateUserInfoDbUseCase
 import gyul.songgyubin.domain.auth.usecase.FirebaseCreateUserUseCase
+import gyul.songgyubin.domain.auth.usecase.SaveUserInfoDbUseCase
 import gyul.songgyubin.domain.usecase.FirebaseLoginUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.flow.observeOn
+import kotlinx.coroutines.flow.subscribe
 import javax.inject.Inject
 
 
@@ -22,8 +26,8 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val firebaseLoginUseCase: FirebaseLoginUseCase,
     private val firebaseCreateUserUseCase: FirebaseCreateUserUseCase,
-    private val firebaseCreateUserInfoDbUseCase: FirebaseCreateUserInfoDbUseCase
-) : BaseViewModel() {
+    private val firebaseCreateUserInfoDbUseCase: SaveUserInfoDbUseCase
+) : ViewModel() {
 
     private val _isValidEmail = MutableLiveData<Boolean>(true)
     private val _loginErrorMsg = MutableLiveData<String>()
