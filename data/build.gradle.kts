@@ -1,7 +1,6 @@
 import Dependencies.applyAndroidX
 import Dependencies.applyFirebase
 import Dependencies.applyHilt
-import Dependencies.applyRx
 import Dependencies.applyTest
 
 plugins {
@@ -42,9 +41,7 @@ android {
 dependencies {
     implementation(project(":domain"))
 
-
     applyAndroidX()
-    applyRx()
     applyTest()
     applyFirebase()
     applyHilt()

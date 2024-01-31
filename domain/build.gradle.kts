@@ -1,5 +1,3 @@
-import Dependencies.applyRx
-
 plugins {
     id("com.android.library")
     id("kotlin-android")
@@ -19,5 +17,5 @@ android {
 }
 
 dependencies {
-    applyRx()
+
 }

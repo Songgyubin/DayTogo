@@ -48,16 +48,6 @@ object Dependencies {
         implementation(Naver.MAP)
     }
 
-    object Rx {
-        const val ANDROID = "io.reactivex.rxjava2:rxandroid:2.1.1"
-        const val JAVA = "io.reactivex.rxjava2:rxjava:2.2.21"
-    }
-
-    fun DependencyHandlerScope.applyRx() {
-        implementation(Rx.ANDROID)
-        implementation(Rx.JAVA)
-    }
-
     object Firebase {
         const val BOM = "com.google.firebase:firebase-bom:30.2.0"
         const val REALTIME_DATABASE = "com.google.firebase:firebase-database-ktx"
