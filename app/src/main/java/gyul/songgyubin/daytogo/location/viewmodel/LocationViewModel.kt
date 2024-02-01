@@ -1,20 +1,17 @@
 package gyul.songgyubin.daytogo.location.viewmodel
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gyul.songgyubin.daytogo.utils.LocationId
 import gyul.songgyubin.domain.location.model.LocationEntity
 import gyul.songgyubin.domain.location.usecase.AddLocationInfoUseCase
 import gyul.songgyubin.domain.location.usecase.GetRemoteSavedLocationInfoUseCase
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.addTo
-import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.flow.observeOn
-import kotlinx.coroutines.flow.subscribe
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 
@@ -63,31 +60,16 @@ class LocationViewModel @Inject constructor(
 
     fun getSavedLocationList() {
         getRemoteSavedLocationInfoUseCase()
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { showProgress() }
-            .doAfterTerminate { hideProgress() }
-            .subscribe({ locationList ->
-                _savedLocationList.value = locationList
-                Log.d("TAG", "getSavedLocationList: ${locationList.size}")
-            }, { error ->
-                _savedLocationListErrorMsg.value = error.message
-                Log.e("TAG", "getSavedLocationList: ", error)
-            }
-            ).addTo(disposable)
+            .onEach {  }
+            .launchIn(viewModelScope)
     }
 
     fun savedLocationDB(locationEntity: LocationEntity) {
         _isEditMode.value = false
         addLocationInfoUseCase(locationEntity)
-            .observeOn(Schedulers.io())
-            .subscribe(
-                {
-                    Log.d("TAG", "savedLocationListDB: Success ")
-                }, { error ->
-                    Log.e("TAG", "savedLocationListDB: ", error)
-                }
-            )
-            .addTo(disposable)
+            .onEach {
+
+            }.launchIn(viewModelScope)
     }
 
     fun setEditMode(view: View) {
