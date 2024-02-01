@@ -8,13 +8,10 @@ import gyul.songgyubin.domain.location.model.LocationEntity
 import gyul.songgyubin.domain.location.model.LocationRequest
 import gyul.songgyubin.domain.location.usecase.AddLocationInfoUseCase
 import gyul.songgyubin.domain.location.usecase.GetRemoteSavedLocationInfoUseCase
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.shareIn
 import javax.inject.Inject
 
 
