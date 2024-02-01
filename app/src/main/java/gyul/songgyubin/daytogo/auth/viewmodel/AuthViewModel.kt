@@ -1,20 +1,19 @@
 package gyul.songgyubin.daytogo.auth.viewmodel
 
-import android.util.Log
 import android.util.Patterns
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import gyul.songgyubin.daytogo.base.viewmodel.BaseViewModel
 import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
 import gyul.songgyubin.domain.auth.model.UserEntity
-import gyul.songgyubin.domain.usecase.FirebaseCreateUserInfoDbUseCase
-import gyul.songgyubin.domain.usecase.FirebaseCreateUserUseCase
-import gyul.songgyubin.domain.usecase.FirebaseLoginUseCase
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.addTo
-import io.reactivex.schedulers.Schedulers
+import gyul.songgyubin.domain.auth.usecase.FirebaseCreateUserUseCase
+import gyul.songgyubin.domain.auth.usecase.FirebaseLoginUseCase
+import gyul.songgyubin.domain.auth.usecase.SaveUserInfoDbUseCase
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 
@@ -22,8 +21,8 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val firebaseLoginUseCase: FirebaseLoginUseCase,
     private val firebaseCreateUserUseCase: FirebaseCreateUserUseCase,
-    private val firebaseCreateUserInfoDbUseCase: FirebaseCreateUserInfoDbUseCase
-) : BaseViewModel() {
+    private val firebaseCreateUserInfoDbUseCase: SaveUserInfoDbUseCase
+) : ViewModel() {
 
     private val _isValidEmail = MutableLiveData<Boolean>(true)
     private val _loginErrorMsg = MutableLiveData<String>()
@@ -42,40 +41,21 @@ class AuthViewModel @Inject constructor(
 
     fun firebaseLogin(inputEmail: String, inputPassword: String) {
         firebaseLoginUseCase(inputEmail, inputPassword)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ user ->
-                _authenticatedUser.value = user
-            }, { error ->
-                _loginErrorMsg.value = error.message
-                Log.e("TAG", "firebaseLogin: ", error)
-            }).addTo(disposable)
+
     }
 
     // sign up And firebase DB create
     // firebase DB root element is userEmail
     fun createUser(inputEmail: String, inputPassword: String) {
         firebaseCreateUserUseCase(inputEmail, inputPassword)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ user ->
-                _authenticatedUser.value = user
-            },
-                { error ->
-                    _loginErrorMsg.value = error.message
-                    Log.e("TAG", "createUserWithEmailAndPassword: ", error)
-                }
-            ).addTo(disposable)
+            .onEach {
+            }.launchIn(viewModelScope)
     }
 
     fun createUserInfoDB(user: UserEntity) {
         firebaseCreateUserInfoDbUseCase(user)
-            .observeOn(Schedulers.io())
-            .subscribe {
-                try {
-                    Log.d("TAG", "createUserInfoDB: ")
-                } catch (e: Exception) {
-                    Log.e("TAG", "createUserInfoDB: ", e)
-                }
-            }.addTo(disposable)
+            .onEach { }
+            .launchIn(viewModelScope)
     }
 
     // check email validation

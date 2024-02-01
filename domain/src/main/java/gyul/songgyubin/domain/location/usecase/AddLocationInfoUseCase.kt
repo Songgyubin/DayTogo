@@ -1,18 +1,28 @@
-package gyul.songgyubin.domain.usecase
+package gyul.songgyubin.domain.location.usecase
 
-import gyul.songgyubin.domain.model.LocationInfoEntity
-import gyul.songgyubin.domain.repository.LocationRepository
-import io.reactivex.Completable
+import gyul.songgyubin.domain.location.model.LocationRequest
+import gyul.songgyubin.domain.location.repository.LocationRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
 
 /**
- * 사용자가 저장한 장소를 DB에 저장
+ * 사용자가 저장한 장소를 DB에 저장하는 UseCase
  * DB 내 'locationList' 리스트에 push
  */
-
-class AddLocationInfoUseCase(private val repository: LocationRepository) {
+class AddLocationInfoUseCase
+@Inject
+constructor(private val repository: LocationRepository) {
 
     operator fun invoke(
-        locationInfoEntity: LocationInfoEntity
-    ):Completable = repository.saveLocationDB(locationInfoEntity)
-
+        locationRequest: LocationRequest
+    ): Flow<Result<Unit>> = flow {
+        val item = repository.saveLocationDB(locationRequest)
+        emit(item)
+    }.catch {
+        emit(Result.failure(it))
+    }.flowOn(Dispatchers.IO)
 }

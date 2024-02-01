@@ -1,8 +1,8 @@
 import Dependencies.applyAndroidX
+import Dependencies.applyCoroutines
 import Dependencies.applyFirebase
 import Dependencies.applyHilt
 import Dependencies.applyNaver
-import Dependencies.applyRx
 import Dependencies.applyTest
 import java.io.FileInputStream
 import java.util.Properties
@@ -68,10 +68,10 @@ dependencies {
     implementation(Dependencies.Google.MATERIAL)
     applyAndroidX()
     applyTest()
-    applyRx()
     applyFirebase()
     applyNaver()
     applyHilt()
+    applyCoroutines()
 }
 kapt {
     correctErrorTypes = true

@@ -1,8 +1,6 @@
 package gyul.songgyubin.domain.repository
 
 import gyul.songgyubin.domain.auth.model.UserEntity
-import io.reactivex.Completable
-import io.reactivex.Maybe
 
 /**
  * UseCase에 필요한 Interface 선언
@@ -11,17 +9,27 @@ import io.reactivex.Maybe
  */
 
 interface AuthRepository {
-    fun firebaseLogin(
-        inputEmail: String,
-        inputPassword: String
-    ): Maybe<UserEntity>
 
-    fun createUser(
-        inputEmail: String,
-        inputPassword: String
-    ): Maybe<UserEntity>
+    /**
+     * 파이어베이스 로그인
+     */
+    suspend fun firebaseLogin(
+        email: String,
+        password: String
+    ): UserEntity
 
-    fun createUserInfoDB(
-        userEntity: UserEntity
-    ): Completable
+    /**
+     * User 생성
+     */
+    suspend fun createUser(
+        email: String,
+        password: String
+    ): UserEntity
+
+    /**
+     * User 정보 Firebase DB에 저장
+     */
+    suspend fun saveUserInfoDB(
+        user: UserEntity
+    ): Result<Unit>
 }

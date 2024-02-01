@@ -1,15 +1,21 @@
-package gyul.songgyubin.domain.usecase
+package gyul.songgyubin.domain.auth.usecase
 
 import gyul.songgyubin.domain.auth.model.UserEntity
 import gyul.songgyubin.domain.repository.AuthRepository
-import io.reactivex.Maybe
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 /**
- * 이메일과 패스워드만 사용하여 파이어베이스 로그인
+ * 파이어베이스 로그인 UseCase
  */
-class FirebaseLoginUseCase(private val repository: AuthRepository){
+class FirebaseLoginUseCase(private val repository: AuthRepository) {
     operator fun invoke(
         inputEmail: String,
         inputPassword: String
-    ): Maybe<UserEntity> = repository.firebaseLogin(inputEmail, inputPassword)
+    ): Flow<UserEntity> = flow {
+        val item = repository.firebaseLogin(inputEmail, inputPassword)
+        emit(item)
+    }.flowOn(Dispatchers.IO)
 }

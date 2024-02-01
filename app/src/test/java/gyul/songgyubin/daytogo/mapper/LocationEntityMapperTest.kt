@@ -1,6 +1,6 @@
 package gyul.songgyubin.daytogo.mapper
 
-import gyul.songgyubin.domain.model.LocationInfoEntity
+import gyul.songgyubin.domain.location.model.LocationEntity
 import org.hamcrest.MatcherAssert.*
 import org.junit.Before
 import org.junit.Test
@@ -9,7 +9,7 @@ import org.mockito.junit.MockitoJUnitRunner
 
 
 @RunWith(MockitoJUnitRunner::class)
-class LocationInfoEntityMapperTest {
+class LocationEntityMapperTest {
     private val hashMap = HashMap<String, Any>()
 
     @Before
@@ -22,16 +22,16 @@ class LocationInfoEntityMapperTest {
 
     @Test
     fun firebaseResponseToLocationInfo() {
-        val locationInfoEntity = LocationInfoEntity()
-        val clazz = LocationInfoEntity::class.java
+        val locationEntity = LocationEntity()
+        val clazz = LocationEntity::class.java
         val methods = clazz.declaredMethods
         methods.forEach { it.isAccessible = true }
         val fields = clazz.declaredFields
         fields.forEach {
             it.isAccessible = true
             val value = hashMap[it.name]
-            it.set(locationInfoEntity,value)
+            it.set(locationEntity,value)
         }
-        assertThat(locationInfoEntity.toString(), true).equals(LocationInfoEntity("","타이틀","설명",1.1,0.0).toString())
+        assertThat(locationEntity.toString(), true).equals(LocationEntity("","타이틀","설명",1.1,0.0).toString())
     }
 }
