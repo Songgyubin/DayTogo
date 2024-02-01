@@ -1,6 +1,4 @@
 import org.gradle.kotlin.dsl.DependencyHandlerScope
-import org.gradle.kotlin.dsl.exclude
-import org.gradle.kotlin.dsl.project
 
 object Dependencies {
 
@@ -106,12 +104,18 @@ object Dependencies {
         const val JUNIT = "junit:junit:4.13.2"
         const val ANDROID_EXT_JUNIT = "androidx.test.ext:junit:1.1.3"
         const val ANDROID_ESPRESSO_CORE = "androidx.test.espresso:espresso-core:3.4.0"
+        const val ANDROID_ARCH = "androidx.arch.core:core-testing:2.1.0"
         const val MOCKITO = "org.mockito:mockito-core:2.28.2"
+        const val MOCKK = "io.mockk:mockk:1.10.6"
+        const val COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2"
     }
 
     fun DependencyHandlerScope.applyTest() {
         Dependencies.testImplementation(Test.JUNIT)
         Dependencies.testImplementation(Test.MOCKITO)
+        Dependencies.testImplementation(Test.MOCKK)
+        Dependencies.testImplementation(Test.ANDROID_ARCH)
+        Dependencies.testImplementation(Test.COROUTINES)
         androidTestImplementation(Test.ANDROID_EXT_JUNIT)
         androidTestImplementation(Test.ANDROID_ESPRESSO_CORE)
     }
