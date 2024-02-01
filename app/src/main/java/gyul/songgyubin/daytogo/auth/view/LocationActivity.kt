@@ -42,7 +42,7 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(R.layout.activity
      *  save locationInfo  to show information of saved location when clicked
      */
     private fun observeSavedLocation() {
-        viewModel.savedLocationList.observe(this) { stationList ->
+        viewModel.fetchSavedLocationList.observe(this) { stationList ->
             Observable.fromArray(*stationList.toTypedArray())
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.computation())
@@ -89,7 +89,7 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(R.layout.activity
 
     // load User's place stored in db
     private fun loadSavedLocation() {
-        viewModel.getSavedLocationList()
+        viewModel.fetchSavedLocationList()
         observeSavedLocation()
     }
 
