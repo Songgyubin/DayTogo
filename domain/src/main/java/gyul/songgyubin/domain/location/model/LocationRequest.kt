@@ -10,6 +10,6 @@ data class LocationRequest(
     val locationId: String? = "",
     val title: String? = "",
     val description: String? = "",
-    val lat: String? = "",
-    val lon: String? = ""
+    val lat: Double? = 0.0,
+    val lon: Double? = 0.0
 )

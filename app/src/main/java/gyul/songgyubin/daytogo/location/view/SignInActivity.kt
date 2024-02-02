@@ -8,7 +8,6 @@ import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.auth.view.LocationActivity
 import gyul.songgyubin.daytogo.base.view.BaseActivity
 import gyul.songgyubin.daytogo.databinding.ActivitySignInBinding
-import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
 import gyul.songgyubin.daytogo.auth.viewmodel.AuthViewModel
 
 
@@ -19,9 +18,9 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setView()
-        setObserveLoginViewModel()
+
+
     }
 
     private fun setView() {
@@ -43,26 +42,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
         }
     }
 
-    // observing viewModel data
-    private fun setObserveLoginViewModel() {
-        observeSingleClickEvent()
-        observeFirebaseLogin()
-    }
-
-    private fun observeSingleClickEvent() {
-        viewModel.viewSingleEvent.observe(this@SignInActivity) {
-            it.getContentIfNotHandled().let { event ->
-                when (event) {
-                    SingleClickEventFlag.EVENT_FIREBASE_LOGIN -> callFirebaseLoginIfValidUserInfo()
-                    else -> {
-                        return@let
-                    }
-                }
-            }
-        }
-    }
-
-
     private fun observeFirebaseLogin() {
         viewModel.run {
             authenticatedUser.observe(this@SignInActivity) { user ->
@@ -80,7 +59,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
     }
 
     override fun onDestroy() {
-        disposable.dispose()
         super.onDestroy()
     }
 }

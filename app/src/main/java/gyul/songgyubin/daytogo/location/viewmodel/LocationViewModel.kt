@@ -105,6 +105,6 @@ class LocationViewModel @Inject constructor(
      * 장소 식별자 반환
      */
     private fun getLocationKey(lat: Double, lon: Double): String {
-        return "${lat.hashCode()}_${lon.hashCode()}"
+        return "${lat}_$lon"
     }
 }
