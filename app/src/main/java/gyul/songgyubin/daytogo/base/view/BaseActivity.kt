@@ -8,7 +8,6 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseActivity<T : ViewDataBinding>(@LayoutRes val layoutId: Int) :
     AppCompatActivity() {
