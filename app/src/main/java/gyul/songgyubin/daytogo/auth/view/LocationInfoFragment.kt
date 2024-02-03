@@ -5,33 +5,34 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.base.view.BaseFragment
-import gyul.songgyubin.domain.location.model.LocationEntity
 import gyul.songgyubin.daytogo.databinding.FragmentLocationInfoBinding
 import gyul.songgyubin.daytogo.location.viewmodel.LocationViewModel
 import gyul.songgyubin.daytogo.utils.toLatLng
-
-
+import gyul.songgyubin.domain.location.model.LocationRequest
 
 @AndroidEntryPoint
 class LocationInfoFragment :
     BaseFragment<FragmentLocationInfoBinding>(R.layout.fragment_location_info) {
     private val viewModel: LocationViewModel by activityViewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        findSelectedLocationInfo()
-        return super.onCreateView(inflater, container, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setView()
+
+        collect()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setView()
-        super.onViewCreated(view, savedInstanceState)
+    /**
+     * collect
+     */
+    private fun collect() {
+        lifecycleScope.launchWhenStarted {
+            collectSelectedLocationInfo()
+        }
     }
 
     /**
@@ -41,17 +42,20 @@ class LocationInfoFragment :
      */
     fun saveLocation(view: View) {
         with(viewModel) {
-            selectedLocationId.value?.let {
-                val selectedLocationId = selectedLocationId.value!!
+            selectedLocationId.value.let {
+                if (it.isBlank()) {
+                    return
+                }
+                val selectedLocationId = selectedLocationId.value
                 val latLng = selectedLocationId.toLatLng()
-                val locationEntity = LocationEntity(
+                val locationRequest = LocationRequest(
                     locationId = selectedLocationId,
                     title = binding.edLocationTitle.text.toString(),
                     description = binding.edLocationDescription.text.toString(),
                     lat = latLng.latitude,
                     lon = latLng.longitude
                 )
-                savedLocationDB(locationEntity)
+                savedLocationDB(locationRequest)
             }
         }
     }
@@ -62,9 +66,9 @@ class LocationInfoFragment :
      * DB에서 꺼내와 저장한 savedLocationInfo를 가져옴
      * savedLocationId : HashMap <LoactionId, LocationInfo>
      */
-    private fun findSelectedLocationInfo() {
+    private suspend fun collectSelectedLocationInfo() {
         with(viewModel) {
-            selectedLocationId.observe(viewLifecycleOwner) { locationId ->
+            selectedLocationId.collect { locationId ->
                 savedLocationEntity[locationId]?.run {
                     binding.edLocationTitle.setText(title)
                     binding.edLocationDescription.setText(description)

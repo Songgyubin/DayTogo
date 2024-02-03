@@ -1,19 +1,21 @@
 package gyul.songgyubin.daytogo.auth.viewmodel
 
 import android.util.Patterns
-import android.view.View
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
 import gyul.songgyubin.domain.auth.model.UserEntity
 import gyul.songgyubin.domain.auth.usecase.FirebaseCreateUserUseCase
 import gyul.songgyubin.domain.auth.usecase.FirebaseLoginUseCase
 import gyul.songgyubin.domain.auth.usecase.SaveUserInfoDbUseCase
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.shareIn
 import javax.inject.Inject
 
 
@@ -24,37 +26,57 @@ class AuthViewModel @Inject constructor(
     private val firebaseCreateUserInfoDbUseCase: SaveUserInfoDbUseCase
 ) : ViewModel() {
 
-    private val _isValidEmail = MutableLiveData<Boolean>(true)
-    private val _loginErrorMsg = MutableLiveData<String>()
-    private val _dbErrorMsg = MutableLiveData<String>()
+    private val _isValidEmail = MutableStateFlow(true)
+    val isValidEmail: StateFlow<Boolean> get() = _isValidEmail
 
-    private val _authenticatedUser = MutableLiveData<UserEntity>()
+    private val _loginErrorMsg = MutableSharedFlow<String>()
+    val loginErrorMsg: SharedFlow<String> get() = _loginErrorMsg.shareIn(viewModelScope, SharingStarted.WhileSubscribed())
 
-    val isValidEmail: LiveData<Boolean> get() = _isValidEmail
-    val authenticatedUser: LiveData<UserEntity> get() = _authenticatedUser
-    val loginErrorMsg: LiveData<String> get() = _loginErrorMsg
-    val dbErrorMsg: LiveData<String> get() = _dbErrorMsg
+    private val _dbErrorMsg = MutableSharedFlow<String>()
+    val dbErrorMsg: SharedFlow<String> get() = _dbErrorMsg.shareIn(viewModelScope, SharingStarted.WhileSubscribed())
 
-    // two way binding
+    private val _authenticatedUser = MutableStateFlow<UserEntity>(UserEntity("", ""))
+    val authenticatedUser: StateFlow<UserEntity> get() = _authenticatedUser
+
     var inputEmail: String = ""
     var inputPassword: String = ""
 
+    /**
+     * 파이어베이스 로그인
+     */
     fun firebaseLogin(inputEmail: String, inputPassword: String) {
         firebaseLoginUseCase(inputEmail, inputPassword)
-
+            .onEach {
+                if (!it.uid.isNullOrBlank()) {
+                    _authenticatedUser.value = it
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
-    // sign up And firebase DB create
-    // firebase DB root element is userEmail
+    /**
+     * 유저 정보 생성
+     */
     fun createUser(inputEmail: String, inputPassword: String) {
         firebaseCreateUserUseCase(inputEmail, inputPassword)
             .onEach {
-            }.launchIn(viewModelScope)
+                if (!it.uid.isNullOrBlank()) {
+                    _authenticatedUser.value = it
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
-    fun createUserInfoDB(user: UserEntity) {
+    /**
+     * DB에 유저 정보 삽입
+     */
+    fun insertUserInfoDB(user: UserEntity) {
         firebaseCreateUserInfoDbUseCase(user)
-            .onEach { }
+            .onEach {
+                if (it.isFailure) {
+                    _dbErrorMsg.emit(it.exceptionOrNull()?.localizedMessage.orEmpty())
+                }
+            }
             .launchIn(viewModelScope)
     }
 
@@ -64,14 +86,4 @@ class AuthViewModel @Inject constructor(
             _isValidEmail.value = Patterns.EMAIL_ADDRESS.matcher(s).matches()
         }
     }
-
-    // two way binding
-    fun firebaseLoginSingleClickEvent(view: View) {
-        viewEvent(SingleClickEventFlag.EVENT_FIREBASE_LOGIN)
-    }
-
-    fun signUpSingleClickEvent(view: View) {
-        viewEvent(SingleClickEventFlag.SIGN_UP)
-    }
-
 }

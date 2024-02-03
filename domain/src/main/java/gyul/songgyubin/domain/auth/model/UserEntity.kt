@@ -7,6 +7,6 @@ package gyul.songgyubin.domain.auth.model
  * @created  2024/01/31
  */
 data class UserEntity(
-    var uid: String?,
-    var email: String?,
+    val uid: String?,
+    val email: String?,
 )
