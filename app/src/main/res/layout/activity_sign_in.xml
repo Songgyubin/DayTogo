@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools">
+<layout>
 
     <data>
 
@@ -19,69 +19,67 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/ed_email"
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edEmail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
             android:autofillHints="emailAddress"
             android:hint="@string/enter_email"
             android:onTextChanged="@{viewmodel::onEmailTextChanged}"
             android:text="@={viewmodel.inputEmail}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_warning_email"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvWarningEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/enter_valid_email"
             android:textColor="#ff0000"
             android:visibility="@{viewmodel.isValidEmail() ? View.GONE : View.VISIBLE}"
-            app:layout_constraintLeft_toLeftOf="@+id/ed_email"
-            app:layout_constraintTop_toBottomOf="@id/ed_email" />
+            app:layout_constraintStart_toStartOf="@+id/edEmail"
+            app:layout_constraintTop_toBottomOf="@id/edEmail" />
 
-        <EditText
-            android:id="@+id/ed_password"
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edPassword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
             android:autofillHints="password"
             android:hint="@string/enter_password"
             android:inputType="textPassword"
             android:text="@={viewmodel.inputPassword}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_warning_email" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvWarningEmail" />
 
-        <Button
-            android:id="@+id/btn_firebase_login"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnFirebaseLogin"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:onClick="@{viewmodel::firebaseLoginSingleClickEvent}"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
             android:text="@string/start_with_email"
             android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            app:layout_constraintTop_toTopOf="@+id/ed_password"
             app:layout_constraintBottom_toBottomOf="parent"
-             />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/edPassword" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSignUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:onClick="@{activity::startSignUp}"
             android:text="@string/signup_with_email"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_firebase_login" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnFirebaseLogin" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
