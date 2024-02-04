@@ -1,99 +1,110 @@
 package gyul.songgyubin.daytogo.location.viewmodel
 
-import android.util.Log
 import android.view.View
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import gyul.songgyubin.daytogo.base.viewmodel.BaseViewModel
-import gyul.songgyubin.domain.model.LocationInfoEntity
-import gyul.songgyubin.domain.usecase.AddLocationInfoUseCase
-import gyul.songgyubin.domain.usecase.GetRemoteSavedLocationInfoUseCase
-import gyul.songgyubin.daytogo.utils.LocationId
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.addTo
-import io.reactivex.schedulers.Schedulers
+import gyul.songgyubin.domain.location.model.LocationEntity
+import gyul.songgyubin.domain.location.model.LocationRequest
+import gyul.songgyubin.domain.location.usecase.AddLocationInfoUseCase
+import gyul.songgyubin.domain.location.usecase.GetRemoteSavedLocationInfoUseCase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 
 /**
- * This class is SharedViewModel
- * with the classes included in the main package.
- * (MainActivity, LocationFragment...)
+ * 위치 관련 ViewModel
+ *
+ * @author   Gyub
+ * @created  2024/01/31
  */
-
 @HiltViewModel
 class LocationViewModel @Inject constructor(
     private val addLocationInfoUseCase: AddLocationInfoUseCase,
     private val getRemoteSavedLocationInfoUseCase: GetRemoteSavedLocationInfoUseCase
-) : BaseViewModel() {
+) : ViewModel() {
 
-    val savedLocationList: LiveData<List<LocationInfoEntity>> get() = _savedLocationList
-    private val _savedLocationList = MutableLiveData<List<LocationInfoEntity>>()
+    private val _savedLocationList = MutableStateFlow<List<LocationEntity>>(listOf())
+    val savedLocationList: StateFlow<List<LocationEntity>> get() = _savedLocationList
 
-    val savedLocationInfoEntity: HashMap<LocationId, LocationInfoEntity> = HashMap()
+    val savedLocationEntity: HashMap<String, LocationEntity> = HashMap()
 
-    val savedLocationListErrorMsg: LiveData<String> get() = _savedLocationListErrorMsg
-    private val _savedLocationListErrorMsg = MutableLiveData<String>()
+    private val _savedLocationListErrorMsg = MutableStateFlow("")
+    val savedLocationListErrorMsg: StateFlow<String> get() = _savedLocationListErrorMsg
 
-    val selectedLocationId: LiveData<LocationId> get() = _selectedLocationId
-    private val _selectedLocationId = MutableLiveData<LocationId>()
+    private val _selectedLocationId = MutableStateFlow("")
+    val selectedLocationId: StateFlow<String> get() = _selectedLocationId
 
-    val isEditMode: LiveData<Boolean> get() = _isEditMode
-    private val _isEditMode = MutableLiveData<Boolean>(false)
-
+    private val _isEditMode = MutableStateFlow(false)
+    val isEditMode: StateFlow<Boolean> get() = _isEditMode
 
     /**
-     * 장소를 구분하기위해
+     * 장소 구분을 위한
      * 클릭된 장소의 LocationId 생성
      */
-    fun createLocationId(latitude: Double, longitude: Double) {
-        _selectedLocationId.value = "${latitude}_$longitude"
+    fun createLocationId(lat: Double, lon: Double) {
+        _selectedLocationId.value = getLocationKey(lat, lon)
     }
 
     /**
      * 클릭된 장소의 loactionInfo를
      * LocationId라는 구분자로 보여주기 위해 Map에 세팅
      */
-    fun setSavedLocationInfo(locationInfoEntity: LocationInfoEntity) {
-        savedLocationInfoEntity[locationInfoEntity.locationId] = locationInfoEntity
+    fun setSavedLocationInfo(locationEntity: LocationEntity) {
+        savedLocationEntity[locationEntity.locationId.orEmpty()] = locationEntity
     }
 
-    fun getSavedLocationList() {
+    /**
+     * 저장된 위치 리스트 가져오기
+     */
+    fun fetchSavedLocationList() {
         getRemoteSavedLocationInfoUseCase()
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { showProgress() }
-            .doAfterTerminate { hideProgress() }
-            .subscribe({ locationList ->
-                _savedLocationList.value = locationList
-                Log.d("TAG", "getSavedLocationList: ${locationList.size}")
-            }, { error ->
-                _savedLocationListErrorMsg.value = error.message
-                Log.e("TAG", "getSavedLocationList: ", error)
-            }
-            ).addTo(disposable)
+            .onEach(::setUpSavedLocationList)
+            .launchIn(viewModelScope)
     }
 
-    fun savedLocationDB(locationInfoEntity: LocationInfoEntity) {
+    /**
+     * 저장된 위치 세팅
+     */
+    private fun setUpSavedLocationList(locationList: List<LocationEntity>) {
+        _savedLocationList.value = locationList
+    }
+
+    /**
+     * 위치 정보 저장
+     */
+    fun savedLocationDB(locationRequest: LocationRequest) {
         _isEditMode.value = false
-        addLocationInfoUseCase(locationInfoEntity)
-            .observeOn(Schedulers.io())
-            .subscribe(
-                {
-                    Log.d("TAG", "savedLocationListDB: Success ")
-                }, { error ->
-                    Log.e("TAG", "savedLocationListDB: ", error)
-                }
-            )
-            .addTo(disposable)
+        addLocationInfoUseCase(locationRequest)
+            .onEach(::setUpSavedLocationResult)
+            .launchIn(viewModelScope)
     }
 
+    /**
+     * 위치 저장 성공/실패 여부 세팅
+     */
+    private fun setUpSavedLocationResult(result: Result<Unit>) {
+        when {
+            result.isFailure -> {
+                _savedLocationListErrorMsg.value = result.exceptionOrNull()?.localizedMessage.orEmpty()
+            }
+        }
+    }
+
+    /**
+     * 편집 모드 세팅
+     */
     fun setEditMode(view: View) {
         _isEditMode.value = true
     }
 
-    override fun onCleared() {
-        disposable.dispose()
-        super.onCleared()
+    /**
+     * 장소 식별자 반환
+     */
+    private fun getLocationKey(lat: Double, lon: Double): String {
+        return "${lat}_$lon"
     }
 }

@@ -1,20 +1,21 @@
 package gyul.songgyubin.daytogo.auth.viewmodel
 
-import android.util.Log
 import android.util.Patterns
-import android.view.View
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import gyul.songgyubin.daytogo.base.viewmodel.BaseViewModel
-import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
 import gyul.songgyubin.domain.auth.model.UserEntity
-import gyul.songgyubin.domain.usecase.FirebaseCreateUserInfoDbUseCase
-import gyul.songgyubin.domain.usecase.FirebaseCreateUserUseCase
-import gyul.songgyubin.domain.usecase.FirebaseLoginUseCase
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.addTo
-import io.reactivex.schedulers.Schedulers
+import gyul.songgyubin.domain.auth.usecase.FirebaseCreateUserUseCase
+import gyul.songgyubin.domain.auth.usecase.FirebaseLoginUseCase
+import gyul.songgyubin.domain.auth.usecase.SaveUserInfoDbUseCase
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.shareIn
 import javax.inject.Inject
 
 
@@ -22,60 +23,61 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val firebaseLoginUseCase: FirebaseLoginUseCase,
     private val firebaseCreateUserUseCase: FirebaseCreateUserUseCase,
-    private val firebaseCreateUserInfoDbUseCase: FirebaseCreateUserInfoDbUseCase
-) : BaseViewModel() {
+    private val firebaseCreateUserInfoDbUseCase: SaveUserInfoDbUseCase
+) : ViewModel() {
 
-    private val _isValidEmail = MutableLiveData<Boolean>(true)
-    private val _loginErrorMsg = MutableLiveData<String>()
-    private val _dbErrorMsg = MutableLiveData<String>()
+    private val _isValidEmail = MutableStateFlow(true)
+    val isValidEmail: StateFlow<Boolean> get() = _isValidEmail
 
-    private val _authenticatedUser = MutableLiveData<UserEntity>()
+    private val _loginErrorMsg = MutableSharedFlow<String>()
+    val loginErrorMsg: SharedFlow<String> get() = _loginErrorMsg.shareIn(viewModelScope, SharingStarted.WhileSubscribed())
 
-    val isValidEmail: LiveData<Boolean> get() = _isValidEmail
-    val authenticatedUser: LiveData<UserEntity> get() = _authenticatedUser
-    val loginErrorMsg: LiveData<String> get() = _loginErrorMsg
-    val dbErrorMsg: LiveData<String> get() = _dbErrorMsg
+    private val _dbErrorMsg = MutableSharedFlow<String>()
+    val dbErrorMsg: SharedFlow<String> get() = _dbErrorMsg.shareIn(viewModelScope, SharingStarted.WhileSubscribed())
 
-    // two way binding
+    private val _authenticatedUser = MutableStateFlow<UserEntity>(UserEntity("", ""))
+    val authenticatedUser: StateFlow<UserEntity> get() = _authenticatedUser
+
     var inputEmail: String = ""
     var inputPassword: String = ""
 
+    /**
+     * 파이어베이스 로그인
+     */
     fun firebaseLogin(inputEmail: String, inputPassword: String) {
         firebaseLoginUseCase(inputEmail, inputPassword)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ user ->
-                _authenticatedUser.value = user
-            }, { error ->
-                _loginErrorMsg.value = error.message
-                Log.e("TAG", "firebaseLogin: ", error)
-            }).addTo(disposable)
+            .onEach {
+                if (!it.uid.isNullOrBlank()) {
+                    _authenticatedUser.value = it
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
-    // sign up And firebase DB create
-    // firebase DB root element is userEmail
+    /**
+     * 유저 정보 생성
+     */
     fun createUser(inputEmail: String, inputPassword: String) {
         firebaseCreateUserUseCase(inputEmail, inputPassword)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ user ->
-                _authenticatedUser.value = user
-            },
-                { error ->
-                    _loginErrorMsg.value = error.message
-                    Log.e("TAG", "createUserWithEmailAndPassword: ", error)
+            .onEach {
+                if (!it.uid.isNullOrBlank()) {
+                    _authenticatedUser.value = it
                 }
-            ).addTo(disposable)
+            }
+            .launchIn(viewModelScope)
     }
 
-    fun createUserInfoDB(user: UserEntity) {
+    /**
+     * DB에 유저 정보 삽입
+     */
+    fun insertUserInfoDB(user: UserEntity) {
         firebaseCreateUserInfoDbUseCase(user)
-            .observeOn(Schedulers.io())
-            .subscribe {
-                try {
-                    Log.d("TAG", "createUserInfoDB: ")
-                } catch (e: Exception) {
-                    Log.e("TAG", "createUserInfoDB: ", e)
+            .onEach {
+                if (it.isFailure) {
+                    _dbErrorMsg.emit(it.exceptionOrNull()?.localizedMessage.orEmpty())
                 }
-            }.addTo(disposable)
+            }
+            .launchIn(viewModelScope)
     }
 
     // check email validation
@@ -84,14 +86,4 @@ class AuthViewModel @Inject constructor(
             _isValidEmail.value = Patterns.EMAIL_ADDRESS.matcher(s).matches()
         }
     }
-
-    // two way binding
-    fun firebaseLoginSingleClickEvent(view: View) {
-        viewEvent(SingleClickEventFlag.EVENT_FIREBASE_LOGIN)
-    }
-
-    fun signUpSingleClickEvent(view: View) {
-        viewEvent(SingleClickEventFlag.SIGN_UP)
-    }
-
 }

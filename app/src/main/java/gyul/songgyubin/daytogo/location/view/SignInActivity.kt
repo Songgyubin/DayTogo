@@ -3,13 +3,14 @@ package gyul.songgyubin.daytogo.location.view
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.auth.view.LocationActivity
+import gyul.songgyubin.daytogo.auth.viewmodel.AuthViewModel
 import gyul.songgyubin.daytogo.base.view.BaseActivity
 import gyul.songgyubin.daytogo.databinding.ActivitySignInBinding
-import gyul.songgyubin.daytogo.utils.SingleClickEventFlag
-import gyul.songgyubin.daytogo.auth.viewmodel.AuthViewModel
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -19,12 +20,42 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setUp()
+        setOnClickListener()
 
-        setView()
-        setObserveLoginViewModel()
+        collect()
     }
 
-    private fun setView() {
+    /**
+     * collect
+     */
+    private fun collect() {
+        lifecycleScope.launchWhenStarted {
+            launch { collectAuthenticatedUser() }
+            launch { collectLoginErrorMsg() }
+        }
+    }
+
+    /**
+     * 클릭 리스너 세팅
+     */
+    private fun setOnClickListener() {
+        setLoginClick()
+    }
+
+    /**
+     * 파이어베이스 로그인
+     */
+    private fun setLoginClick() {
+        binding.btnFirebaseLogin.setOnClickListener {
+            callFirebaseLoginIfValidUserInfo()
+        }
+    }
+
+    /**
+     * 초기 세팅
+     */
+    private fun setUp() {
         binding.viewmodel = viewModel
         binding.activity = this
     }
@@ -43,44 +74,26 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
         }
     }
 
-    // observing viewModel data
-    private fun setObserveLoginViewModel() {
-        observeSingleClickEvent()
-        observeFirebaseLogin()
-    }
-
-    private fun observeSingleClickEvent() {
-        viewModel.viewSingleEvent.observe(this@SignInActivity) {
-            it.getContentIfNotHandled().let { event ->
-                when (event) {
-                    SingleClickEventFlag.EVENT_FIREBASE_LOGIN -> callFirebaseLoginIfValidUserInfo()
-                    else -> {
-                        return@let
-                    }
-                }
-            }
+    /**
+     * 인증된 유저 로그인 완료 여부 collect
+     */
+    private suspend fun collectAuthenticatedUser() {
+        viewModel.authenticatedUser.collect {
+            startOtherActivity(this@SignInActivity, LocationActivity())
+            finish()
         }
     }
 
-
-    private fun observeFirebaseLogin() {
-        viewModel.run {
-            authenticatedUser.observe(this@SignInActivity) { user ->
-                startOtherActivity(this@SignInActivity, LocationActivity())
-                finish()
-            }
-            loginErrorMsg.observe(this@SignInActivity) { error ->
-                showShortToast(getString(R.string.check_email_password))
-            }
+    /**
+     * 로그인 에러 메시지 collect
+     */
+    private suspend fun collectLoginErrorMsg() {
+        viewModel.loginErrorMsg.collect {
+            showShortToast(getString(R.string.check_email_password))
         }
     }
 
     fun startSignUp(view: View) {
         startOtherActivity(this@SignInActivity, SignUpActivity())
-    }
-
-    override fun onDestroy() {
-        disposable.dispose()
-        super.onDestroy()
     }
 }

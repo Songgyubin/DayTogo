@@ -1,6 +1,4 @@
 import org.gradle.kotlin.dsl.DependencyHandlerScope
-import org.gradle.kotlin.dsl.exclude
-import org.gradle.kotlin.dsl.project
 
 object Dependencies {
 
@@ -16,7 +14,7 @@ object Dependencies {
     private const val kaptTest = "kaptTest"
     private const val kaptAndroidTest = "kaptAndroidTest"
 
-    object Kotlin{
+    object Kotlin {
         const val VERSION = "1.7.10"
     }
 
@@ -48,21 +46,12 @@ object Dependencies {
         implementation(Naver.MAP)
     }
 
-    object Rx {
-        const val ANDROID = "io.reactivex.rxjava2:rxandroid:2.1.1"
-        const val JAVA = "io.reactivex.rxjava2:rxjava:2.2.21"
-    }
-
-    fun DependencyHandlerScope.applyRx() {
-        implementation(Rx.ANDROID)
-        implementation(Rx.JAVA)
-    }
-
     object Firebase {
         const val BOM = "com.google.firebase:firebase-bom:30.2.0"
         const val REALTIME_DATABASE = "com.google.firebase:firebase-database-ktx"
         const val AUTH = "com.google.firebase:firebase-auth-ktx"
         const val RX_FIREBASE = "com.github.FrangSierra:RxFirebase:1.5.6"
+        const val COROUTINES_FIREBASE = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.2"
         const val ANALYTICS = "com.google.firebase:firebase-analytics"
     }
 
@@ -71,9 +60,10 @@ object Dependencies {
         implementation(Firebase.AUTH)
         implementation(Firebase.RX_FIREBASE)
         implementation(platform(Firebase.BOM))
+        implementation(Firebase.COROUTINES_FIREBASE)
     }
 
-    object Hilt{
+    object Hilt {
         const val VERSION = "2.42"
 
         const val CORE = "com.google.dagger:hilt-android:$VERSION"
@@ -88,7 +78,7 @@ object Dependencies {
         const val LOCAL_TESTING_COMPILER = "com.google.dagger:hilt-compiler:$VERSION"
     }
 
-    fun DependencyHandlerScope.applyHilt(){
+    fun DependencyHandlerScope.applyHilt() {
         implementation(Hilt.CORE)
         kapt(Hilt.COMPILER)
 
@@ -99,18 +89,33 @@ object Dependencies {
         kaptAndroidTest(Hilt.ANDROID_TESTING_COMPILER)
     }
 
+    object Coroutines {
+        const val COROUTINES_ANDROID = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.2"
+        const val COROUTINES_CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2"
+    }
+
+    fun DependencyHandlerScope.applyCoroutines() {
+        implementation(Coroutines.COROUTINES_ANDROID)
+        implementation(Coroutines.COROUTINES_CORE)
+    }
 
 
     object Test {
         const val JUNIT = "junit:junit:4.13.2"
         const val ANDROID_EXT_JUNIT = "androidx.test.ext:junit:1.1.3"
         const val ANDROID_ESPRESSO_CORE = "androidx.test.espresso:espresso-core:3.4.0"
+        const val ANDROID_ARCH = "androidx.arch.core:core-testing:2.1.0"
         const val MOCKITO = "org.mockito:mockito-core:2.28.2"
+        const val MOCKK = "io.mockk:mockk:1.10.6"
+        const val COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2"
     }
 
     fun DependencyHandlerScope.applyTest() {
         Dependencies.testImplementation(Test.JUNIT)
         Dependencies.testImplementation(Test.MOCKITO)
+        Dependencies.testImplementation(Test.MOCKK)
+        Dependencies.testImplementation(Test.ANDROID_ARCH)
+        Dependencies.testImplementation(Test.COROUTINES)
         androidTestImplementation(Test.ANDROID_EXT_JUNIT)
         androidTestImplementation(Test.ANDROID_ESPRESSO_CORE)
     }

@@ -7,11 +7,11 @@
 
         <variable
             name="locationInfo"
-            type="gyul.songgyubin.domain.model.LocationInfoEntity" />
+            type="gyul.songgyubin.domain.location.model.LocationEntity" />
 
         <variable
             name="fragment"
-            type="gyul.songgyubin.daytogo.view.LocationInfoFragment" />
+            type="gyul.songgyubin.daytogo.auth.view.LocationInfoFragment" />
 
         <variable
             name="viewModel"
