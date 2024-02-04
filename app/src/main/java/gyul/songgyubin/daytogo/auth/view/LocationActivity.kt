@@ -99,7 +99,6 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(R.layout.activity
         viewModel.fetchSavedLocationList()
     }
 
-
     // NaverMap 세팅
     @UiThread
     override fun onMapReady(p0: NaverMap) {
@@ -116,10 +115,5 @@ class LocationActivity : BaseActivity<ActivityLocationBinding>(R.layout.activity
         if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
             finish()
         }
-    }
-
-    override fun onDestroy() {
-        disposable.dispose()
-        super.onDestroy()
     }
 }
