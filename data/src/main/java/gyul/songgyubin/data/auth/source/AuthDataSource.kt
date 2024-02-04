@@ -1,11 +1,13 @@
 package gyul.songgyubin.data.auth.source
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import gyul.songgyubin.data.auth.model.UserMapper.toResponse
 import gyul.songgyubin.data.auth.model.UserResponse
 import gyul.songgyubin.domain.auth.model.UserEntity
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
 /**
  * Auth Data Source
@@ -13,10 +15,12 @@ import kotlinx.coroutines.tasks.await
  * @author   Gyub
  * @created  2024/01/31
  */
-class AuthDataSource {
-    private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
-    private val dbReference by lazy { FirebaseDatabase.getInstance().reference }
-
+class AuthDataSource
+@Inject
+constructor(
+    private val auth: FirebaseAuth,
+    private val firebaseDataBase: FirebaseDatabase
+) {
     /**
      * 파이어베이스 로그인
      */
@@ -42,7 +46,7 @@ class AuthDataSource {
      */
     suspend fun saveUserInfoDB(user: UserEntity): Result<Unit> {
         return try {
-            dbReference.child("users")
+            firebaseDataBase.reference.child("users")
                 .child(user.uid.orEmpty())
                 .child("userInfo")
                 .setValue(user)

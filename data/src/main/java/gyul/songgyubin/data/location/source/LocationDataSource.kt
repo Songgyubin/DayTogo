@@ -2,13 +2,12 @@ package gyul.songgyubin.data.location.source
 
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.ktx.database
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.getValue
-import com.google.firebase.ktx.Firebase
-import gyul.songgyubin.domain.location.model.LocationRequest
 import gyul.songgyubin.data.location.model.LocationResponse
+import gyul.songgyubin.domain.location.model.LocationRequest
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
 /**
  * 장소 정보 관련 Data Source
@@ -16,10 +15,13 @@ import kotlinx.coroutines.tasks.await
  * @author   Gyub
  * @created  2024/01/31
  */
-class LocationDataSource {
-    private val dbReference by lazy { Firebase.database.reference }
-    private val auth: FirebaseAuth by lazy { Firebase.auth }
-    private val currentUser by lazy { auth.currentUser }
+class LocationDataSource
+@Inject
+constructor(
+    private val firebaseDatabase: FirebaseDatabase,
+    private val auth: FirebaseAuth
+) {
+
 
     /**
      * 저장된 장소 가져오기
@@ -27,8 +29,8 @@ class LocationDataSource {
      * @return 저장된 장소 리스트
      */
     suspend fun getSavedLocationList(): List<LocationResponse> {
-        val uid = currentUser?.uid.orEmpty()
-        val snapshot = dbReference.child("users")
+        val uid = auth.currentUser?.uid.orEmpty()
+        val snapshot = firebaseDatabase.reference.child("users")
             .child(uid)
             .child("locationInfoList")
             .get()
@@ -39,13 +41,13 @@ class LocationDataSource {
 
     /**
      * 장소 저장하기
-     * 
+     *
      * @return 성공/실패 여부
      */
     suspend fun saveLocationDB(locationRequest: LocationRequest): Result<Unit> {
         return try {
-            dbReference.child("users")
-                .child(currentUser!!.uid)
+            firebaseDatabase.reference.child("users")
+                .child(auth.currentUser!!.uid)
                 .child("locationInfoList")
                 .push()
                 .setValue(locationRequest)

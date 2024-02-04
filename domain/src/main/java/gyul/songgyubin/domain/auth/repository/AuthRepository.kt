@@ -9,7 +9,6 @@ import gyul.songgyubin.domain.auth.model.UserEntity
  */
 
 interface AuthRepository {
-
     /**
      * 파이어베이스 로그인
      */
