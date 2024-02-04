@@ -6,11 +6,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
 
 /**
  * 파이어베이스 로그인 UseCase
  */
-class FirebaseLoginUseCase(private val repository: AuthRepository) {
+class FirebaseLoginUseCase
+@Inject
+constructor(private val repository: AuthRepository) {
     operator fun invoke(
         inputEmail: String,
         inputPassword: String

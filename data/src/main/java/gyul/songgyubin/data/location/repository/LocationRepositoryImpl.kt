@@ -6,7 +6,9 @@ import gyul.songgyubin.data.location.source.LocationDataSource
 import gyul.songgyubin.domain.location.model.LocationEntity
 import gyul.songgyubin.domain.location.repository.LocationRepository
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class LocationRepositoryImpl
 @Inject constructor(
     private val locationDataSource: LocationDataSource

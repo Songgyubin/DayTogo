@@ -1,10 +1,12 @@
 package com.gyub.common.di
 
-import dagger.Provides
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import gyul.songgyubin.data.auth.repository.AuthRepositoryImpl
 import gyul.songgyubin.data.location.repository.LocationRepositoryImpl
 import gyul.songgyubin.domain.location.repository.LocationRepository
-import gyul.songgyubin.domain.location.usecase.AddLocationInfoUseCase
 import gyul.songgyubin.domain.repository.AuthRepository
 
 /**
@@ -13,10 +15,12 @@ import gyul.songgyubin.domain.repository.AuthRepository
  * @author   Gyub
  * @created  2024/01/30
  */
+@Module
+@InstallIn(SingletonComponent::class)
 interface RepositoryModule {
-    @Provides
-    fun provideLocationRepositoryImpl(): LocationRepository = LocationRepositoryImpl()
+    @Binds
+    fun bindLocationRepository(locationRepositoryImpl: LocationRepositoryImpl): LocationRepository
 
-    @Provides
-    fun provideAuthRepositoryImpl(): AuthRepository = AuthRepositoryImpl()
+    @Binds
+    fun bindAuthRepository(authRepositoryImpl: AuthRepositoryImpl): AuthRepository
 }

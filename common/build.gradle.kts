@@ -1,3 +1,4 @@
+import Dependencies.applyFirebase
 import Dependencies.applyHilt
 
 plugins {
@@ -39,4 +40,5 @@ dependencies {
     implementation(project(":data"))
     
     applyHilt()
+    applyFirebase()
 }
