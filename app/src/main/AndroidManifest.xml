@@ -4,8 +4,8 @@
     package="gyul.songgyubin.daytogo">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".GlobalApplication"
@@ -27,9 +27,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="gyul.songgyubin.daytogo.location.view.SignUpActivity"/>
+        <activity android:name="gyul.songgyubin.daytogo.location.view.SignUpActivity" />
 
-        <activity android:name="gyul.songgyubin.daytogo.auth.view.LocationActivity"></activity>
+        <activity android:name="gyul.songgyubin.daytogo.auth.view.LocationActivity" />
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
