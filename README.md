@@ -23,12 +23,12 @@ Kotlin / Clean Architecture / MVVM / AAC / Coroutine / Hilt / Firebase / Naver M
 
 <img width="1761" alt="image" src="https://github.com/Songgyubin/DayTogo/assets/37494776/09580449-36c8-467d-af55-0756fe83b55c">
 
-## 핵심 기능
+## Core Features
 - 이메일 로그인
 - 마커를 이용한 저장한 위치 표시 제공
 - 장소별 상세 설명 작성
 
-## 서비스 화면
+## ScreenShot
 <div> 
     <img width="200" src ="https://github.com/Songgyubin/DayTogo/assets/37494776/b60e3091-d4f8-4fdf-9d32-041a5ae05947.jpeg"> 
       <img width="200" src ="https://user-images.githubusercontent.com/37494776/186362554-70c8d3b8-af7b-47a3-bfb4-8e33c8d508a7.jpeg"> 
