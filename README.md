@@ -38,10 +38,6 @@ Kotlin / Clean Architecture / MVVM / AAC / Coroutine / Hilt / Firebase / Naver M
 ### 서비스 화면
 <div> 
     <img width="200" src ="https://github.com/Songgyubin/DayTogo/assets/37494776/b60e3091-d4f8-4fdf-9d32-041a5ae05947.jpeg"> 
-     <img width="200" src ="https://user-images.githubusercontent.com/37494776/186362538-44e975ae-6da0-45e0-85ee-14107c89732a.jpeg"> 
       <img width="200" src ="https://user-images.githubusercontent.com/37494776/186362554-70c8d3b8-af7b-47a3-bfb4-8e33c8d508a7.jpeg"> 
     <img width="200" src ="https://user-images.githubusercontent.com/37494776/186362516-4c6e351d-d6b6-4159-9f9f-529b6472f26a.jpeg"> 
-  
-  
-
 </div> 
