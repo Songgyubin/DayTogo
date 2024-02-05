@@ -1,3 +1,5 @@
+![banner](https://github.com/Songgyubin/DayTogo/assets/37494776/c7e9729b-121b-488e-a103-994ec213d275.png)
+
 # DayTogo
 > 기억에 남는 장소 저장 앱
 
@@ -32,10 +34,10 @@ Kotlin / Clean Architecture / MVVM / AAC / Coroutine / Hilt / Firebase / Naver M
 - **각 장소 별 특징**
     
     저장한 장소들의 별명 및 상세 설명을 적을 수 있게 구현했습니다.
-    
+
 ### 서비스 화면
 <div> 
-    <img width="200" src ="https://github.com/Songgyubin/DayTogo/assets/37494776/235182aa-ebdc-4594-ad27-bbb6434164d5.jpeg"> 
+    <img width="200" src ="https://github.com/Songgyubin/DayTogo/assets/37494776/b60e3091-d4f8-4fdf-9d32-041a5ae05947.jpeg"> 
      <img width="200" src ="https://user-images.githubusercontent.com/37494776/186362538-44e975ae-6da0-45e0-85ee-14107c89732a.jpeg"> 
       <img width="200" src ="https://user-images.githubusercontent.com/37494776/186362554-70c8d3b8-af7b-47a3-bfb4-8e33c8d508a7.jpeg"> 
     <img width="200" src ="https://user-images.githubusercontent.com/37494776/186362516-4c6e351d-d6b6-4159-9f9f-529b6472f26a.jpeg"> 
