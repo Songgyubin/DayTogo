@@ -57,6 +57,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
         binding.viewmodel = viewModel
         binding.activity = this
     }
+
     /**
      * 파이어베이스 로그인 클릭 이벤트
      */
@@ -77,8 +78,10 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
             when {
                 inputEmail.isNotEmpty() && inputPassword.isNotEmpty() ->
                     firebaseLogin(inputEmail, inputPassword)
+
                 inputEmail.isEmpty() && inputPassword.isEmpty() ->
                     startOtherActivity(this@SignInActivity, SignUpActivity())
+
                 else ->
                     showLongToast(getString(R.string.enter_email_password))
             }
@@ -90,6 +93,9 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(R.layout.activity_sig
      */
     private suspend fun collectAuthenticatedUser() {
         viewModel.authenticatedUser.collect {
+            if (it.uid.isNullOrBlank()) {
+                return@collect
+            }
             startOtherActivity(this@SignInActivity, LocationActivity())
             finish()
         }
