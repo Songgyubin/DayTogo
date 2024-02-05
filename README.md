@@ -3,7 +3,8 @@
 # DayTogo
 > 기억에 남는 장소 저장 앱
 
-## 서비스 내용
+
+## Introduction
 
 ### *기억하고 싶은 장소를 저장해봐!*
 
@@ -15,27 +16,19 @@
 
 간편하게 저장하고 한 눈에 볼 수 있는 서비스를 제공합니다.
 
-### Skils
-Kotlin / Clean Architecture / MVVM / AAC / Coroutine / Hilt / Firebase / Naver Maps API
+## Skils
+Kotlin / Clean Architecture / MVVM / AAC / Coroutine / Hilt / Firebase / Naver Maps API 
 
+## Clean Architecture
 
-### 핵심 기능
+<img width="1761" alt="image" src="https://github.com/Songgyubin/DayTogo/assets/37494776/09580449-36c8-467d-af55-0756fe83b55c">
 
-- **간편 로그인**
-    
-     간편하게 이메일과 패스워드만으로 회원가입이 가능한 파이어베이스 로그인을 구현했습니다.
-    
-- **저장한 위치 표시 제공**
-    
-    NaverMap API를 사용하여 저장한 곳마다 마커를 지정하여서
-    
-    한 눈에 저장한 곳들을 볼 수 있게 구현했습니다.
-    
-- **각 장소 별 특징**
-    
-    저장한 장소들의 별명 및 상세 설명을 적을 수 있게 구현했습니다.
+## 핵심 기능
+- 이메일 로그인
+- 마커를 이용한 저장한 위치 표시 제공
+- 장소별 상세 설명 작성
 
-### 서비스 화면
+## 서비스 화면
 <div> 
     <img width="200" src ="https://github.com/Songgyubin/DayTogo/assets/37494776/b60e3091-d4f8-4fdf-9d32-041a5ae05947.jpeg"> 
       <img width="200" src ="https://user-images.githubusercontent.com/37494776/186362554-70c8d3b8-af7b-47a3-bfb4-8e33c8d508a7.jpeg"> 
