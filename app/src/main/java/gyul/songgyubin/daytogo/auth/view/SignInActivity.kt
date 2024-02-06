@@ -1,15 +1,14 @@
-package gyul.songgyubin.daytogo.location.view
+package gyul.songgyubin.daytogo.auth.view
 
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import gyul.songgyubin.daytogo.R
-import gyul.songgyubin.daytogo.auth.view.LocationActivity
 import gyul.songgyubin.daytogo.auth.viewmodel.AuthViewModel
 import gyul.songgyubin.daytogo.base.view.BaseActivity
 import gyul.songgyubin.daytogo.databinding.ActivitySignInBinding
+import gyul.songgyubin.daytogo.location.view.LocationActivity
 import kotlinx.coroutines.launch
 
 

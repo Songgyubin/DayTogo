@@ -11,7 +11,7 @@
 
         <variable
             name="activity"
-            type="gyul.songgyubin.daytogo.location.view.SignInActivity" />
+            type="gyul.songgyubin.daytogo.auth.view.SignInActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
