@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gyul.songgyubin.daytogo.auth.model.UserUiModel
 import gyul.songgyubin.daytogo.auth.model.mapper.toUiModel
+import gyul.songgyubin.domain.auth.model.UserRequest
 import gyul.songgyubin.domain.auth.usecase.FirebaseCreateUserUseCase
 import gyul.songgyubin.domain.auth.usecase.FirebaseLoginUseCase
 import gyul.songgyubin.domain.auth.usecase.SaveUserInfoDbUseCase
@@ -64,7 +65,7 @@ class AuthViewModel @Inject constructor(
         firebaseCreateUserUseCase(inputEmail, inputPassword)
             .onEach {
                 if (!it.uid.isNullOrBlank()) {
-                    _authenticatedUser.value = it
+                    _authenticatedUser.value = it.toUiModel()
                 }
             }
             .launchIn(viewModelScope)
@@ -73,7 +74,7 @@ class AuthViewModel @Inject constructor(
     /**
      * DB에 유저 정보 삽입
      */
-    fun insertUserInfoDB(user: UserUiModel) {
+    fun insertUserInfoDB(user: UserRequest) {
         firebaseCreateUserInfoDbUseCase(user)
             .onEach {
                 if (it.isFailure) {
