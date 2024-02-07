@@ -1,4 +1,4 @@
-package gyul.songgyubin.daytogo.utils.extensions
+package com.gyub.common.util.extensions
 
 /**
  * Double형 Extension

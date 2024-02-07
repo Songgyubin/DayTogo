@@ -1,7 +1,7 @@
 package gyul.songgyubin.daytogo.location.model.mapper
 
 import gyul.songgyubin.daytogo.location.model.LocationUiModel
-import gyul.songgyubin.daytogo.utils.extensions.orDefault
+import com.gyub.common.util.extensions.orDefault
 import gyul.songgyubin.domain.location.model.LocationEntity
 
 /**
