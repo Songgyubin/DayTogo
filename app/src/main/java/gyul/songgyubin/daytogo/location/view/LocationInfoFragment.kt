@@ -67,7 +67,7 @@ class LocationInfoFragment :
     private suspend fun collectSelectedLocationInfo() {
         with(viewModel) {
             selectedLocationId.collect { locationId ->
-                savedLocationEntity[locationId]?.run {
+                savedLocationUiModel[locationId]?.run {
                     binding.edLocationTitle.setText(title)
                     binding.edLocationDescription.setText(description)
                 }

@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -39,7 +40,10 @@ class AuthViewModel @Inject constructor(
     val dbErrorMsg: SharedFlow<String> get() = _dbErrorMsg.shareIn(viewModelScope, SharingStarted.WhileSubscribed())
 
     private val _authenticatedUser = MutableStateFlow(UserUiModel())
-    val authenticatedUser: StateFlow<UserUiModel> get() = _authenticatedUser
+    val authenticatedUser: StateFlow<UserUiModel> = _authenticatedUser.asStateFlow()
+
+    private val _authenticatedUserRequest = MutableStateFlow(UserRequest(uid = null, email = null))
+    val authenticatedUserRequest: StateFlow<UserRequest> = _authenticatedUserRequest.asStateFlow()
 
     var inputEmail: String = ""
     var inputPassword: String = ""
@@ -66,6 +70,7 @@ class AuthViewModel @Inject constructor(
             .onEach {
                 if (!it.uid.isNullOrBlank()) {
                     _authenticatedUser.value = it.toUiModel()
+                    _authenticatedUserRequest.value = UserRequest(it.uid, it.email)
                 }
             }
             .launchIn(viewModelScope)

@@ -1,4 +1,4 @@
-package gyul.songgyubin.daytogo.utils.extensions
+package com.gyub.common.util.extensions
 
 /**
  * Int형 확장함수

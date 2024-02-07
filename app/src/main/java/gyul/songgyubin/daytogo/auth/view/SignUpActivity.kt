@@ -8,7 +8,7 @@ import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.auth.viewmodel.AuthViewModel
 import gyul.songgyubin.daytogo.base.view.BaseActivity
 import gyul.songgyubin.daytogo.databinding.ActivitySignUpBinding
-import gyul.songgyubin.domain.auth.model.UserEntity
+import gyul.songgyubin.domain.auth.model.UserRequest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -62,7 +62,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sig
      */
     private suspend fun collectCreatedUser() {
         viewModel.run {
-            authenticatedUser.collect { user ->
+            authenticatedUserRequest.collect { user ->
                 if (user.uid.isNullOrBlank()) {
                     return@collect
                 }
@@ -97,7 +97,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(R.layout.activity_sig
     /**
      * 유저 email DB 생성
      */
-    private fun insertDBWithUserEmail(user: UserEntity) {
+    private fun insertDBWithUserEmail(user: UserRequest) {
         viewModel.insertUserInfoDB(user)
     }
 }

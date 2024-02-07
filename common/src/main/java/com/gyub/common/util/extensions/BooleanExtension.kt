@@ -1,4 +1,4 @@
-package gyul.songgyubin.daytogo.utils.extensions
+package com.gyub.common.util.extensions
 
 /**
  * Boolean 형 확장함수
