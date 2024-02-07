@@ -4,13 +4,15 @@ import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import gyul.songgyubin.domain.location.model.LocationEntity
+import gyul.songgyubin.daytogo.location.model.LocationUiModel
+import gyul.songgyubin.daytogo.location.model.mapper.LocationUiModelMapper.toUiModelList
 import gyul.songgyubin.domain.location.model.LocationRequest
 import gyul.songgyubin.domain.location.usecase.AddLocationInfoUseCase
 import gyul.songgyubin.domain.location.usecase.GetRemoteSavedLocationInfoUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
@@ -27,10 +29,10 @@ class LocationViewModel @Inject constructor(
     private val getRemoteSavedLocationInfoUseCase: GetRemoteSavedLocationInfoUseCase
 ) : ViewModel() {
 
-    private val _savedLocationList = MutableStateFlow<List<LocationEntity>>(listOf())
-    val savedLocationList: StateFlow<List<LocationEntity>> get() = _savedLocationList
+    private val _savedLocationList = MutableStateFlow<List<LocationUiModel>>(listOf())
+    val savedLocationList: StateFlow<List<LocationUiModel>> get() = _savedLocationList
 
-    val savedLocationEntity: HashMap<String, LocationEntity> = HashMap()
+    val savedLocationUiModel: HashMap<String, LocationUiModel> = HashMap()
 
     private val _savedLocationListErrorMsg = MutableStateFlow("")
     val savedLocationListErrorMsg: StateFlow<String> get() = _savedLocationListErrorMsg
@@ -53,8 +55,8 @@ class LocationViewModel @Inject constructor(
      * 클릭된 장소의 loactionInfo를
      * LocationId라는 구분자로 보여주기 위해 Map에 세팅
      */
-    fun setSavedLocationInfo(locationEntity: LocationEntity) {
-        savedLocationEntity[locationEntity.locationId.orEmpty()] = locationEntity
+    fun setSavedLocationInfo(locationUiModel: LocationUiModel) {
+        savedLocationUiModel[locationUiModel.locationId] = locationUiModel
     }
 
     /**
@@ -62,6 +64,7 @@ class LocationViewModel @Inject constructor(
      */
     fun fetchSavedLocationList() {
         getRemoteSavedLocationInfoUseCase()
+            .map { it.toUiModelList() }
             .onEach(::setUpSavedLocationList)
             .launchIn(viewModelScope)
     }
@@ -69,7 +72,7 @@ class LocationViewModel @Inject constructor(
     /**
      * 저장된 위치 세팅
      */
-    private fun setUpSavedLocationList(locationList: List<LocationEntity>) {
+    private fun setUpSavedLocationList(locationList: List<LocationUiModel>) {
         _savedLocationList.value = locationList
     }
 

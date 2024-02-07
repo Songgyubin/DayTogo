@@ -1,4 +1,4 @@
-package gyul.songgyubin.daytogo.auth.view
+package gyul.songgyubin.daytogo.location.view
 
 import android.os.Bundle
 import androidx.activity.viewModels

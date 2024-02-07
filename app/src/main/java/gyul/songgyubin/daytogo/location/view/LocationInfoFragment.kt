@@ -1,9 +1,7 @@
-package gyul.songgyubin.daytogo.auth.view
+package gyul.songgyubin.daytogo.location.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
@@ -11,7 +9,7 @@ import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.base.view.BaseFragment
 import gyul.songgyubin.daytogo.databinding.FragmentLocationInfoBinding
 import gyul.songgyubin.daytogo.location.viewmodel.LocationViewModel
-import gyul.songgyubin.daytogo.utils.toLatLng
+import gyul.songgyubin.daytogo.utils.extensions.toLatLng
 import gyul.songgyubin.domain.location.model.LocationRequest
 
 @AndroidEntryPoint

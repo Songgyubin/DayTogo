@@ -1,11 +1,10 @@
 package gyul.songgyubin.data.auth.source
 
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import gyul.songgyubin.data.auth.model.UserMapper.toResponse
 import gyul.songgyubin.data.auth.model.UserResponse
-import gyul.songgyubin.domain.auth.model.UserEntity
+import gyul.songgyubin.domain.auth.model.UserRequest
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -44,7 +43,7 @@ constructor(
     /**
      * User 정보 DB에 저장
      */
-    suspend fun saveUserInfoDB(user: UserEntity): Result<Unit> {
+    suspend fun saveUserInfoDB(user: UserRequest): Result<Unit> {
         return try {
             firebaseDataBase.reference.child("users")
                 .child(user.uid.orEmpty())

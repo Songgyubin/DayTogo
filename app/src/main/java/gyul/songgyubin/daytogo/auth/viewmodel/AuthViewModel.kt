@@ -4,7 +4,9 @@ import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import gyul.songgyubin.domain.auth.model.UserEntity
+import gyul.songgyubin.daytogo.auth.model.UserUiModel
+import gyul.songgyubin.daytogo.auth.model.mapper.toUiModel
+import gyul.songgyubin.domain.auth.model.UserRequest
 import gyul.songgyubin.domain.auth.usecase.FirebaseCreateUserUseCase
 import gyul.songgyubin.domain.auth.usecase.FirebaseLoginUseCase
 import gyul.songgyubin.domain.auth.usecase.SaveUserInfoDbUseCase
@@ -14,6 +16,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import javax.inject.Inject
@@ -35,8 +38,8 @@ class AuthViewModel @Inject constructor(
     private val _dbErrorMsg = MutableSharedFlow<String>()
     val dbErrorMsg: SharedFlow<String> get() = _dbErrorMsg.shareIn(viewModelScope, SharingStarted.WhileSubscribed())
 
-    private val _authenticatedUser = MutableStateFlow<UserEntity>(UserEntity("", ""))
-    val authenticatedUser: StateFlow<UserEntity> get() = _authenticatedUser
+    private val _authenticatedUser = MutableStateFlow(UserUiModel())
+    val authenticatedUser: StateFlow<UserUiModel> get() = _authenticatedUser
 
     var inputEmail: String = ""
     var inputPassword: String = ""
@@ -46,8 +49,9 @@ class AuthViewModel @Inject constructor(
      */
     fun firebaseLogin(inputEmail: String, inputPassword: String) {
         firebaseLoginUseCase(inputEmail, inputPassword)
+            .map { it.toUiModel() }
             .onEach {
-                if (!it.uid.isNullOrBlank()) {
+                if (it.uid.isNotBlank()) {
                     _authenticatedUser.value = it
                 }
             }
@@ -61,7 +65,7 @@ class AuthViewModel @Inject constructor(
         firebaseCreateUserUseCase(inputEmail, inputPassword)
             .onEach {
                 if (!it.uid.isNullOrBlank()) {
-                    _authenticatedUser.value = it
+                    _authenticatedUser.value = it.toUiModel()
                 }
             }
             .launchIn(viewModelScope)
@@ -70,7 +74,7 @@ class AuthViewModel @Inject constructor(
     /**
      * DB에 유저 정보 삽입
      */
-    fun insertUserInfoDB(user: UserEntity) {
+    fun insertUserInfoDB(user: UserRequest) {
         firebaseCreateUserInfoDbUseCase(user)
             .onEach {
                 if (it.isFailure) {

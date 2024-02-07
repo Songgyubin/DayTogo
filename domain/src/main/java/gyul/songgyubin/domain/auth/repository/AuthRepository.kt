@@ -1,6 +1,7 @@
 package gyul.songgyubin.domain.repository
 
 import gyul.songgyubin.domain.auth.model.UserEntity
+import gyul.songgyubin.domain.auth.model.UserRequest
 
 /**
  * UseCase에 필요한 Interface 선언
@@ -29,6 +30,6 @@ interface AuthRepository {
      * User 정보 Firebase DB에 저장
      */
     suspend fun saveUserInfoDB(
-        user: UserEntity
+        user: UserRequest
     ): Result<Unit>
 }

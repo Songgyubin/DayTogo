@@ -1,6 +1,6 @@
 package gyul.songgyubin.domain.auth.usecase
 
-import gyul.songgyubin.domain.auth.model.UserEntity
+import gyul.songgyubin.domain.auth.model.UserRequest
 import gyul.songgyubin.domain.repository.AuthRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -16,9 +16,9 @@ class SaveUserInfoDbUseCase
 @Inject
 constructor(private val repository: AuthRepository) {
     operator fun invoke(
-        userEntity: UserEntity
+        userRequest: UserRequest
     ): Flow<Result<Unit>> = flow {
-        val item = repository.saveUserInfoDB(userEntity)
+        val item = repository.saveUserInfoDB(userRequest)
         emit(item)
     }.catch {
         emit(Result.failure(it))
