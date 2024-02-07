@@ -9,7 +9,7 @@ import gyul.songgyubin.daytogo.R
 import gyul.songgyubin.daytogo.base.view.BaseFragment
 import gyul.songgyubin.daytogo.databinding.FragmentLocationInfoBinding
 import gyul.songgyubin.daytogo.location.viewmodel.LocationViewModel
-import gyul.songgyubin.daytogo.utils.toLatLng
+import gyul.songgyubin.daytogo.utils.extensions.toLatLng
 import gyul.songgyubin.domain.location.model.LocationRequest
 
 @AndroidEntryPoint
