@@ -3,6 +3,7 @@ package gyul.songgyubin.data.auth.repository
 import gyul.songgyubin.data.auth.model.UserMapper.toEntity
 import gyul.songgyubin.data.auth.source.AuthDataSource
 import gyul.songgyubin.domain.auth.model.UserEntity
+import gyul.songgyubin.domain.auth.model.UserRequest
 import gyul.songgyubin.domain.repository.AuthRepository
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -38,7 +39,7 @@ constructor(private val authDataSource: AuthDataSource) : AuthRepository {
      * 유저 정보 firebase DB에 저장
      */
     override suspend fun saveUserInfoDB(
-        user: UserEntity
+        user: UserRequest
     ): Result<Unit> {
         return authDataSource.saveUserInfoDB(user)
     }
