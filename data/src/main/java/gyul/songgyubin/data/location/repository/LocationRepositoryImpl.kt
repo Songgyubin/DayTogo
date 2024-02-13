@@ -1,9 +1,9 @@
 package gyul.songgyubin.data.location.repository
 
 import gyul.songgyubin.data.location.model.LocationMapper.toEntity
-import gyul.songgyubin.domain.location.model.LocationRequest
 import gyul.songgyubin.data.location.source.LocationDataSource
 import gyul.songgyubin.domain.location.model.LocationEntity
+import gyul.songgyubin.domain.location.model.LocationRequest
 import gyul.songgyubin.domain.location.repository.LocationRepository
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -17,8 +17,8 @@ class LocationRepositoryImpl
     /**
      * 저장된 장소 리스트 가져오기
      */
-    override suspend fun getSavedLocationList(): List<LocationEntity> {
-        return locationDataSource.getSavedLocationList().map {
+    override suspend fun getSavedLocationList(uid: String): List<LocationEntity> {
+        return locationDataSource.getSavedLocationList(uid).map {
             it.toEntity()
         }
     }
