@@ -3,6 +3,7 @@ package gyul.songgyubin.daytogo.location.viewmodel
 import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gyul.songgyubin.daytogo.location.model.LocationUiModel
 import gyul.songgyubin.daytogo.location.model.mapper.LocationUiModelMapper.toUiModelList
@@ -25,6 +26,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class LocationViewModel @Inject constructor(
+    private val auth: FirebaseAuth,
     private val addLocationInfoUseCase: AddLocationInfoUseCase,
     private val getRemoteSavedLocationInfoUseCase: GetRemoteSavedLocationInfoUseCase
 ) : ViewModel() {
@@ -63,7 +65,9 @@ class LocationViewModel @Inject constructor(
      * 저장된 위치 리스트 가져오기
      */
     fun fetchSavedLocationList() {
-        getRemoteSavedLocationInfoUseCase()
+        val uid = auth.currentUser?.uid.orEmpty()
+
+        getRemoteSavedLocationInfoUseCase(uid)
             .map { it.toUiModelList() }
             .onEach(::setUpSavedLocationList)
             .launchIn(viewModelScope)
@@ -80,8 +84,11 @@ class LocationViewModel @Inject constructor(
      * 위치 정보 저장
      */
     fun savedLocationDB(locationRequest: LocationRequest) {
+        val uid = auth.currentUser?.uid.orEmpty()
+
         _isEditMode.value = false
-        addLocationInfoUseCase(locationRequest)
+
+        addLocationInfoUseCase(uid, locationRequest)
             .onEach(::setUpSavedLocationResult)
             .launchIn(viewModelScope)
     }

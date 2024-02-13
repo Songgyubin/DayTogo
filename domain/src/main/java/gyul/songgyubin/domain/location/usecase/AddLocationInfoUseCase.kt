@@ -18,9 +18,10 @@ class AddLocationInfoUseCase
 constructor(private val repository: LocationRepository) {
 
     operator fun invoke(
+        uid: String,
         locationRequest: LocationRequest
     ): Flow<Result<Unit>> = flow {
-        val item = repository.saveLocationDB(locationRequest)
+        val item = repository.saveLocationDB(uid, locationRequest)
         emit(item)
     }.catch {
         emit(Result.failure(it))

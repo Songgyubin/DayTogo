@@ -14,8 +14,8 @@ import javax.inject.Inject
 class GetRemoteSavedLocationInfoUseCase
 @Inject
 constructor(private val repository: LocationRepository) {
-    operator fun invoke(): Flow<List<LocationEntity>> = flow {
-        val item = repository.getSavedLocationList()
+    operator fun invoke(uid: String): Flow<List<LocationEntity>> = flow {
+        val item = repository.getSavedLocationList(uid)
         emit(item)
     }.flowOn(Dispatchers.IO)
 }

@@ -11,10 +11,10 @@ interface LocationRepository {
     /**
      * 저장된 장소 리스트 가져오기
      */
-    suspend fun getSavedLocationList(): List<LocationEntity>
+    suspend fun getSavedLocationList(uid: String): List<LocationEntity>
 
     /**
      * 장소 저장하기
      */
-    suspend fun saveLocationDB(locationRequest: LocationRequest): Result<Unit>
+    suspend fun saveLocationDB(uid: String, locationRequest: LocationRequest): Result<Unit>
 }

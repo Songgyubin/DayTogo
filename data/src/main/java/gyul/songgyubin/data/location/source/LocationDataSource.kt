@@ -1,7 +1,6 @@
 package gyul.songgyubin.data.location.source
 
 import com.google.firebase.FirebaseException
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.getValue
 import gyul.songgyubin.data.location.model.LocationResponse
@@ -19,7 +18,6 @@ class LocationDataSource
 @Inject
 constructor(
     private val firebaseDatabase: FirebaseDatabase,
-    private val auth: FirebaseAuth
 ) {
 
 
@@ -28,8 +26,7 @@ constructor(
      *
      * @return 저장된 장소 리스트
      */
-    suspend fun getSavedLocationList(): List<LocationResponse> {
-        val uid = auth.currentUser?.uid.orEmpty()
+    suspend fun getSavedLocationList(uid: String): List<LocationResponse> {
         val snapshot = firebaseDatabase.reference.child("users")
             .child(uid)
             .child("locationInfoList")
@@ -44,10 +41,10 @@ constructor(
      *
      * @return 성공/실패 여부
      */
-    suspend fun saveLocationDB(locationRequest: LocationRequest): Result<Unit> {
+    suspend fun saveLocationDB(uid: String, locationRequest: LocationRequest): Result<Unit> {
         return try {
             firebaseDatabase.reference.child("users")
-                .child(auth.currentUser!!.uid)
+                .child(uid)
                 .child("locationInfoList")
                 .push()
                 .setValue(locationRequest)
