@@ -27,8 +27,9 @@ class LocationRepositoryImpl
      * 장소 저장하기
      */
     override suspend fun saveLocationDB(
+        uid: String,
         locationRequest: LocationRequest
     ): Result<Unit> {
-        return locationDataSource.saveLocationDB(locationRequest)
+        return locationDataSource.saveLocationDB(uid, locationRequest)
     }
 }

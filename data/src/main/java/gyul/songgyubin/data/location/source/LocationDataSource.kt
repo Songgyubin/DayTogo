@@ -44,10 +44,10 @@ constructor(
      *
      * @return 성공/실패 여부
      */
-    suspend fun saveLocationDB(locationRequest: LocationRequest): Result<Unit> {
+    suspend fun saveLocationDB(uid: String, locationRequest: LocationRequest): Result<Unit> {
         return try {
             firebaseDatabase.reference.child("users")
-                .child(auth.currentUser!!.uid)
+                .child(uid)
                 .child("locationInfoList")
                 .push()
                 .setValue(locationRequest)
