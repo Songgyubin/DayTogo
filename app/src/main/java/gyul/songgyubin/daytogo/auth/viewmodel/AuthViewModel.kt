@@ -7,9 +7,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import gyul.songgyubin.daytogo.auth.model.UserUiModel
 import gyul.songgyubin.daytogo.auth.model.mapper.toUiModel
 import gyul.songgyubin.domain.auth.model.UserRequest
-import gyul.songgyubin.domain.auth.usecase.FirebaseCreateUserUseCase
-import gyul.songgyubin.domain.auth.usecase.FirebaseLoginUseCase
-import gyul.songgyubin.domain.auth.usecase.SaveUserInfoDbUseCase
+import gyul.songgyubin.domain.auth.usecase.CreateUserUseCase
+import gyul.songgyubin.domain.auth.usecase.LoginUseCase
+import gyul.songgyubin.domain.auth.usecase.SaveUserInfoDBUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -25,9 +25,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val firebaseLoginUseCase: FirebaseLoginUseCase,
-    private val firebaseCreateUserUseCase: FirebaseCreateUserUseCase,
-    private val firebaseCreateUserInfoDbUseCase: SaveUserInfoDbUseCase
+    private val loginUseCase: LoginUseCase,
+    private val createUserUseCase: CreateUserUseCase,
+    private val firebaseCreateUserInfoDbUseCase: SaveUserInfoDBUseCase
 ) : ViewModel() {
 
     private val _isValidEmail = MutableStateFlow(true)
@@ -52,7 +52,7 @@ class AuthViewModel @Inject constructor(
      * 파이어베이스 로그인
      */
     fun firebaseLogin(inputEmail: String, inputPassword: String) {
-        firebaseLoginUseCase(inputEmail, inputPassword)
+        loginUseCase(inputEmail, inputPassword)
             .map { it.toUiModel() }
             .onEach {
                 if (it.uid.isNotBlank()) {
@@ -66,7 +66,7 @@ class AuthViewModel @Inject constructor(
      * 유저 정보 생성
      */
     fun createUser(inputEmail: String, inputPassword: String) {
-        firebaseCreateUserUseCase(inputEmail, inputPassword)
+        createUserUseCase(inputEmail, inputPassword)
             .onEach {
                 if (!it.uid.isNullOrBlank()) {
                     _authenticatedUser.value = it.toUiModel()

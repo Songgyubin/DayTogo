@@ -11,7 +11,7 @@ import javax.inject.Inject
 /**
  * 파이어베이스 로그인 UseCase
  */
-class FirebaseLoginUseCase
+class LoginUseCase
 @Inject
 constructor(private val repository: AuthRepository) {
     operator fun invoke(

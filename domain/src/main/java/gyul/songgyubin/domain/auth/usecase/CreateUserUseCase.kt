@@ -11,7 +11,7 @@ import javax.inject.Inject
 /**
  * 이메일과 패스워드만 사용하여 파이어베이스 회원가입 UseCase
  */
-class FirebaseCreateUserUseCase
+class CreateUserUseCase
 @Inject
 constructor(private val repository: AuthRepository) {
     operator fun invoke(email: String, password: String): Flow<UserEntity> = flow {

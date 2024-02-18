@@ -12,7 +12,7 @@ import javax.inject.Inject
 /**
  * 회원가입 시 유저 정보를 담는 DB 저장 UseCase
  */
-class SaveUserInfoDbUseCase
+class SaveUserInfoDBUseCase
 @Inject
 constructor(private val repository: AuthRepository) {
     operator fun invoke(
